@@ -51,7 +51,7 @@ class RequestController extends Controller
         $wardName = null;
         $officeName= null;
         $wardId = null;
-        $officeid = null;
+        $officeId = null;
         if(Auth::user()->ward_id != null){
             $wardId = Auth::user()->ward_id; 
             foreach($wardList as $ward){

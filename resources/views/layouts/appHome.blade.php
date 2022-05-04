@@ -68,10 +68,12 @@
                                   'Product quantity: ' + JSON.stringify(data.productQuantity).replace(/\"/g, "") ; 
                                   
                                  
-        if(JSON.stringify(data.wardname) != null){
-          messageNotification += '<br>' + 'Ward: ' + JSON.stringify(data.wardname).replace(/\"/g, "") ; 
+        if(data.wardName !== null){
+          console.log(data.wardName)
+          messageNotification += '<br>' + 'Ward: ' + JSON.stringify(data.wardName).replace(/\"/g, "") ; 
         }  
-        if(JSON.stringify(data.officeName) != null){
+        if(data.officeName !== null){
+          console.log(data.officeName)
           messageNotification +=  '<br>' + 'Office: ' + JSON.stringify(data.officeName).replace(/\"/g, "") ; 
         }          
 
