@@ -22,7 +22,7 @@
               <legend>
                  
                     <div class="row">
-                        <div class="col-6">
+                        <div class="col-8">
                             <div class="input-group input-group-sm mb-3">
                                 <div class="input-group-prepend">                      
                                 <label for="product_name" class="input-group-text">{{ __('Product Name') }}</label>
@@ -35,8 +35,17 @@
                                 @enderror                    
                             </div>
                         </div>
-                        <div class="col">
+                        <div class="col-4">
                         <div class="input-group input-group-sm mb-3"> 
+                            <div class="input-group-prepend">                      
+                                <label for="product_quantity" class="input-group-text">{{ __('Product Quantity') }}</label>
+                                </div>                    
+                                <input id="product_quantity" type="number" class="form-control @error('product_quantity') is-invalid @enderror" name="product_quantity" value="{{ old('product_quantity') }}" required autocomplete="product_quantity"  autofocus>
+                                @error('product_name')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror          
                             
                             
                                         
@@ -73,7 +82,11 @@ $(document).ready(function () {
      
 </script>    
 <style>
-
+    body {
+    -moz-transform: scale(0.9, 0.9); /* Moz-browsers */
+    zoom: 0.9; /* Other non-webkit browsers */
+    zoom: 90%; /* Webkit browsers */
+}    
     
     </style> 
 @endpush

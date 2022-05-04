@@ -497,6 +497,10 @@ $(document).ready(function () {
     .input-group .input-group-text {
         width: 100%;
     }
-    
+    body {
+    -moz-transform: scale(0.9, 0.9); /* Moz-browsers */
+    zoom: 0.9; /* Other non-webkit browsers */
+    zoom: 90%; /* Webkit browsers */
+}    
     </style> 
 @endpush

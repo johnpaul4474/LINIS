@@ -76,7 +76,8 @@ class IssuanceController extends Controller
             'is_available' => false,	
             'issued_office_id' => $request->office,	
             'issued_ward_id' => $request->ward,	
-            'issued_date' => \Carbon\Carbon::now()           
+            'issued_date' => \Carbon\Carbon::now() ,
+            "returned_date" => null          
         ]);
 
         

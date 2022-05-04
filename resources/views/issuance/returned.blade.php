@@ -172,21 +172,88 @@
                 <form class = 'card p-3 bg-light' action = "condemned" method = "post">
                     @csrf
                     <fieldset>
-                        <legend>Condemn Products <legend>
+                        <legend>Condemned Products <legend>
                         <div class="row">
+                            <div class="col">
+                                <div class="input-group input-group-sm mb-3">
+                                    <div class="input-group-prepend">                      
+                                        <label for="wardCondemn" class="col col-form-label text-md-end" style="font-size:medium"> 
+                                            <input class="form-check-input" type="radio" name="ward_officeCondemn" id="wardRadioCondemn" required >{{ __('     Ward') }}
+                                        </label>
+                                    </div>                    
+                                    
+                                
+                                        <select class="form-control @error('wardCondemn') is-invalid @enderror" id="wardCondemn" name="wardCondemn" required autocomplete="wardCondemn" autofocus disabled>
+                                            <option value="" selected disabled hidden> Choose Ward</option>
+                                        @foreach(\App\Http\Controllers\Department\DepartmentController::wardList() as $ward)                                                                
+                                        <option value="{{$ward->id}}">
+                                                {{$ward->ward_name}}
+                                            </option>
+                                        @endforeach
+                                        </select>
+                                        @error('wardCondemn')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="input-group input-group-sm mb-3">
+                                    <div class="input-group-prepend">
+                                        <label for="officeCondemn" class="col col-form-label text-md-end" style="font-size:medium">
+                                            <input class="form-check-input" type="radio" name="ward_officeCondemn" id="officeRadioCondemn" required>{{ __('     Office') }}
+                                        </label>
+                                    </div>                    
+                                    
+                                    
+                                        {{-- <input id="office" type="text" class="form-control @error('office') is-invalid @enderror" name="office" value="{{ old('office') }}" required autocomplete="office" autofocus> --}}
+                                        <select class="form-control @error('officeCondemn') is-invalid @enderror" id="officeCondemn" name="officeCondemn" required autocomplete="officeCondemn" autofocus disabled>
+                                            <option value="" selected disabled hidden> Choose Office</option>
+                                        @foreach(\App\Http\Controllers\Department\DepartmentController::officeList() as $office)                                                                
+                                        <option value="{{$office->id}}">
+                                                {{$office->office_name}}
+                                            </option>
+                                        @endforeach
+                                        </select>
+                                        @error('officeCondemn')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    
+                                </div>
+                            </div> 
+                            <div class="col">
+                                <div class="input-group input-group-sm mb-3">
+                                    <div class="input-group-prepend">                      
+                                    <label for="availableProductsCondemn" class="input-group-text">{{ __('Issued Products') }}</label>
+                                    </div>                    
+                                        <input id="availableProductsCondemn" type="number" class="form-control @error('availableProductsCondemn') is-invalid @enderror" name="availableProductsCondemn" value="{{ old('availableProductsCondemn') }}" required readonly="readonly" autocomplete="availableProductsCondemn" autofocus>
+                                        <input id="availableProductsOriginalCondemn" type="number" class="form-control @error('availableProductsOriginalCondemn') is-invalid @enderror" name="availableProductsOriginalCondemn" value="" required readonly="readonly" autocomplete="availableProductsOriginalCondemn" hidden autofocus>
+                                        <input id="productIdsCondemn" type="text" class="form-control @error('productIdsCondemn') is-invalid @enderror" name="productIdsCondemn" value="" required readonly="readonly" autocomplete="productIdsCondemn"  autofocus hidden>
+                                        @error('availableProductsCondemn')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror                    
+                                </div>
+                            </div>   
+
+                            <div class="w-100"></div>
                             <div class="col">
                                 <div class="input-group input-group-sm mb-3">                            
                                     <div class="input-group-prepend">
                                         <label for="material_usedCondemn" class="input-group-text">{{ __('Material used') }}</label>
                                     </div>
-                                        <select class="form-control @error('material_usedCondemn') is-invalid @enderror" id="material_usedCondemn" name="material_usedCondemn" required autocomplete="material_usedCondemn" autofocus >
+                                        <select class="form-control @error('material_usedCondemn') is-invalid @enderror" id="material_usedCondemn" name="material_usedCondemn" required readonly="readoonly" autocomplete="material_usedCondemn" autofocus >
                                             <option value="" selected disabled hidden> Choose Material</option>                                                                                   
-                                            @foreach($productsList as $product)     
+                                            {{-- @foreach($productsList as $product)     
                                                                                                     
                                                 <option value="{{$product->raw_material_id}}">
                                                     {{$product->raw_material_stock_number}} : {{$product->material_used}}
                                                 </option>
-                                            @endforeach
+                                            @endforeach --}}
                                         
                                         </select>
                                         @error('material_usedCondemn')
@@ -201,7 +268,7 @@
                                     <div class="input-group-prepend">
                                         <label for="finishedProductCondemn" class="input-group-text">{{ __('Finished Products') }}</label>
                                     </div>
-                                        <select class="form-control @error('finishedProductCondemn') is-invalid @enderror" id="finishedProductCondemn" name="finishedProductCondemn" required autocomplete="finishedProductCondemn" autofocus >
+                                        <select class="form-control @error('finishedProductCondemn') is-invalid @enderror" id="finishedProductCondemn" name="finishedProductCondemn" required autocomplete="finishedProductCondemn" readonly="readonly" autofocus >
                                             <option value="" selected disabled hidden> Choose Product</option>                                                                                   
                                         
                                         
@@ -216,39 +283,27 @@
                             <div class="col">
                                 <div class="input-group input-group-sm mb-3">
                                     <div class="input-group-prepend">                      
-                                    <label for="availableProductsCondemn" class="input-group-text">{{ __('Issued Products') }}</label>
+                                    <label for="quantityCondemn" class="input-group-text">{{ __('Total Quantity') }}</label>
                                     </div>                    
-                                        <input id="availableProductsCondemn" type="number" class="form-control @error('availableProductsCondemn') is-invalid @enderror" name="availableProductsCondemn" value="{{ old('availableProductsCondemn') }}" required readonly="readonly" autocomplete="availableProductsCondemn" autofocus>
-                                        <input id="availableProductsOriginalCondemn" type="number" class="form-control @error('availableProductsOriginalCondemn') is-invalid @enderror" name="availableProductsOriginalCondemn" value="" required readonly="readonly" autocomplete="availableProductsOriginalCondemn" hidden autofocus>
-                                        <input id="productIdsCondemn" type="text" class="form-control @error('productIdsCondemn') is-invalid @enderror" name="productIdsCondemn" value="" required readonly="readonly" autocomplete="productIdsCondemn"  autofocus hidden>
-                                        @error('availableProducts')
+                                        <input id="quantityCondemn" type="number" class="form-control @error('quantityCondemn') is-invalid @enderror" name="quantityCondemn" value="{{ old('quantityCondemn') }}"  readonly="readonly" autocomplete="quantityCondemn" autofocus>
+                                        @error('quantityCondemn')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror                    
                                 </div>
-                            </div>
+                            </div>    
+                            
 
                             <div class="w-100"></div>
                             <div class="col" >
                                 <div class="card" >
-                                    <div class="card-header"><div class="input-group input-group-sm mb-3">
-                                        <div class="input-group-prepend">                      
-                                        <label for="issuedItemsSearchCondem" class="input-group-text">{{ __('ISSUED ITEMS') }}</label>
-                                        </div>                    
-                                            <input id="issuedItemsSearchCondemn" placeholder="Search for issued items"  type="text" class="form-control @error('issuedItemsSearchCondemn') is-invalid @enderror" name="issuedItemsSearchCondemn" value="{{ old('issuedItemsSearchCondemn') }}" required autocomplete="issuedItemsSearchCondemn" autofocus>
-                                            @error('issuedItemsSearchCondemn')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror                    
-                                        </div>
-                                    </div>
+                                    
                                     <div class="card-body">
-                                        <ul class="list-group" id ="listProductsCondemn"></ul>
-                                        {{-- <ul class="list-group" >
                                         
-                                        </ul> --}}
+                                        <ul class="list-group" id="listProductsCondemn" >
+                                        
+                                        </ul> 
 
                                 
                                 
@@ -261,19 +316,20 @@
                                     <div class="card-header">{{ __('CONDEMN ITEMS') }}</div>
                                     <div class="card-body">
                                         
-                                        <button type="submit" class="btn btn-primary " >Condemn</button>    
+                                        
 
 
+                                        <button type="submit" class="btn btn-primary " >Condemn Items</button>  
 
                                     </div> 
-                                    
+                                      
                                 </div>
                     
                         
                         </div>    
                     </fieldset>
                 </form>            
-            </div>     
+            </div>
         </div>        
     </div>
 
@@ -300,16 +356,14 @@
                             <th>TOTAL <br> CONDEMNED</th> 
                             <th>ORIGINAL TOTAL <br> QUANTITY</th>                           
                             <th>UNIT <br> COST</th>
-                            <th>TOTAL <br> COST</th>
-                            {{-- <th>PRODUCT STOCK <br>NUMBER(s)</th>  --}}
+                            <th>TOTAL <br> COST</th>                           
                             <th>STOCK ROOM</th>
                             <th>STORAGE</th>
                             <th>AVAILABLE</th>
                             <th>CONDEMNED</th> 
                             <th>WARD/OFFICE</th>                
-                            <th>DATE CREATED</th>
-                            {{-- <th>EDIT</th> --}}
-                            <th>DELETE</th>
+                            <th>DATE CREATED</th>                            
+                            {{-- <th>DELETE</th> --}}
                           </tr>
                         </thead>
                         <tbody>
@@ -326,7 +380,7 @@
                             <td id="product_quantity">{{$products->product_quantity}}</td>                            
                             <td id="product_unit_cost">{{$products->product_unit_cost}}</td>
                             <td id="total_cost">{{$products->total_cost}}</td>
-                            {{-- <td id="{{$products->product_stock_ids}}">{{$products->product_stock_ids}}</td> --}}
+                            
                             <td id="{{$products->stock_room_id}}">{{$products->stock_room}}</td>
                             <td id="{{$products->storage_room_id}}">{{$products->storage_name}}</td>
                             @if($products->is_available == 1)
@@ -353,7 +407,7 @@
                                 @endif
                                 @endforeach
                             @else  
-                                <td>Not yet issued</td>  
+                                <td >Not yet issued</td>  
                             @endif
                             <td id="created_date">{{$products->create_date}}</td>
                             {{-- <td>                                          
@@ -380,7 +434,7 @@
                               </button>
                               </a>
                             </td> --}}
-                            <td>
+                            {{-- <td>
                                 <form action = "/condemned/delete" method = "post">
                                   @csrf
                                   <input id="id" type="hidden" class="form-control @error('id') is-invalid @enderror" name="id" value="{{$products->id}}">
@@ -406,7 +460,7 @@
                                   </button>
                               </form>
                           
-                          </td>
+                          </td> --}}
                           </tr>
 
                           @endforeach
@@ -549,19 +603,19 @@ $(document).ready(function () {
                     $("#listProducts").find('li').remove();
                 
                     
-                        selectedProductArray.sort(function(a, b) {
-                        var nameA = a.id.toUpperCase(); // ignore upper and lowercase
-                        var nameB = b.id.toUpperCase(); // ignore upper and lowercase
-                        if (nameA < nameB) {
-                            return -1;
-                        }
-                        if (nameA > nameB) {
-                            return 1;
-                        }
+                        // selectedProductArray.sort(function(a, b) {
+                        // var nameA = a.id.toUpperCase(); // ignore upper and lowercase
+                        // var nameB = b.id.toUpperCase(); // ignore upper and lowercase
+                        // if (nameA < nameB) {
+                        //     return -1;
+                        // }
+                        // if (nameA > nameB) {
+                        //     return 1;
+                        // }
 
-                        // names must be equal
-                        return 0;
-                        });
+                        // // names must be equal
+                        // return 0;
+                        // });
                         console.log(selectedProductArray);
                         $.each(selectedProductArray, function(key, value) {
                             let office_ward ="";
@@ -617,6 +671,173 @@ $(document).ready(function () {
       
         }); 
 
+        $("#wardRadioCondemn, #officeRadioCondemn").change(function(){
+        console.log('radio ward office');
+            
+            $("#wardCondemn, #officeCondemn").val("").attr("readonly",true);
+            if($("#wardRadioCondemn").is(":checked")){
+                $("#wardCondemn").removeAttr("readonly");
+                $("#wardRadioCondemn").attr("required",true);
+                $("#wardCondemn").attr("required",true);
+                $("#wardCondemn").prop('disabled', false);
+                $("#wardCondemn").focus();
+                $("#officeCondemn").prop('disabled', true);
+            }
+            else if($("#officeRadioCondemn").is(":checked")){
+                $("#officeCondemn").removeAttr("readonly");
+                $("#officeRadioCondemn").attr("required",true);
+                $("#officeCondemn").attr("required",true);
+                $("#officeCondemn").prop('disabled', false);
+                $("#officeCondemn").focus();   
+                $("#wardCondemn").prop('disabled', true);
+            }
+       
+            $("#material_usedCondemn").find('option').remove(); 
+        });  
+
+        
+
+        $("#wardCondemn").change(function(){
+            console.log($("#ward").val());
+            $("#material_usedCondemn").removeAttr("readonly");
+            
+            $("#material_usedCondemn").find('option').remove(); 
+            $("#finishedProductCondemn").find('option').remove();     
+            $("#material_usedCondemn").append('<option value="" selected disabled hidden> Choose Material Used</option>'); 
+            $.each({!! json_encode($productsList, JSON_HEX_TAG) !!}, function(key, value) {
+                if($("#wardCondemn").val() == value.issued_ward_id){
+                    //console.log(value);
+                    
+                    $("#material_usedCondemn").append('<option value="'+value.raw_material_id+'">'+value.material_used+'</option>'); 
+                }    
+            });
+
+            var usedNamesCondemn = {};
+            $("select[name='material_usedCondemn'] > option").each(function () {
+                if(usedNamesCondemn[this.text]) {
+                    $(this).remove();
+                } else {
+                    usedNamesCondemn[this.text] = this.value;
+                }
+            });
+
+        }); 
+
+        $("#material_usedCondemn").change(function(){
+            let raw_material_idCondemn =  $(this).val();
+            console.log(raw_material_idCondemn);
+            $("#finishedProductCondemn").removeAttr("readonly");
+            $("#finishedProductCondemn").find('option').remove();
+            $("#finishedProductCondemn").append('<option value="" selected disabled hidden> Choose Material Used</option>');
+            $.each({!! json_encode($productsList, JSON_HEX_TAG) !!}, function(key, value) {
+                
+                if(value.raw_material_id == raw_material_idCondemn){
+                    console.log(value.raw_material_id , raw_material_idCondemn);
+                    $("#finishedProductCondemn").append('<option value="'+value.product_bulk_id+'">'+value.product_name+'</option>'); 
+                }
+            });
+            var usedNamesCondemn = {};
+            $("select[name='finishedProductCondemn'] > option").each(function () {
+                if(usedNamesCondemn[this.text]) {
+                    $(this).remove();
+                } else {
+                    usedNamesCondemn[this.text] = this.value;
+                }
+            });
+            console.log( $("#wardCondemn").val());
+            $("#finishedProductCondemn").change(function() {   
+                    let bulkIdCondemn = $(this).children(":selected").val();
+                    console.log(bulkIdCondemn);
+                    var selectedProductArrayCondemn = new Array();
+                    $("#listProductsCondemn").find('ul').remove();
+                   
+                    
+                    let totalQuantityCondemn = 0;
+                    $.each({!! json_encode($productsList, JSON_HEX_TAG) !!}, function(key, value) {
+                        if(value.product_bulk_id == bulkIdCondemn){
+                            totalQuantityCondemn =value. product_quantity
+                        }
+                        if(value.product_bulk_id == bulkIdCondemn && value.is_available == 0 && value.is_condemned == 0 && value.issued_ward_id == $('#wardCondemn').val()){
+                            console.log(value)
+                            selectedProductArrayCondemn.push(value);
+                    
+                        }
+                        
+                    });
+                    $('#quantityCondemn').val(totalQuantityCondemn);
+                    $('#availableProductsOriginalCondemn').val(selectedProductArrayCondemn.length);
+                    $('#availableProductsCondemn').val(selectedProductArrayCondemn.length);
+                    $("#listProductsCondemn").find('li').remove();
+                
+                    
+                        // selectedProductArray.sort(function(a, b) {
+                        // var nameA = a.id.toUpperCase(); // ignore upper and lowercase
+                        // var nameB = b.id.toUpperCase(); // ignore upper and lowercase
+                        // if (nameA < nameB) {
+                        //     return -1;
+                        // }
+                        // if (nameA > nameB) {
+                        //     return 1;
+                        // }
+
+                        // // names must be equal
+                        // return 0;
+                        // });
+                        console.log(selectedProductArrayCondemn);
+                        $.each(selectedProductArrayCondemn, function(key, value) {
+                            let office_wardCondemn ="";
+                            if(value.office_name != null){
+                                office_wardCondemn = value.office_name;
+                            }else if(value.ward_name != null){
+                                office_wardCondemn = value.ward_name;
+                            }else{
+                                office_wardCondemn = "Not yet issued";
+                            }
+                            $('#listProductsCondemn').append(  
+                                            `<li class="list-group-item">                                
+                                                    <div class="form-check">                            
+                                                        <input class="form-control form-check-input" type="checkbox"  value="" id="${value.id}">
+                                                        <label class="form-control form-check-label checkbox-inline" style="font-size:small" for="${value.id}">
+                                                        ${value.product_stock_id} - ${value.product_name} - ${office_wardCondemn}
+                                                        </label>
+                                                    </div>                                    
+                                            </li>`);
+
+                        });
+            
+            });
+
+        });
+
+        
+        $("#officeCondemn").change(function(){
+        console.log('office change');
+        console.log($("#officeCondemn").val());
+            $("#material_usedCondemn").removeAttr("readonly");
+            
+            $("#material_usedCondemn").find('option').remove(); 
+            $("#finishedProductCondemn").find('option').remove();     
+            $("#material_usedCondemn").append('<option value="" selected disabled hidden> Choose Material Used</option>'); 
+            $.each({!! json_encode($productsList, JSON_HEX_TAG) !!}, function(key, value) {
+                if($("#officeCondemn").val() == value.issued_office_id){
+                    //console.log(value);
+                    
+                    $("#material_usedCondemn").append('<option value="'+value.raw_material_id+'">'+value.material_used+'</option>'); 
+                }    
+            });
+
+            var usedNamesCondemn = {};
+            $("select[name='material_usedCondemn'] > option").each(function () {
+                if(usedNamesCondemn[this.text]) {
+                    $(this).remove();
+                } else {
+                    usedNamesCondemn[this.text] = this.value;
+                }
+            });
+
+      
+        }); 
+
 
 
 
@@ -662,14 +883,14 @@ $(document).change(function () {
 
     $('#productIds').val(productIds);
 
-    // let productIdsCondemn =[]
-    // $('#listProductsCondemn input:checkbox').each(function (i) {
-    //     if($(this).prop("checked") == true){                    
-    //         productIdsCondemn.push($(this).attr('id'));
-    //     }                
-    // });
+    let productIdsCondemn =[]
+    $('#listProductsCondemn input:checkbox').each(function (i) {
+        if($(this).prop("checked") == true){                    
+            productIdsCondemn.push($(this).attr('id'));
+        }                
+    });
 
-    // $('#productIdsCondemn').val(productIdsCondemn);
+    $('#productIdsCondemn').val(productIdsCondemn);
 
     
 });
@@ -680,11 +901,11 @@ $(document).change(function () {
 input[type=checkbox] , {
     transform: scale(0.5);
 }
-/* body {
+ body {
     -moz-transform: scale(0.9, 0.9); /* Moz-browsers */
     zoom: 0.9; /* Other non-webkit browsers */
     zoom: 90%; /* Webkit browsers */
-} */
+} 
     
 </style> 
 @endpush

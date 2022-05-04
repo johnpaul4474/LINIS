@@ -202,15 +202,13 @@
                             <th>TOTAL <br> CONDEMNED</th> 
                             <th>ORIGINAL TOTAL <br> QUANTITY</th>                           
                             <th>UNIT <br> COST</th>
-                            <th>TOTAL <br> COST</th>
-                            {{-- <th>PRODUCT STOCK <br>NUMBER(s)</th>  --}}
+                            <th>TOTAL <br> COST</th>                           
                             <th>STOCK ROOM</th>
                             <th>STORAGE</th>
                             <th>AVAILABLE</th>
                             <th>CONDEMNED</th> 
                             <th>WARD/OFFICE</th>                
-                            <th>DATE CREATED</th>
-                            {{-- <th>EDIT</th> --}}
+                            <th>DATE CREATED</th>                            
                             <th>DELETE</th>
                           </tr>
                         </thead>
@@ -229,7 +227,7 @@
                                                      
                             <td id="product_unit_cost">{{$products->product_unit_cost}}</td>
                             <td id="total_cost">{{$products->total_cost}}</td>
-                            {{-- <td id="{{$products->product_stock_ids}}">{{$products->product_stock_ids}}</td> --}}
+                           
                             <td id="{{$products->stock_room_id}}">{{$products->stock_room}}</td>
                             <td id="{{$products->storage_room_id}}">{{$products->storage_name}}</td>
                             @if($products->is_available == 1)
@@ -375,7 +373,7 @@ $("#finishedProduct").change(function() {
             selectedProductArray.push(value);
     
         }
-          
+    
     });
     $('#availableProductsOriginal').val(selectedProductArray.length);
     $('#availableProducts').val(selectedProductArray.length);
@@ -535,11 +533,11 @@ $(document).change(function () {
 input[type=checkbox] , {
     transform: scale(0.5);
 }
-/* body {
+body {
     -moz-transform: scale(0.9, 0.9); /* Moz-browsers */
     zoom: 0.9; /* Other non-webkit browsers */
     zoom: 90%; /* Webkit browsers */
 }
-     */
+     
 </style> 
 @endpush

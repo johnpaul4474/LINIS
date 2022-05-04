@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\Linen\StockRoom;
 use App\Models\Linen\Storage;
 use Illuminate\Validation\Rule;
+use App\Models\Linen\Requests;
 use DB;
 
 class LinenInventoryController extends Controller
@@ -32,24 +33,28 @@ class LinenInventoryController extends Controller
         $rawMaterials = DB::select("select * , (raw_material.quantity * raw_material.unit_cost) as total_price from [nora].[paul].[linen_raw_materials] as raw_material");
 
         $materialCount = DB::table('nora.paul.linen_raw_materials')->count() ;
-        $productCount = DB::table('nora.paul.linen_products')->count();
+        $newRequest = Requests::select()->where('status',1)->orderBy('created_at', 'desc' )->get();
 
        // dd(Auth::user()->role_id,Auth::user()->ward_id,Auth::user()->office_id);
         if(Auth::user()->role_id == 1 || Auth::user()->role_id == 2){
              $productsList = DB::select('EXEC nora.paul.linen_getBulkProducts');
+            
+             $productCount = DB::table('nora.paul.linen_products')->where('is_condemned',0)->count();
         }
         else{
             if(Auth::user()->office_id != null){      
                 $productsList = DB::select('EXEC nora.paul.linen_getProductsListByWardOffice @ward =null'.', @office='.Auth::user()->office_id);
+                $productCount = DB::table('nora.paul.linen_products')->where('is_condemned',0)->where('issued_office_id',Auth::user()->office_id)->count();
             }else if(Auth::user()->ward_id != null){
                 $productsList = DB::select('EXEC nora.paul.linen_getProductsListByWardOffice @ward ='.Auth::user()->ward_id.', @office=null');
+                $productCount = DB::table('nora.paul.linen_products')->where('is_condemned',0)->where('issued_ward_id',Auth::user()->ward_id)->count();
                 
             }
         }
             
         
        
-        return view('linenInventory', compact('materialCount','productCount','rawMaterials','stockRooms','storageList','productsList'));
+        return view('linenInventory', compact('materialCount','productCount','rawMaterials','stockRooms','storageList','productsList','newRequest'));
            
         
     }
@@ -220,4 +225,6 @@ class LinenInventoryController extends Controller
 
         return redirect()->route('material')->with('error', 'Raw material deleted successfully');
     }
+
+
 }

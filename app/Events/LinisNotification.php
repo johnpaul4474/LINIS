@@ -10,21 +10,30 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 class LinisNotification implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
+    public $type;
 
     public $username;
 
-    public $message;
+    public $productName;
 
+    public $productQuantity;
+
+    public $wardName;
+
+    public $officeName;
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($username,$message)
+    public function __construct($type,$username,$productName,$productQuantity,$wardName,$officeName)
     {
-       
-        $this->username = $username;
-        $this->message  = $message;
+        $this->type = $type;
+        $this->username = $username;       
+        $this->productName  = $productName;
+        $this->productQuantity  = $productQuantity;
+        $this->wardName  = $wardName;
+        $this->officeName  = $officeName;
     }
 
     /**

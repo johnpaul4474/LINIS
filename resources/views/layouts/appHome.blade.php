@@ -17,7 +17,7 @@
 
     <title>Linen Inventory System</title>
     <!-- Scripts -->
-    {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>     --}}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> 
 
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>   
@@ -55,13 +55,34 @@
 
       var counter = 0;     
       var channel = pusher.subscribe('linis-notification');
-      channel.bind('linis-event', function(data) {
-        alert(JSON.stringify(data));
+      channel.bind('linis-event', function(data) {       
         counter = counter + 1;
+
+        $('#btnNotification').removeAttr('hidden');
         $("#counterNotification").attr('data-count',counter );
-        console.log(counter);
+       
+        console.log(data);
+
+
+        let messageNotification = 'Product name: ' + JSON.stringify(data.productName).replace(/\"/g, "") + '<br>' +
+                                  'Product quantity: ' + JSON.stringify(data.productQuantity).replace(/\"/g, "") ; 
+                                  
+                                 
+        if(JSON.stringify(data.wardname) != null){
+          messageNotification += '<br>' + 'Ward: ' + JSON.stringify(data.wardname).replace(/\"/g, "") ; 
+        }  
+        if(JSON.stringify(data.officeName) != null){
+          messageNotification +=  '<br>' + 'Office: ' + JSON.stringify(data.officeName).replace(/\"/g, "") ; 
+        }          
+
+        console.log(messageNotification);
+        $('#dropdownNotification').append(`
+                              <a class="dropdown-item" href="services">${messageNotification}</a>
+                              <div class="dropdown-divider"></div>
+                            `);
        
       });
+      
     });
       </script>
       
@@ -145,32 +166,18 @@
 
                               
                             
-                            <button role="button" type="button" class="btn" data-toggle="dropdown"> 
+                            <button role="button" type="button" class="btn" data-toggle="dropdown" id="btnNotification" hidden> 
                               <span class="fa-stack fa-1x" id="counterNotification" data-count="0">
                                 <i class="fa fa-circle fa-stack-2x"></i>
                                 <i class="fa fa-bell fa-stack-1x fa-inverse" ></i>
                               </span>
                             </button>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                              <a class="dropdown-item" href="#">Action</a>
-                              <a class="dropdown-item" href="#">Another action</a>
-                              <div class="dropdown-divider"></div>
-                              <a class="dropdown-item" href="#">Something else here</a>
-                            </div>
-                            
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                            <div id = "dropdownNotification">
                              
-
-                              <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                  <a class="dropdown-item" href="{{ route('logout') }}"
-                                    onclick="event.preventDefault();
-                                                  document.getElementById('logout-form').submit();">
-                                      {{ __('Logout') }}
-                                  </a>
-
-                                  <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                      @csrf
-                                  </form>
-                              </div>
+                            </div>
+                          </div>
+                              
                           </li>
                             <li class="nav-item dropdown">
                               
@@ -214,8 +221,9 @@
                 Inventory Management
               </a>
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <li><a class="dropdown-item" href="material">Add Raw Material </li>
+                <li><a class="dropdown-item" href="material">Add Raw Material </a></li>
                 <li><a class="dropdown-item" href="products">Add Final Product </a></li>
+                <li><a class="dropdown-item" href="stockroom">Add Stock Room / Storage</a></li>
                             {{-- <li><hr class="dropdown-divider"></li> --}}
                 
               </ul>
@@ -233,7 +241,7 @@
                 
               </ul>
             </li>
-            <li class="nav-item dropdown">
+            {{-- <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Storage Management
               </a>
@@ -242,8 +250,8 @@
                 <li><a class="dropdown-item" href="#">TO DO</a></li>
                 {{-- <li><hr class="dropdown-divider"></li> --}}
                 
-              </ul>
-            </li>
+              {{-- </ul> --}}
+            {{-- </li> --}} 
             @endif
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
