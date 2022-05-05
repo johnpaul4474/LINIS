@@ -46,23 +46,27 @@
                                 <th>Requested By</th>
                                 <th>Ward</th>
                                 <th>Office</th>
-                                <th>Date</th>
+                                <th>Create Date</th>
                                 <th>Status</th>
+                                <th>Processed By</th>
+                                <th>Processed Date</th>
+                                @if(Auth::user()->role_id  == 1 || Auth::user()->role_id== 2)
                                 <th>Action</th>
+                                @endif
                               </tr>
                             </thead>
                             <tbody>
-                              @foreach($newRequest as $newReq)                                                                
-                              <tr id={{$newReq->id}}>
-                                <td>{{$newReq->id}}</td>
-                                <td>{{$newReq->product_name_request}}</td>
-                                <td>{{$newReq->product_quantity_request}}</td>
-                                <td>{{$newReq->name}}</td>
+                              @foreach($requestList as $req)                                                                
+                              <tr id={{$req->id}}>
+                                <td>{{$req->id}}</td>
+                                <td>{{$req->product_name_request}}</td>
+                                <td>{{$req->product_quantity_request}}</td>
+                                <td>{{$req->name}}</td>
 
                                 
-                                @if($newReq->ward_id != null)
+                                @if($req->ward_id != null)
                                     @foreach(\App\Http\Controllers\Department\DepartmentController::wardList() as $ward)                                                                
-                                    @if($ward->id == $newReq->ward_id )
+                                    @if($ward->id == $req->ward_id )
                                             <td>{{$ward->ward_name}}</td>
                                     @endif
                                     @endforeach
@@ -70,9 +74,9 @@
                                     <td>N/A</td>  
                                 @endif   
 
-                                @if($newReq->office_id != null)
+                                @if($req->office_id != null)
                                   @foreach(\App\Http\Controllers\Department\DepartmentController::officeList() as $office)                                                                
-                                      @if($office->id == $newReq->office_id) 
+                                      @if($office->id == $req->office_id) 
                                           <td>{{$office->office_name}}</td>
                                       @endif
                                   @endforeach
@@ -80,22 +84,60 @@
                                   <td>N/A</td>  
                                 @endif                                   
 
-                                <td>{{$newReq->created_at}}</td>
+                                <td>{{$req->created_at}}</td>
                                
 
-                                @if($newReq->status == 1)
-                                 <td style="background-color:#FF0000">PENDING</td>
-                                @elseif($newReq->status == 2)
-                                 <td>IN_PROGRESS</td>                                
-                                @elseif($newReq->status == 3)
-                                 <td>FINISHED</td>
-                                @elseif($newReq->status == 4)
+                                @if($req->status == 1)
+                                 <td style="background-color:#FF5252">PENDING</td>
+                                @elseif($req->status == 2)
+                                 <td style="background-color:#2196F3;color:white">IN PROGRESS</td>                                
+                                @elseif($req->status == 3)
+                                <td style="background-color:#4CAF50;color:white">READY FOR <br> PICK-UP </td> 
+                                @elseif($req->status == 4)
                                   <td>REOPENED REQUEST</td>
-                                @elseif($newReq->status == 5)
+                                @elseif($req->status == 5)
                                   <td>DELETED</td>
                                 @endif
-                                <td><button type="submit" class="editProductsButton btn btn-primary btn-sm" >PROCESS</button></td>
-                                
+                                <td>{{$req->processed_by}}</td>
+                                <td>{{$req->processed_at}}</td>
+
+                                @if(Auth::user()->role_id  == 1 || Auth::user()->role_id== 2)
+                                  @if($req->status == 1)
+                                    <form action = "/processRequest" method = "post">
+                                      @csrf
+                                        <input id="id" type="hidden" class="form-control @error('id') is-invalid @enderror" name="id" value="{{$req->id}}">
+                                        <input id="product_name_request" type="hidden" class="form-control @error('id') is-invalid @enderror" name="product_name_request" value="{{$req->product_name_request}}">
+                                        <input id="product_quantity_request" type="hidden" class="form-control @error('id') is-invalid @enderror" name="product_quantity_request" value="{{$req->product_quantity_request}}">
+                                        <td>
+                                          <button type="submit" class="editProductsButton btn btn-primary btn-sm" >PROCESS</button>
+                                        </td>
+                                    </form>
+                                  @elseif($req->status == 2)
+                                  <form action = "/pickUpProductRequest" method = "post">
+                                    @csrf
+                                      <input id="id" type="hidden" class="form-control @error('id') is-invalid @enderror" name="id" value="{{$req->id}}">
+                                      <input id="product_name_request" type="hidden" class="form-control @error('id') is-invalid @enderror" name="product_name_request" value="{{$req->product_name_request}}">
+                                      <input id="product_quantity_request" type="hidden" class="form-control @error('id') is-invalid @enderror" name="product_quantity_request" value="{{$req->product_quantity_request}}">
+                                      <td>
+                                        <button type="submit" class="editProductsButton btn btn-success btn-sm" >READY</button>
+                                      </td>
+                                  </form>
+                                  @elseif($req->status == 3)
+                                  <form action = "/issueProductRequest/{{$req->id}}" method = "post">
+                                    @csrf
+                                      <input id="id" type="hidden" class="form-control @error('id') is-invalid @enderror" name="id" value="{{$req->id}}">
+                                      <input id="product_name_request" type="hidden" class="form-control @error('id') is-invalid @enderror" name="product_name_request" value="{{$req->product_name_request}}">
+                                      <input id="product_quantity_request" type="hidden" class="form-control @error('id') is-invalid @enderror" name="product_quantity_request" value="{{$req->product_quantity_request}}">
+                                      <td>
+                                        <button type="submit" class="editProductsButton btn btn-info btn-sm" >ISSUE</button>
+                                      </td>
+                                  </form>
+                                  @elseif($req->status == 4)
+                                      <td>REOPENED REQUEST</td>
+                                  @elseif($req->status == 5)
+                                      <td>DELETED</td>
+                                  @endif 
+                                @endif   
            
                               </tr>
       
@@ -126,7 +168,7 @@
 
 <script>
 $(document).ready(function () {
-  let pendingCount = {!!$newRequest!!};
+  let pendingCount = {!!$requestList!!};
   $('#pendingRequest').text(pendingCount.length);
 
   

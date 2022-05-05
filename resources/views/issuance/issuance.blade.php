@@ -160,7 +160,10 @@
                                         
                                     </div>
     
-    
+                                    @if($message = Session::get('requestId'))       
+                                        
+                                        <input id="requestId" type="hidden" class="form-control @error('requestId') is-invalid @enderror" name="requestId" value="{{$message}}">  
+                                    @endif
     
     
                                 </div> 
@@ -189,6 +192,7 @@
                 <div class="card">
                     <div class="card-header text-white" style="background-color: #00AA9E;">{{ __('Linen Products') }}</div>
                     <br>
+                    
                     <table id="productsTable" class="table  table-bordered table-success" style="width:100%">
                         <thead>
                           <tr>

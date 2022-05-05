@@ -21,12 +21,14 @@ class LinisNotification implements ShouldBroadcast
     public $wardName;
 
     public $officeName;
+
+    public $requestorDetails;
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($type,$username,$productName,$productQuantity,$wardName,$officeName)
+    public function __construct($type,$username,$productName,$productQuantity,$wardName,$officeName,$requestorDetails)
     {
         $this->type = $type;
         $this->username = $username;       
@@ -34,6 +36,8 @@ class LinisNotification implements ShouldBroadcast
         $this->productQuantity  = $productQuantity;
         $this->wardName  = $wardName;
         $this->officeName  = $officeName;
+        $this->requestorDetails = $requestorDetails;
+        
     }
 
     /**

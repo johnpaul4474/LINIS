@@ -26,7 +26,10 @@ class Requests extends Model
         'role_id',
         'ward_id',
         'office_id',
-        'status'
+        'status',
+        'processed_by',
+        'processed_by_emp_id',
+        'processed_at'
 
     ];
 

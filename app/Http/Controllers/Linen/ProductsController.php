@@ -114,7 +114,7 @@ class ProductsController extends Controller
        
        DB::table('nora.paul.linen_products')
        ->insert($productsList);
-       return redirect()->route('products')->with('success', 'Product added successfully');
+       return redirect()->route('issuance')->with('success', 'Product added successfully');
     }
 
     public function destroy(Request $request)

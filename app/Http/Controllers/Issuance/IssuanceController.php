@@ -13,8 +13,8 @@ use Illuminate\Support\Facades\Validator;
 
 class IssuanceController extends Controller
 {
-    public function index(){
-
+    public function index(Request $request){
+      
         $productsList  = DB::select("SELECT	products.id ,
         products.raw_material_id,		
         products.raw_material_stock_number,
@@ -54,7 +54,7 @@ class IssuanceController extends Controller
     }
 
     public function issueProduct(Request $request){
-       
+     
         Validator::make($request->all(), [
             'availableProducts' =>  'required|numeric|gt:-1', 
         ])->validate();
@@ -84,7 +84,7 @@ class IssuanceController extends Controller
 
     
 
-        return redirect()->route('issuance')->with('success', 'Issued product successfully');
+        return redirect()->route('home')->with('success', 'Issued product successfully');
     }
 
     public function destroy(Request $request)
@@ -107,5 +107,34 @@ class IssuanceController extends Controller
         return redirect()->route('issuance')->with('error', 'Deleted Condemned Product deleted successfully');
     }
 
+    public function issueProductRequest(Request $request, $requestId){
+     
+        Validator::make($request->all(), [
+            'availableProducts' =>  'required|numeric|gt:-1', 
+        ])->validate();
+
+        $productIds = explode(',', $request->productIds);
+
+        DB::table('nora.paul.linen_activity_logs')->insert([
+            'employee_id' => Auth::user()->employee_id,
+            'activity_details' => 'Product issued: '.$request->productIds.' Ward: '.$request->ward.' Office: '.$request->office,
+            "created_at" =>  \Carbon\Carbon::now(), 
+        ]);
+        
+        Products::where('product_bulk_id', $request->finishedProduct)->decrement('product_available_quantity',(int)$request->quantity);
+
+        
+        DB::table('nora.paul.linen_products')
+        ->whereIn('id', $productIds)
+        ->update([
+            'is_available' => false,	
+            'issued_office_id' => $request->office,	
+            'issued_ward_id' => $request->ward,	
+            'issued_date' => \Carbon\Carbon::now() ,
+            "returned_date" => null          
+        ]);
+
+        return redirect()->route('home')->with('success', 'Issued product successfully');
+    }
 
 }

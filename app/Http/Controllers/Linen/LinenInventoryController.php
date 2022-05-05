@@ -33,7 +33,17 @@ class LinenInventoryController extends Controller
         $rawMaterials = DB::select("select * , (raw_material.quantity * raw_material.unit_cost) as total_price from [nora].[paul].[linen_raw_materials] as raw_material");
 
         $materialCount = DB::table('nora.paul.linen_raw_materials')->count() ;
-        $newRequest = Requests::select()->where('status',1)->orderBy('created_at', 'desc' )->get();
+
+        if(Auth::user()->role_id == 1 || Auth::user()->role_id == 2 ){ 
+            $requestList = Requests::select()->orderBy('created_at', 'desc' )->get();
+        }else{
+            if(Auth::user()->ward_id != null){
+                $requestList = Requests::select()->where('ward_id',Auth::user()->ward_id)->orderBy('created_at', 'desc' )->get();
+            }
+            if(Auth::user()->office_id  != null ){
+                $requestList = Requests::select()->where('office_id',Auth::user()->office_id)->orderBy('created_at', 'desc' )->get();  
+            }
+        }
 
        // dd(Auth::user()->role_id,Auth::user()->ward_id,Auth::user()->office_id);
         if(Auth::user()->role_id == 1 || Auth::user()->role_id == 2){
@@ -54,7 +64,7 @@ class LinenInventoryController extends Controller
             
         
        
-        return view('linenInventory', compact('materialCount','productCount','rawMaterials','stockRooms','storageList','productsList','newRequest'));
+        return view('linenInventory', compact('materialCount','productCount','rawMaterials','stockRooms','storageList','productsList','requestList'));
            
         
     }

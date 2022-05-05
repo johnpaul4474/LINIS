@@ -66,6 +66,9 @@ Route::any('/condemned', [App\Http\Controllers\Issuance\ReturnedProductsControll
 //requests
 Route::any('/request', [App\Http\Controllers\Request\RequestController::class, 'index'])->name('request');
 Route::post('/newRequest', [App\Http\Controllers\Request\RequestController::class, 'newRequest'])->name('newRequest');
+Route::post('/processRequest', [App\Http\Controllers\Request\RequestController::class, 'processRequest'])->name('processRequest');
+Route::post('/pickUpProductRequest', [App\Http\Controllers\Request\RequestController::class, 'pickUpProductRequest'])->name('pickUpProductRequest');
+Route::post('/issueProductRequest/{requestId}', [App\Http\Controllers\Request\RequestController::class, 'issueProductRequest'])->name('issueProductRequest/{requestId}');
 
 Route::get('test', function () {
     event(new App\Events\LinisNotification('This is  a test'));

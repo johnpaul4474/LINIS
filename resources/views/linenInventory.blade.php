@@ -22,7 +22,7 @@
                                   {{$office->office_name}}
                               @endif
                            @endforeach
-                      @elseif(Auth::user()->office_id != null)
+                      @elseif(Auth::user()->ward_id != null)
                           @foreach(\App\Http\Controllers\Department\DepartmentController::wardList() as $ward)                                                                
                           @if($ward->id ==  Auth::user()->ward_id )
                                   {{$ward->ward_name}}
@@ -381,7 +381,7 @@ $("#material_used").change(function() {
     //     // });
 
     // });
-    let pendingCount = {!!$newRequest!!};
+    let pendingCount = {!!$requestList!!};
     $('#pendingRequestCount').text(pendingCount.length);
   
 });
