@@ -208,9 +208,9 @@
         </script>    
     @endif
 
-    <div id="app" classs="container-fluid">
+    <div id="app" classs="container-fluid d-print-none">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-            <div class="container-fluid">
+            <div class="container-fluid d-print-none">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{-- {{ config('app.name', 'Linen Inventory System') }} --}} Linen Inventory System
                 </a>
@@ -338,6 +338,7 @@
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">                
                 <li><a class="dropdown-item" href="request">Create Request</a></li>
                 <li><a class="dropdown-item" href="services">Services</a></li>
+                <li><a class="dropdown-item" href="reports">Reports</a></li>
                 {{-- <li><hr class="dropdown-divider"></li> --}}
                 
               </ul>

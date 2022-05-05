@@ -70,6 +70,11 @@ Route::post('/processRequest', [App\Http\Controllers\Request\RequestController::
 Route::post('/pickUpProductRequest', [App\Http\Controllers\Request\RequestController::class, 'pickUpProductRequest'])->name('pickUpProductRequest');
 Route::post('/issueProductRequest/{requestId}', [App\Http\Controllers\Request\RequestController::class, 'issueProductRequest'])->name('issueProductRequest/{requestId}');
 
+//reports
+Route::any('/reports', [App\Http\Controllers\Reports\ReportsController::class, 'index'])->name('reports');
+Route::post('/generateInventoryReport', [App\Http\Controllers\Reports\ReportsController::class, 'linenInventory'])->name('generateInventoryReport');
+
+
 Route::get('test', function () {
     event(new App\Events\LinisNotification('This is  a test'));
     return "Event has been sent!";
