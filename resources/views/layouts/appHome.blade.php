@@ -330,7 +330,7 @@
                 
               {{-- </ul> --}}
             {{-- </li> --}} 
-            @endif
+            
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Request Management
@@ -343,6 +343,34 @@
                 
               </ul>
             </li>
+            @else
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Return and Condemn
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">                
+                <li><a class="dropdown-item" href="returnedProducts">Condemned/Return Products</a></li>
+
+                {{-- <li><hr class="dropdown-divider"></li> --}}
+                
+              </ul>
+            </li>
+            
+            
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Request Management
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">                
+                <li><a class="dropdown-item" href="request">Create Request</a></li>
+                <li><a class="dropdown-item" href="services">Services</a></li>
+                <li><a class="dropdown-item" href="reports">Reports</a></li>
+                {{-- <li><hr class="dropdown-divider"></li> --}}
+                
+              </ul>
+            </li>
+            
+            @endif
 
             
             

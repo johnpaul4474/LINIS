@@ -102,9 +102,11 @@ class ProductsController extends Controller
                         'product_quantity' =>$request->quantity,
                         'product_available_quantity' =>$request->quantity,
                         'product_condemned_quantity' =>0,	
+                        'products.product_losses_quantity' =>0,
                         'product_unit_cost' => $request->unit_cost, 
                         'is_available' => true,  
-                        'is_condemned' => false,      
+                        'is_condemned' => false, 
+                        'is_lossed'     =>false,
                         'created_at' => \Carbon\Carbon::now(),
                         'product_bulk_id'=>$product_bulk_id
                 ]);

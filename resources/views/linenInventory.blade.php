@@ -6,7 +6,7 @@
 
 <div class="row">
    
-	<div class="col">
+	<div class="col-2">
        
 		<div class="card text-center">
             
@@ -47,59 +47,59 @@
          
 		</div>
         
-    <br>
-		<div class="card text-center">
-			<h5 class="card-header">Number of Request</h5>
-			<div class="card-body">
-				<h3 class="card-title" id ="pendingRequestCount"></h3>
-				<a href="services" class="btn btn-primary">Request Status</a>
-			</div>
-		</div>
-    @if(Auth::user()->role_id  == 1 || Auth::user()->role_id== 2)
-    
-    <br>
-		<div class="card text-center">
-			<h5 class="card-header">AVAILABLE RAW MATERIALS</h5>
-			<div class="card-body">
-				<h3 class="card-title">{{$materialCount}}</h3>
-				<a href="material" class="btn btn-primary">Add Materials</a>
-				<button type="button" class="btn btn-primary" id="viewMaterialsButton">View Materials</button>
-			</div>
-		</div>
-@endif
+        <br>
+                <div class="card text-center">
+                    <h5 class="card-header">Number of Request</h5>
+                    <div class="card-body">
+                        <h3 class="card-title" id ="pendingRequestCount"></h3>
+                        <a href="services" class="btn btn-primary">Request Status</a>
+                    </div>
+                </div>
+            @if(Auth::user()->role_id  == 1 || Auth::user()->role_id== 2)
+                
+                <br>
+                    <div class="card text-center">
+                        <h5 class="card-header">AVAILABLE RAW MATERIALS</h5>
+                        <div class="card-body">
+                            <h3 class="card-title">{{$materialCount}}</h3>
+                            <a href="material" class="btn btn-primary">Add Materials</a>
+                            <button type="button" class="btn btn-primary" id="viewMaterialsButton">View Materials</button>
+                        </div>
+                    </div>
+            @endif
 	
 	</div>
 	<div class="col-10">
 		<div class="card">
             
 			<div class="card-header text-white" style="background-color: #00AA9E;" >
-        @if(Auth::user()->office_id != null)
-                          @foreach(\App\Http\Controllers\Department\DepartmentController::officeList() as $office)                                                                
-                              @if($office->id == Auth::user()->office_id) 
-                                  {{$office->office_name}}
-                              @endif
-                           @endforeach
-                      @elseif(Auth::user()->office_id != null)
-                          @foreach(\App\Http\Controllers\Department\DepartmentController::wardList() as $ward)                                                                
-                          @if($ward->id ==  Auth::user()->ward_id )
-                                  {{$ward->ward_name}}
-                          @endif
-                          @endforeach
-                      
-                    @endif
-        PRODUCTS
+                    @if(Auth::user()->office_id != null)
+                                    @foreach(\App\Http\Controllers\Department\DepartmentController::officeList() as $office)                                                                
+                                        @if($office->id == Auth::user()->office_id) 
+                                            {{$office->office_name}}
+                                        @endif
+                                    @endforeach
+                                @elseif(Auth::user()->office_id != null)
+                                    @foreach(\App\Http\Controllers\Department\DepartmentController::wardList() as $ward)                                                                
+                                    @if($ward->id ==  Auth::user()->ward_id )
+                                            {{$ward->ward_name}}
+                                    @endif
+                                    @endforeach
+                                
+                                @endif
+                    PRODUCTS
       
 				
 				
 			</div>
 			<br>
-				<div class="card-body">
+			<div class="card-body">
                     @if(Auth::user()->role_id  == 1 || Auth::user()->role_id== 2)
    
 					<div class="row">
                         
-						<div class="col-3">
-                            <div class="input-group input-group-sm mb-3">                            
+						<div class="col-2">
+                            <div class="input-group input-group-sm mb-2">                            
                                 <div class="input-group-prepend">
                                     <label for="material_used" class="input-group-text">{{ __('Material used') }}</label>
                                 </div>
@@ -121,8 +121,8 @@
                                     <input id ="materialUsedId" type="hidden">             
                             </div>
                         </div>
-                        <div class="col-3">
-                            <div class="input-group input-group-sm mb-3">                            
+                        <div class="col-2">
+                            <div class="input-group input-group-sm mb-2">                            
                                 <div class="input-group-prepend">
                                     <label for="finishedProduct" class="input-group-text">{{ __('Finished Products') }}</label>
                                 </div>
@@ -177,6 +177,24 @@
 									
 							</div>
                         </div>
+                        <div class="col-2">
+							<div class="input-group input-group-sm mb-2">
+								<div class="input-group-prepend">
+									<label for="productsLosses" class="input-group-text">{{ __('Products Losses') }}</label>
+								</div>
+									<input id="productsLosses" type="number" class="form-control @error('productsLosses') is-invalid @enderror" name="productsLosses" value="{{ old('productsLosses') }}" required readonly="readonly" autocomplete="productsLosses" autofocus>
+                 
+                                    @error('productsLosses')
+                                        
+                                                            
+                                                            <span class="invalid-feedback" role="alert">
+                                                                <strong>{{ $message }}</strong>
+                                                            </span>
+                                    @enderror                    
+            
+									
+							</div>
+                        </div>
 						<div class="col-2">
 							<div class="input-group input-group-sm mb-2">
 							    <div class="input-group-prepend">
@@ -197,73 +215,76 @@
 								</div>
 							</div>
 						</div>
-						
                         
-                        
+					</div>	
+                    @endif   
+                    <div class="row" id="productsTableDiv">
+                        <table id="productsTable" class="table  table-bordered table-success" style="width:100%">
+                            <thead>
+                                <tr>
+                                <th>id</th>              
+                                <th>PRODUCT</th>
+                                <th>PRODUCT <br> UNIT</th>
+                                <th>ISSUED QUANTITY</th>
+                                <th>WARD/OFFICE</th>     
+                                <th>DATE CREATED</th>  
+                                <th>DATE ISSUED</th>
+                                @if(Auth::user()->role_id  == 1 || Auth::user()->role_id== 2)
+                                <th>DATE RETURNED</th>
+                                <th>DATE CONDEMNED</th>
+                                <th>DATE LOSSED</th> 
+                                @endif
+                                
+                                </tr>
+                            </thead>
+                            <tbody id="productsTbody">
+                                @foreach($productsList as $products)                                                                
+                                <tr id={{$products->product_bulk_id}}>
+                                <td>{{$products->product_bulk_id}}</td>
+                                    
+                                <td id="product_name">{{$products->product_name}}</td>
+                                <td id="product_unit">{{$products->product_unit}}</td>
+                                
+                                
+                                
+                                <td id="issued_quantity">{{$products->products_issued_quantity}}</td>      
+                                @if($products->issued_office_id != null)
+                                    @foreach(\App\Http\Controllers\Department\DepartmentController::officeList() as $office)                                                                
+                                        @if($office->id == $products->issued_office_id) 
+                                            <td>{{$office->office_name}}</td>
+                                        @endif
+                                    @endforeach
+                                @elseif($products->issued_ward_id != null)
+                                    @foreach(\App\Http\Controllers\Department\DepartmentController::wardList() as $ward)                                                                
+                                    @if($ward->id == $products->issued_ward_id )
+                                            <td>{{$ward->ward_name}}</td>
+                                    @endif
+                                    @endforeach
+                                @else  
+                                    <td style="background-color:#00FF00">NOT YET ISSUED</td>  
+                                @endif                    
+                                
+                                <td id="created_date">{{$products->create_date}}</td>
+                                <td id="issued_date">{{$products->issued_date}}</td>
+                                @if(Auth::user()->role_id  == 1 || Auth::user()->role_id== 2)
+                                <td id="returned_date">{{$products->returned_date}}</td>
+                                <td id="condemned_date">{{$products->condemned_date}}</td>
+                                <td id="condemned_date">{{$products->lossed_date}}</td> 
+                                @endif
+                                </tr>
+
+                                @endforeach
+                                
+                            </tbody>  
+                        </table> 
+                
+                    </div>        
                         
                           
-                </div>
-                @endif
-                        <div class="row" id="productsTableDiv">
-                            <table id="productsTable" class="table  table-bordered table-success" style="width:100%">
-                                <thead>
-                                    <tr>
-                                    <th>id</th>              
-                                    <th>PRODUCT</th>
-                                    <th>PRODUCT <br> UNIT</th>
-                                    <th>ISSUED QUANTITY</th>
-                                    <th>WARD/OFFICE</th>     
-                                    <th>DATE CREATED</th>  
-                                    <th>DATE ISSUED</th>
-                                    <th>DATE RETURNED</th>
-                                    <th>DATE CONDEMNED</th>
-                                    
-                                    </tr>
-                                </thead>
-                                <tbody id="productsTbody">
-                                    @foreach($productsList as $products)                                                                
-                                    <tr id={{$products->product_bulk_id}}>
-                                    <td>{{$products->product_bulk_id}}</td>
-                                        
-                                    <td id="product_name">{{$products->product_name}}</td>
-                                    <td id="product_unit">{{$products->product_unit}}</td>
-                                    
-                                    
-                                    
-                                    <td id="issued_quantity">{{$products->products_issued_quantity}}</td>      
-                                    @if($products->issued_office_id != null)
-                                        @foreach(\App\Http\Controllers\Department\DepartmentController::officeList() as $office)                                                                
-                                            @if($office->id == $products->issued_office_id) 
-                                                <td>{{$office->office_name}}</td>
-                                            @endif
-                                        @endforeach
-                                    @elseif($products->issued_ward_id != null)
-                                        @foreach(\App\Http\Controllers\Department\DepartmentController::wardList() as $ward)                                                                
-                                        @if($ward->id == $products->issued_ward_id )
-                                                <td>{{$ward->ward_name}}</td>
-                                        @endif
-                                        @endforeach
-                                    @else  
-                                        <td style="background-color:#00FF00">NOT YET ISSUED</td>  
-                                    @endif                    
-                                    
-                                    <td id="created_date">{{$products->create_date}}</td>
-                                    <td id="issued_date">{{$products->issued_date}}</td>
-                                    <td id="returned_date">{{$products->returned_date}}</td>
-                                    <td id="condemned_date">{{$products->condemned_date}}</td>
-                                    </tr>
-
-                                    @endforeach
-                                    
-                                </tbody>  
-                            </table> 
-					
-                        </div>
-                    </div>
-                   
-				</div>
-			</div>
+            </div>
 		</div>
+	</div>
+</div>
 
 
 @endsection
@@ -354,6 +375,7 @@ $("#material_used").change(function() {
           $('#productsTotalQuantity').val(value.product_quantity);
           $('#productsAvailable').val(value.product_available_quantity);
           $('#productsCondemned').val(value.product_condemned_quantity);
+          $('#productsLosses').val(value.product_losses_quantity);
     
         }
       });  

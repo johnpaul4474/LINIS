@@ -6,7 +6,7 @@
 <div class="row">
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <form class = 'card p-3 bg-light' action = "returningProducts" method = "post">
                     @csrf
                     <fieldset>
@@ -168,7 +168,7 @@
                     </fieldset>
                 </form>            
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <form class = 'card p-3 bg-light' action = "condemned" method = "post">
                     @csrf
                     <fieldset>
@@ -330,6 +330,168 @@
                     </fieldset>
                 </form>            
             </div>
+            <div class="col-md-4">
+                <form class = 'card p-3 bg-light' action = "losses" method = "post">
+                    @csrf
+                    <fieldset>
+                        <legend>Lossed Products <legend>
+                        <div class="row">
+                            <div class="col">
+                                <div class="input-group input-group-sm mb-3">
+                                    <div class="input-group-prepend">                      
+                                        <label for="wardLosses" class="col col-form-label text-md-end" style="font-size:medium"> 
+                                            <input class="form-check-input" type="radio" name="ward_officeLosses" id="wardRadioLosses" required >{{ __('     Ward') }}
+                                        </label>
+                                    </div>                    
+                                    
+                                
+                                        <select class="form-control @error('wardLosses') is-invalid @enderror" id="wardLosses" name="wardLosses" required autocomplete="wardLosses" autofocus disabled>
+                                            <option value="" selected disabled hidden> Choose Ward</option>
+                                        @foreach(\App\Http\Controllers\Department\DepartmentController::wardList() as $ward)                                                                
+                                        <option value="{{$ward->id}}">
+                                                {{$ward->ward_name}}
+                                            </option>
+                                        @endforeach
+                                        </select>
+                                        @error('wardLosses')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="input-group input-group-sm mb-3">
+                                    <div class="input-group-prepend">
+                                        <label for="officeLosses" class="col col-form-label text-md-end" style="font-size:medium">
+                                            <input class="form-check-input" type="radio" name="ward_officeLosses" id="officeRadioLosses" required>{{ __('     Office') }}
+                                        </label>
+                                    </div>                    
+                                    
+                                    
+                                        {{-- <input id="office" type="text" class="form-control @error('office') is-invalid @enderror" name="office" value="{{ old('office') }}" required autocomplete="office" autofocus> --}}
+                                        <select class="form-control @error('officeLosses') is-invalid @enderror" id="officeLosses" name="officeLosses" required autocomplete="officeLosses" autofocus disabled>
+                                            <option value="" selected disabled hidden> Choose Office</option>
+                                        @foreach(\App\Http\Controllers\Department\DepartmentController::officeList() as $office)                                                                
+                                        <option value="{{$office->id}}">
+                                                {{$office->office_name}}
+                                            </option>
+                                        @endforeach
+                                        </select>
+                                        @error('officeLosses')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    
+                                </div>
+                            </div> 
+                            <div class="col">
+                                <div class="input-group input-group-sm mb-3">
+                                    <div class="input-group-prepend">                      
+                                    <label for="availableProductsLosses" class="input-group-text">{{ __('Issued Products') }}</label>
+                                    </div>                    
+                                        <input id="availableProductsLosses" type="number" class="form-control @error('availableProductsLosses') is-invalid @enderror" name="availableProductsLosses" value="{{ old('availableProductsLosses') }}" required readonly="readonly" autocomplete="availableProductsLosses" autofocus>
+                                        <input id="availableProductsOriginalLosses" type="number" class="form-control @error('availableProductsOriginalLosses') is-invalid @enderror" name="availableProductsOriginalLosses" value="" required readonly="readonly" autocomplete="availableProductsOriginalLosses" hidden autofocus>
+                                        <input id="productIdsLosses" type="text" class="form-control @error('productIdsLosses') is-invalid @enderror" name="productIdsLosses" value="" required readonly="readonly" autocomplete="productIdsLosses"  autofocus hidden>
+                                        @error('availableProductsLosses')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror                    
+                                </div>
+                            </div>   
+
+                            <div class="w-100"></div>
+                            <div class="col">
+                                <div class="input-group input-group-sm mb-3">                            
+                                    <div class="input-group-prepend">
+                                        <label for="material_usedLosses" class="input-group-text">{{ __('Material used') }}</label>
+                                    </div>
+                                        <select class="form-control @error('material_usedLosses') is-invalid @enderror" id="material_usedLosses" name="material_usedLosses" required readonly="readoonly" autocomplete="material_usedLosses" autofocus >
+                                            <option value="" selected disabled hidden> Choose Material</option>                                                                                   
+                                            {{-- @foreach($productsList as $product)     
+                                                                                                    
+                                                <option value="{{$product->raw_material_id}}">
+                                                    {{$product->raw_material_stock_number}} : {{$product->material_used}}
+                                                </option>
+                                            @endforeach --}}
+                                        
+                                        </select>
+                                        @error('material_usedLosses')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror                    
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="input-group input-group-sm mb-3">                            
+                                    <div class="input-group-prepend">
+                                        <label for="finishedProductLosses" class="input-group-text">{{ __('Finished Products') }}</label>
+                                    </div>
+                                        <select class="form-control @error('finishedProductLosses') is-invalid @enderror" id="finishedProductLosses" name="finishedProductLosses" required autocomplete="finishedProductLosses" readonly="readonly" autofocus >
+                                            <option value="" selected disabled hidden> Choose Product</option>                                                                                   
+                                        
+                                        
+                                        </select>
+                                        @error('finsihedProductLosses')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror                    
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="input-group input-group-sm mb-3">
+                                    <div class="input-group-prepend">                      
+                                    <label for="quantityLosses" class="input-group-text">{{ __('Total Quantity') }}</label>
+                                    </div>                    
+                                        <input id="quantityLosses" type="number" class="form-control @error('quantityLosses') is-invalid @enderror" name="quantityLosses" value="{{ old('quantityLosses') }}"  readonly="readonly" autocomplete="quantityLosses" autofocus>
+                                        @error('quantityLosses')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror                    
+                                </div>
+                            </div>    
+                            
+
+                            <div class="w-100"></div>
+                            <div class="col" >
+                                <div class="card" >
+                                    
+                                    <div class="card-body">
+                                        
+                                        <ul class="list-group" id="listProductsLosses" >
+                                        
+                                        </ul> 
+
+                                
+                                
+                                    </div>    
+                                
+                                </div>
+                            </div>
+                            <div class="col" >
+                                <div class="card text-center" >
+                                    <div class="card-header">{{ __('LOSSED ITEMS') }}</div>
+                                    <div class="card-body">
+                                        
+                                        
+
+
+                                        <button type="submit" class="btn btn-primary " >Lossed Items</button>  
+
+                                    </div> 
+                                      
+                                </div>
+                    
+                        
+                        </div>    
+                    </fieldset>
+                </form>            
+            </div>
         </div>        
     </div>
 
@@ -361,6 +523,7 @@
                             <th>STORAGE</th>
                             <th>AVAILABLE</th>
                             <th>CONDEMNED</th> 
+                            <th>LOSSED</th>
                             <th>WARD/OFFICE</th>                
                             <th>DATE CREATED</th>                            
                             {{-- <th>DELETE</th> --}}
@@ -392,6 +555,11 @@
                                 <td id="condemned" style="background-color:#00FF00">YES</td>
                             @else
                                 <td id="condemned" style="background-color:#FF0000">NO</td>
+                            @endif
+                            @if($products->is_lossed == 1)
+                                <td id="lossed" style="background-color:#00FF00">YES</td>
+                            @else
+                                <td id="lossed" style="background-color:#FF0000">NO</td>
                             @endif
 
                             @if($products->issued_office_id != null)
@@ -590,7 +758,7 @@ $(document).ready(function () {
                         if(value.product_bulk_id == bulkId){
                             totalQuantity =value. product_quantity
                         }
-                        if(value.product_bulk_id == bulkId && value.is_available == 0 && value.is_condemned == 0 && value.issued_ward_id == $('#ward').val()){
+                        if(value.product_bulk_id == bulkId && value.is_available == 0 && value.is_condemned == 0 && value.issued_ward_id == $('#ward').val() && value.is_lossed == 0){
                             console.log(value)
                             selectedProductArray.push(value);
                     
@@ -757,7 +925,7 @@ $(document).ready(function () {
                         if(value.product_bulk_id == bulkIdCondemn){
                             totalQuantityCondemn =value. product_quantity
                         }
-                        if(value.product_bulk_id == bulkIdCondemn && value.is_available == 0 && value.is_condemned == 0 && value.issued_ward_id == $('#wardCondemn').val()){
+                        if(value.product_bulk_id == bulkIdCondemn && value.is_available == 0 && value.is_condemned == 0 && value.issued_ward_id == $('#wardCondemn').val() && value.is_lossed == 0){
                             console.log(value)
                             selectedProductArrayCondemn.push(value);
                     
@@ -807,12 +975,14 @@ $(document).ready(function () {
             
             });
 
+            
+
         });
 
         
         $("#officeCondemn").change(function(){
-        console.log('office change');
-        console.log($("#officeCondemn").val());
+            console.log('office change');
+            console.log($("#officeCondemn").val());
             $("#material_usedCondemn").removeAttr("readonly");
             
             $("#material_usedCondemn").find('option').remove(); 
@@ -837,6 +1007,155 @@ $(document).ready(function () {
 
       
         }); 
+
+        $("#wardRadioLosses, #officeRadioLosses").change(function(){
+        console.log('radio ward office Losses');
+            
+            $("#wardLosses, #officeLosses").val("").attr("readonly",true);
+            if($("#wardRadioLosses").is(":checked")){
+                $("#wardLosses").removeAttr("readonly");
+                $("#wardRadioLosses").attr("required",true);
+                $("#wardLosses").attr("required",true);
+                $("#wardLosses").prop('disabled', false);
+                $("#wardLosses").focus();
+                $("#officeLosses").prop('disabled', true);
+            }
+            else if($("#officeRadioLosses").is(":checked")){
+                $("#officeLosses").removeAttr("readonly");
+                $("#officeRadioLosses").attr("required",true);
+                $("#officeLosses").attr("required",true);
+                $("#officeLosses").prop('disabled', false);
+                $("#officeLosses").focus();   
+                $("#wardLosses").prop('disabled', true);
+            }
+       
+            $("#material_usedLosses").find('option').remove(); 
+        });  
+        
+
+        $("#wardLosses").change(function(){
+            console.log($("#ward").val());
+            $("#material_usedLosses").removeAttr("readonly");
+            
+            $("#material_usedLosses").find('option').remove(); 
+            $("#finishedProductLosses").find('option').remove();     
+            $("#material_usedLosses").append('<option value="" selected disabled hidden> Choose Material Used</option>'); 
+            $.each({!! json_encode($productsList, JSON_HEX_TAG) !!}, function(key, value) {
+                if($("#wardLosses").val() == value.issued_ward_id){
+                    //console.log(value);
+                    
+                    $("#material_usedLosses").append('<option value="'+value.raw_material_id+'">'+value.material_used+'</option>'); 
+                }    
+            });
+
+            var usedNamesLosses = {};
+            $("select[name='material_usedLosses'] > option").each(function () {
+                if(usedNamesLosses[this.text]) {
+                    $(this).remove();
+                } else {
+                    usedNamesLosses[this.text] = this.value;
+                }
+            });
+
+        }); 
+
+		$("#material_usedLosses").change(function(){
+				let raw_material_idLosses =  $(this).val();
+				console.log(raw_material_idLosses);
+				$("#finishedProductLosses").removeAttr("readonly");
+				$("#finishedProductLosses").find('option').remove();
+				$("#finishedProductLosses").append('<option value="" selected disabled hidden> Choose Material Used</option>');
+				$.each({!! json_encode($productsList, JSON_HEX_TAG) !!}, function(key, value) {
+					
+					if(value.raw_material_id == raw_material_idLosses){
+						console.log(value.raw_material_id , raw_material_idLosses);
+						$("#finishedProductLosses").append('<option value="'+value.product_bulk_id+'">'+value.product_name+'</option>'); 
+					}
+				});
+				var usedNamesLosses = {};
+				$("select[name='finishedProductLosses'] > option").each(function () {
+					if(usedNamesLosses[this.text]) {
+						$(this).remove();
+					} else {
+						usedNamesLosses[this.text] = this.value;
+					}
+				});
+				console.log( $("#wardLosses").val());
+				$("#finishedProductLosses").change(function() {   
+						let bulkIdLosses = $(this).children(":selected").val();
+						console.log(bulkIdLosses);
+						var selectedProductArrayLosses = new Array();
+						$("#listProductsLosses").find('ul').remove();
+					   
+						
+						let totalQuantityLosses = 0;
+						$.each({!! json_encode($productsList, JSON_HEX_TAG) !!}, function(key, value) {
+							if(value.product_bulk_id == bulkIdLosses){
+								totalQuantityLosses =value. product_quantity
+							}
+							if(value.product_bulk_id == bulkIdLosses && value.is_available == 0 && value.is_condemned == 0 && value.issued_ward_id == $('#wardLosses').val() && value.is_lossed == 0){
+								console.log(value)
+								selectedProductArrayLosses.push(value);
+						
+							}
+							
+						});
+						$('#quantityLosses').val(totalQuantityLosses);
+						$('#availableProductsOriginalLosses').val(selectedProductArrayLosses.length);
+						$('#availableProductsLosses').val(selectedProductArrayLosses.length);
+						$("#listProductsLosses").find('li').remove();
+
+							console.log(selectedProductArrayLosses);
+							$.each(selectedProductArrayLosses, function(key, value) {
+								let office_wardLosses ="";
+								if(value.office_name != null){
+									office_wardLosses = value.office_name;
+								}else if(value.ward_name != null){
+									office_wardLosses = value.ward_name;
+								}else{
+									office_wardLosses = "Not yet issued";
+								}
+								$('#listProductsLosses').append(  
+												`<li class="list-group-item">                                
+														<div class="form-check">                            
+															<input class="form-control form-check-input" type="checkbox"  value="" id="${value.id}">
+															<label class="form-control form-check-label checkbox-inline" style="font-size:small" for="${value.id}">
+															${value.product_stock_id} - ${value.product_name} - ${office_wardLosses}
+															</label>
+														</div>                                    
+												</li>`);
+
+							});
+            
+				});
+			});
+		$("#officeLosses").change(function(){
+				console.log('office change');
+				console.log($("#officeLosses").val());
+				$("#material_usedLosses").removeAttr("readonly");
+				
+				$("#material_usedLosses").find('option').remove(); 
+				$("#finishedProductLosses").find('option').remove();     
+				$("#material_usedLosses").append('<option value="" selected disabled hidden> Choose Material Used</option>'); 
+				$.each({!! json_encode($productsList, JSON_HEX_TAG) !!}, function(key, value) {
+					if($("#officeLosses").val() == value.issued_office_id){
+						//console.log(value);
+						
+						$("#material_usedLosses").append('<option value="'+value.raw_material_id+'">'+value.material_used+'</option>'); 
+					}    
+				});
+
+				var usedNamesLosses = {};
+				$("select[name='material_usedLosses'] > option").each(function () {
+					if(usedNamesLosses[this.text]) {
+						$(this).remove();
+					} else {
+						usedNamesLosses[this.text] = this.value;
+					}
+				});
+
+		  
+		}); 
 
 
 
@@ -865,6 +1184,7 @@ $(document).ready(function () {
             }    
     }); 
 
+    
 
    
   
@@ -891,6 +1211,15 @@ $(document).change(function () {
     });
 
     $('#productIdsCondemn').val(productIdsCondemn);
+
+    let productIdsLosses =[]
+    $('#listProductsLosses input:checkbox').each(function (i) {
+        if($(this).prop("checked") == true){                    
+            productIdsLosses.push($(this).attr('id'));
+        }                
+    });
+
+    $('#productIdsLosses').val(productIdsLosses);
 
     
 });

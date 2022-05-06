@@ -123,7 +123,7 @@
                                       </td>
                                   </form>
                                   @elseif($req->status == 3)
-                                  <form action = "/issueProductRequest/{{$req->id}}" method = "post">
+                                  <form action = "/products" method = "post">
                                     @csrf
                                       <input id="id" type="hidden" class="form-control @error('id') is-invalid @enderror" name="id" value="{{$req->id}}">
                                       <input id="product_name_request" type="hidden" class="form-control @error('id') is-invalid @enderror" name="product_name_request" value="{{$req->product_name_request}}">

@@ -27,19 +27,17 @@ class ReportsController extends Controller
     }
 
     public function linenInventory(Request $request){
-        if(Auth::user()->office_id != null){      
+    
+        if($request->office != null){      
             $linenInventory = DB::select('EXEC nora.paul.linen_getProductsListByWardOffice @ward =null'.', @office='.$request->office);
                             
             
         }
         
-        if(Auth::user()->ward_id != null){
+        if($request->ward != null){
             $linenInventory = DB::select('EXEC nora.paul.linen_getProductsListByWardOffice @ward ='.$request->ward.', @office=null');
                       
         }
-        
-
-    
         
         return view('Reports.reports',compact('linenInventory', $linenInventory));
     }

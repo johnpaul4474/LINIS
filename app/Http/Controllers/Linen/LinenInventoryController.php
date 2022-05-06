@@ -49,15 +49,15 @@ class LinenInventoryController extends Controller
         if(Auth::user()->role_id == 1 || Auth::user()->role_id == 2){
              $productsList = DB::select('EXEC nora.paul.linen_getBulkProducts');
             
-             $productCount = DB::table('nora.paul.linen_products')->where('is_condemned',0)->count();
+             $productCount = DB::table('nora.paul.linen_products')->where('is_condemned',0)->where('is_lossed',0)->count();
         }
         else{
             if(Auth::user()->office_id != null){      
                 $productsList = DB::select('EXEC nora.paul.linen_getProductsListByWardOffice @ward =null'.', @office='.Auth::user()->office_id);
-                $productCount = DB::table('nora.paul.linen_products')->where('is_condemned',0)->where('issued_office_id',Auth::user()->office_id)->count();
+                $productCount = DB::table('nora.paul.linen_products')->where('is_condemned',0)->where('is_lossed',0)->where('issued_office_id',Auth::user()->office_id)->count();
             }else if(Auth::user()->ward_id != null){
                 $productsList = DB::select('EXEC nora.paul.linen_getProductsListByWardOffice @ward ='.Auth::user()->ward_id.', @office=null');
-                $productCount = DB::table('nora.paul.linen_products')->where('is_condemned',0)->where('issued_ward_id',Auth::user()->ward_id)->count();
+                $productCount = DB::table('nora.paul.linen_products')->where('is_condemned',0)->where('is_lossed',0)->where('issued_ward_id',Auth::user()->ward_id)->count();
                 
             }
         }

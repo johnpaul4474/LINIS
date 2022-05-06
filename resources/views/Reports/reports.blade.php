@@ -105,7 +105,7 @@
                     </div>
                 </div>
                 @else
-                @if(Auth::user()->office_id != null)
+                    @if(Auth::user()->office_id != null)
                         @foreach(\App\Http\Controllers\Department\DepartmentController::officeList() as $office)                                                                
                             @if($office->id == Auth::user()->office_id) 
                             
@@ -115,7 +115,9 @@
                                             <div class="input-group-prepend">                      
                                             <label for="office" class="input-group-text">{{ __('Office:') }}</label>
                                             </div>                    
-                                            <input id="office" type="text" class="form-control @error('office') is-invalid @enderror" name="office" value="{{$office->office_name}}" required autocomplete="office"  autofocus disabled>
+                                            <input id="office" type="hidden" class="form-control @error('office') is-invalid @enderror" name="office" value="{{$office->id}}" required autocomplete="office"  autofocus readonly="readonly">
+                                            <input id="officeName" type="text" class="form-control @error('officeName') is-invalid @enderror" name="officeName" value="{{$office->office_name}}" required autocomplete="officeName"  autofocus readonly="readonly">
+                                           
                                             @error('office')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
@@ -134,7 +136,8 @@
                                         <div class="input-group-prepend">                      
                                         <label for="ward" class="input-group-text">{{ __('Ward:') }}</label>
                                         </div>                    
-                                        <input id="ward" type="text" class="form-control @error('ward') is-invalid @enderror" name="ward" value="{{$ward->ward_name}}" required autocomplete="ward"  autofocus disabled>
+                                        <input id="ward" type="hidden" class="form-control @error('ward') is-invalid @enderror" name="ward" value="{{$ward->id}}" required autocomplete="ward"  autofocus readonly="readonly">
+                                        <input id="wardName" type="text" class="form-control @error('wardName') is-invalid @enderror" name="wardName" value="{{$ward->ward_name}}" required autocomplete="wardName"  autofocus readonly="readonly">
                                         @error('ward')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -227,8 +230,34 @@
                 <table class="table table-sm table-bordered">
                         <thead>
                             <tr>
-                              <th  colspan="4"><small><b>UNIT/WARD: </b><u>test</u></small></th>
-                              <th  colspan="3"><small><b>DATE: </b></small></th>
+                              <th  colspan="4"><small><b>UNIT/WARD: </b>
+                                @if(Auth::user()->role_id  == 3)
+                                    @if(Auth::user()->office_id != null)
+                                    @foreach(\App\Http\Controllers\Department\DepartmentController::officeList() as $office)                                                                
+                                        @if($office->id == Auth::user()->office_id) 
+                                            <u>
+                                              {{$office->office_name}}
+                                            </u>
+                                        @endif
+                                    @endforeach
+                                    @elseif(Auth::user()->ward_id != null)
+                                        @foreach(\App\Http\Controllers\Department\DepartmentController::wardList() as $ward)                                                                
+                                        @if($ward->id ==  Auth::user()->ward_id )
+                                            
+                                                <u>
+                                                {{$ward->ward_name}}
+                                                </u> 
+                                            
+                                        @endif
+                                        @endforeach
+                                    
+                                    @endif
+                                @else
+                                    <span id="unit_ward">          
+                                    </span>
+                                @endif
+                            </small></th>
+                              <th  colspan="3"><small><b>DATE: {{\Carbon\Carbon::now()->format('F d,Y h:i A')}}</b></small></th>
                             </tr>
                           </thead>
                           <tbody>
@@ -309,10 +338,24 @@ $(document).ready(function () {
                 $("#ward").prop('disabled', true);
             }
 
+           
+        });  
+   
+        $("#ward").change(function(){
+            var ward = $(this).children("option:selected").text().trim();
+            $('#unit_ward').text(ward);
+        });
+        $("#office").change(function(){
+            var office = $(this).children("option:selected").text().trim();
+            $('#unit_ward').text(office);
+        });
+       
+       
+})    
 
-        });   
 
-})     
+
+
 </script>    
 <style>
             @media print {

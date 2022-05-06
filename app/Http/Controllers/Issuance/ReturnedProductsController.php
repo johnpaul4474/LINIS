@@ -29,12 +29,14 @@ class ReturnedProductsController extends Controller
         products.product_quantity,
         products.product_available_quantity,
         products.product_condemned_quantity,
+        products.product_losses_quantity,
         products.product_unit_cost,
         raw_material.quantity as raw_material_quantity,
         products.stock_room_id,
         products.storage_room_id,
         products.is_available,
         products.is_condemned,
+        products.is_lossed,
         products.issued_office_id,
 		office.office_name,
         products.issued_ward_id,
@@ -146,5 +148,41 @@ class ReturnedProductsController extends Controller
             'product_condemned_quantity' => count($productIds) 
         ]);   
         return redirect()->route('returnedProducts')->with('error', 'Condemned Product added successfully');
+    }
+
+    public function losses(Request $request){
+        
+        $productIds = explode(',', $request->productIdsLosses);
+
+    
+        
+        DB::table('nora.paul.linen_activity_logs')->insert([
+            'employee_id' => Auth::user()->employee_id,
+            'activity_details' => 'Product lossed: '.$request->productIdsLosses.' Ward: '.$request->wardLosses. ' Office: '.$request->officeLosses,
+            "created_at" =>  \Carbon\Carbon::now(), 
+        ]);
+
+
+        DB::table('nora.paul.linen_products')
+        ->whereIn('id', $productIds)
+        ->update([
+            'is_available' => false,	
+            'issued_office_id' => $request->officeLosses,	
+            'issued_ward_id' => $request->wardLosses,	
+            'issued_date' => null ,
+            "returned_date" => null,
+            'is_available' => false,	
+            'is_condemned' => false,  
+            'is_lossed' => true,
+            'lossed_date' => \Carbon\Carbon::now(),
+            'product_losses_quantity' => count($productIds) 
+        ]);
+        
+        DB::table('nora.paul.linen_products')
+        ->where('product_bulk_id', $request->finishedProductLosses)
+        ->update([
+            'product_losses_quantity' => count($productIds) 
+        ]);   
+        return redirect()->route('returnedProducts')->with('error', 'Lossed Product added successfully');
     }
 }

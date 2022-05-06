@@ -60,6 +60,7 @@ Route::any('/returnedProducts', [App\Http\Controllers\Issuance\ReturnedProductsC
 Route::post('/returningProducts', [App\Http\Controllers\Issuance\ReturnedProductsController::class, 'returningProducts'])->name('/returningProducts');
 Route::post('/condemned/delete', [App\Http\Controllers\Issuance\ReturnedProductsController::class, 'destroy'])->name('/condemned/delete');
 Route::any('/condemned', [App\Http\Controllers\Issuance\ReturnedProductsController::class, 'condemned'])->name('/condemned');
+Route::any('/losses', [App\Http\Controllers\Issuance\ReturnedProductsController::class, 'losses'])->name('/losses');
 //notification test
 
 
