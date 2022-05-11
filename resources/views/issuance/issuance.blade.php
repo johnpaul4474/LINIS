@@ -2,11 +2,10 @@
 
 @section('content')
 <div class="row">
-    <div class="container">
+    <div class="container d-print-none">
         <div class="row justify-content-center">        
             <div class="col-md-9">
-                <form class = 'card p-3 bg-light' action = "issueProduct" method = "post">
-                    @csrf
+               
                     <fieldset>
                     <legend>Issue Products <legend>
                     <div class="row">
@@ -113,61 +112,72 @@
                                                 </span>
                                             @enderror                    
                                     </div>
-                                    <div class="input-group input-group-sm mb-3">
-                                        <div class="input-group-prepend">                      
-                                            <label for="ward" class="col col-form-label text-md-end" style="font-size:medium"> 
-                                                <input class="form-check-input" type="radio" name="ward_office" id="wardRadio" required >{{ __('     Ward') }}
-                                            </label>
-                                        </div>                    
+                                <form id="myForm" class = 'card p-3 bg-light' action = "issueProduct" method = "post">
+                                        @csrf
+                                        <div class="input-group input-group-sm mb-3">
+                                            <div class="input-group-prepend">                      
+                                                <label for="ward" class="col col-form-label text-md-end" style="font-size:medium"> 
+                                                    <input class="form-check-input" type="radio" name="ward_office" id="wardRadio" required >{{ __('     Ward') }}
+                                                </label>
+                                            </div>                    
+                                            
                                         
-                                    
-                                            <select class="form-control @error('ward') is-invalid @enderror" id="ward" name="ward" required autocomplete="ward" autofocus disabled>
-                                                <option value="" selected disabled hidden> Choose Ward</option>
-                                            @foreach(\App\Http\Controllers\Department\DepartmentController::wardList() as $ward)                                                                
-                                            <option value="{{$ward->id}}">
-                                                    {{$ward->ward_name}}
-                                                 </option>
-                                             @endforeach
-                                            </select>
-                                            @error('ward')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                    </div>
-                                    <div class="input-group input-group-sm mb-3">
-                                        <div class="input-group-prepend">
-                                             <label for="office" class="col col-form-label text-md-end" style="font-size:medium">
-                                                <input class="form-check-input" type="radio" name="ward_office" id="officeRadio" required>{{ __('     Office') }}
-                                            </label>
-                                        </div>                    
-                                        
-                                        
-                                            {{-- <input id="office" type="text" class="form-control @error('office') is-invalid @enderror" name="office" value="{{ old('office') }}" required autocomplete="office" autofocus> --}}
-                                            <select class="form-control @error('office') is-invalid @enderror" id="office" name="office" required autocomplete="office" autofocus disabled>
-                                                <option value="" selected disabled hidden> Choose Office</option>
-                                            @foreach(\App\Http\Controllers\Department\DepartmentController::officeList() as $office)                                                                
-                                            <option value="{{$office->id}}">
-                                                    {{$office->office_name}}
-                                                 </option>
-                                             @endforeach
-                                            </select>
-                                            @error('office')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                        
-                                    </div>
-    
-                                    @if($message = Session::get('requestId'))       
-                                        
+                                                <select class="form-control @error('ward') is-invalid @enderror" id="ward" name="ward" required autocomplete="ward" autofocus disabled>
+                                                    <option value="" selected disabled hidden> Choose Ward</option>
+                                                @foreach(\App\Http\Controllers\Department\DepartmentController::wardList() as $ward)                                                                
+                                                <option value="{{$ward->id}}">
+                                                        {{$ward->ward_name}}
+                                                    </option>
+                                                @endforeach
+                                                </select>
+                                                @error('ward')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                        </div>
+                                        <div class="input-group input-group-sm mb-3">
+                                            <div class="input-group-prepend">
+                                                <label for="office" class="col col-form-label text-md-end" style="font-size:medium">
+                                                    <input class="form-check-input" type="radio" name="ward_office" id="officeRadio" required>{{ __('     Office') }}
+                                                </label>
+                                            </div>                    
+                                            
+                                            
+                                                {{-- <input id="office" type="text" class="form-control @error('office') is-invalid @enderror" name="office" value="{{ old('office') }}" required autocomplete="office" autofocus> --}}
+                                                <select class="form-control @error('office') is-invalid @enderror" id="office" name="office" required autocomplete="office" autofocus disabled>
+                                                    <option value="" selected disabled hidden> Choose Office</option>
+                                                @foreach(\App\Http\Controllers\Department\DepartmentController::officeList() as $office)                                                                
+                                                <option value="{{$office->id}}">
+                                                        {{$office->office_name}}
+                                                    </option>
+                                                @endforeach
+                                                </select>
+                                                @error('office')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            
+                                        </div>
+        
+                                        @if($message = Session::get('requestId'))       
+                                            
                                         <input id="requestId" type="hidden" class="form-control @error('requestId') is-invalid @enderror" name="requestId" value="{{$message}}">  
-                                    @endif
-    
-    
-                                </div> 
-                                <button type="submit" class="btn btn-primary " >Submit</button>    
+                                        @endif
+                                        <input id="itemsIssuedListObject" type="hidden" class="form-control @error('itemsIssuedListObject') is-invalid @enderror" name="itemsIssuedListObject" value="">  
+
+        
+        
+                                    </div> 
+                                    <div class="card-footer">
+                                        <button type="button" id="issueItems" class="btn btn-primary " disabled >Add</button>
+                                        <button type="button" id="removeItems" class="btn btn-primary " >Remove</button>
+                                        <button type="button" id="printItems" class="btn btn-primary " >Print</button>
+                                        <button type="submit" class="btn btn-primary " >Submit</button> 
+                                    
+                                    </div>
+                                </form>       
                             </div>
                             
                         </div>
@@ -178,165 +188,208 @@
                        
                     </fieldset>
     
-                </form>
+                
             </div>
+            <input id="trId" type="hidden" value="">
+            <input id="tdUnit" type="hidden" value="">
+            <input id="tdItem" type="hidden" value="">
+            <input id="tdCost" type="hidden" value="">
+            <input id="tdDateIssued" type="hidden" value="{{\Carbon\Carbon::now()->format('F d,Y')}}">
+            <input id="tdMaterial" type="hidden" value="">
             
         </div>    
     </div> 
 </div>    
     <br>
-<div class="row">    
-    <div class="container">
+<div class="row" id = "issuanceForm" hidden>    
+    <div class="container ">
+        <div class="col-md-9 mx-auto">  
         <div class="row justify-content-center">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header text-white" style="background-color: #00AA9E;">{{ __('Linen Products') }}</div>
-                    <br>
-                    
-                    <table id="productsTable" class="table  table-bordered table-success" style="width:100%">
-                        <thead>
-                          <tr>
-                            <th>id</th>
-                            <th>STOCK-NUMBER</th>
-                            <th>MATERIAL USED</th>    
-                            <th>RAW MATERIAL <br> AVAILABLE QUANTITY</th>                                                  
-                            <th>PRODUCT</th>
-                            <th>PRODUCT <br> UNIT</th>
-                            <th>AVAILABLE <br> QUANTITY</th>
-                            <th>TOTAL <br> CONDEMNED</th> 
-                            <th>ORIGINAL TOTAL <br> QUANTITY</th>                           
-                            <th>UNIT <br> COST</th>
-                            <th>TOTAL <br> COST</th>                           
-                            <th>STOCK ROOM</th>
-                            <th>STORAGE</th>
-                            <th>AVAILABLE</th>
-                            <th>CONDEMNED</th> 
-                            <th>WARD/OFFICE</th>                
-                            <th>DATE CREATED</th>                            
-                            <th>DELETE</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          @foreach($productsList as $products)                                                                
-                          <tr id={{$products->id}}>
-                            <td>{{$products->id}}</td>
-                            <td id="{{$products->product_stock_id}}" style="background-color:#39bedf">{{$products->product_stock_id}}</td>
-                            <td id="{{$products->raw_material_id}}" style="background-color:#39bedf">{{$products->material_used}}</td>
-                            <td id="raw_material_quantity" style="background-color:#39bedf">{{$products->raw_material_quantity}}</td>                            
-                            <td id="product_name">{{$products->product_name}}</td>
-                            <td id="product_unit">{{$products->product_unit}}</td>
-                            <td id="product_available_quantity">{{$products->product_available_quantity}}</td> 
-                            <td id="product_condemned_quantity">{{$products->product_condemned_quantity}}</td>
-                            <td id="product_quantity">{{$products->product_quantity}}</td>  
-                                                     
-                            <td id="product_unit_cost">{{$products->product_unit_cost}}</td>
-                            <td id="total_cost">{{$products->total_cost}}</td>
-                           
-                            <td id="{{$products->stock_room_id}}">{{$products->stock_room}}</td>
-                            <td id="{{$products->storage_room_id}}">{{$products->storage_name}}</td>
-                            @if($products->is_available == 1)
-                                <td id="available" style="background-color:#00FF00">YES</td>
-                            @else
-                                <td id="available" style="background-color:#FF0000">NO</td>
-                            @endif
-                            @if($products->is_condemned == 1)
-                                <td id="condemned" >YES</td>
-                            @else
-                                <td id="condemned" >NO</td>
-                            @endif
+          <div class="col-2 border border-dark border-bottom-0"><br>
 
-                            @if($products->issued_office_id != null)
-                                @foreach(\App\Http\Controllers\Department\DepartmentController::officeList() as $office)                                                                
-                                    @if($office->id == $products->issued_office_id) 
-                                        <td>{{$office->office_name}}</td>
-                                    @endif
-                                 @endforeach
-                            @elseif($products->issued_ward_id != null)
-                                @foreach(\App\Http\Controllers\Department\DepartmentController::wardList() as $ward)                                                                
-                                @if($ward->id == $products->issued_ward_id )
-                                        <td>{{$ward->ward_name}}</td>
-                                @endif
-                                @endforeach
-                            @else  
-                                <td>Not yet issued</td>  
-                            @endif
-                            <td id="created_date">{{$products->create_date}}</td>
-                            {{-- <td>                                          
-                              
-                              <button type="submit" class="editProductsButton btn btn-primary btn-sm"  >
-                                  <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                                      width="20px" height="20px" viewBox="0 0 494.936 494.936" style="enable-background:new 0 0 494.936 494.936;"
-                                      xml:space="preserve">
-                                  <g>
-                                      <g>
-                                          <path d="M389.844,182.85c-6.743,0-12.21,5.467-12.21,12.21v222.968c0,23.562-19.174,42.735-42.736,42.735H67.157
-                                              c-23.562,0-42.736-19.174-42.736-42.735V150.285c0-23.562,19.174-42.735,42.736-42.735h267.741c6.743,0,12.21-5.467,12.21-12.21
-                                              s-5.467-12.21-12.21-12.21H67.157C30.126,83.13,0,113.255,0,150.285v267.743c0,37.029,30.126,67.155,67.157,67.155h267.741
-                                              c37.03,0,67.156-30.126,67.156-67.155V195.061C402.054,188.318,396.587,182.85,389.844,182.85z"/>
-                                          <path d="M483.876,20.791c-14.72-14.72-38.669-14.714-53.377,0L221.352,229.944c-0.28,0.28-3.434,3.559-4.251,5.396l-28.963,65.069
-                                              c-2.057,4.619-1.056,10.027,2.521,13.6c2.337,2.336,5.461,3.576,8.639,3.576c1.675,0,3.362-0.346,4.96-1.057l65.07-28.963
-                                              c1.83-0.815,5.114-3.97,5.396-4.25L483.876,74.169c7.131-7.131,11.06-16.61,11.06-26.692
-                                              C494.936,37.396,491.007,27.915,483.876,20.791z M466.61,56.897L257.457,266.05c-0.035,0.036-0.055,0.078-0.089,0.107
-                                              l-33.989,15.131L238.51,247.3c0.03-0.036,0.071-0.055,0.107-0.09L447.765,38.058c5.038-5.039,13.819-5.033,18.846,0.005
-                                              c2.518,2.51,3.905,5.855,3.905,9.414C470.516,51.036,469.127,54.38,466.61,56.897z"/>
-                                      </g>
-                                  </g>
-                                  </svg>
-                              </button>
-                              </a>
-                            </td> --}}
-                            <td>
-                                <form action = "/condemned/delete" method = "post">
-                                  @csrf
-                                  <input id="id" type="hidden" class="form-control @error('id') is-invalid @enderror" name="id" value="{{$products->id}}">
-                                  <input id="product_bulk_id" type="hidden" class="form-control @error('product_bulk_id') is-invalid @enderror" name="product_bulk_id" value="{{$products->product_bulk_id}}">
-
-                                  <button class="btn btn-danger btn-sm" type="submit">  
-                                  <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" 
-                                      width="20px" height="20px" viewBox="0 0 494.936 494.936" style="enable-background:new 0 0 494.936 494.936;"
-                                      xml:space="preserve">
-                                  <g>
-                                      <path d="M324.285,215.015V128h20V38h-98.384V0H132.669v38H34.285v90h20v305h161.523c23.578,24.635,56.766,40,93.477,40
-                                          c71.368,0,129.43-58.062,129.43-129.43C438.715,277.276,388.612,222.474,324.285,215.015z M294.285,215.015
-                                          c-18.052,2.093-34.982,7.911-50,16.669V128h50V215.015z M162.669,30h53.232v8h-53.232V30z M64.285,68h250v30h-250V68z M84.285,128
-                                          h50v275h-50V128z M164.285,403V128h50v127.768c-21.356,23.089-34.429,53.946-34.429,87.802c0,21.411,5.231,41.622,14.475,59.43
-                                          H164.285z M309.285,443c-54.826,0-99.429-44.604-99.429-99.43s44.604-99.429,99.429-99.429s99.43,44.604,99.43,99.429
-                                          S364.111,443,309.285,443z"/>
-                                      <polygon points="342.248,289.395 309.285,322.358 276.323,289.395 255.11,310.608 288.073,343.571 255.11,376.533 276.323,397.746 
-                                          309.285,364.783 342.248,397.746 363.461,376.533 330.498,343.571 363.461,310.608 	"/>
-                                  </g>
-
-                                  </svg> </button>                                   
-                                  <span class="glyphicon glyphicon-remove-circle"></span>  
-                                  </button>
-                              </form>
-                          
-                          </td>
-                          </tr>
-
-                          @endforeach
-                          
-                        </tbody>  
-                    </table>
-                    <div class="card-body">
-                    </div>
+            <img src="../img/bghmc.png" class="mx-auto d-block" width="120" height="120" alt="">
+            <br>
+          </div>
+          <div class="col-10 border border-dark border-left-0 border-bottom-0">
+            <div class="row">
+                <div class="col-12 border border-light border-left-0 border-top-0 border-right-0" >
+                    <div class="text-center"><small>Republic of the Philippines</small></div>
+                    <div class="text-center"><small>Department of Health</small></div>
+                    <div class="text-center text-uppercase font-weight-bold">baguio general hospital and medical
+                        center</small> </div>
+                    <div class="text-center"><small>Baguio City</small> </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-8 border border-dark border-left-0 border-bottom-0 border-top-0">                                    
+                    <div class="text-center mt-3">
+                        <span class="font-weight-bold">GENERAL SERVICES SECTION - LINEN ROOM</span>
+                        <h5 class="font-weight-bold">INVENTORY (LINEN) CUSTODIAN SLIP</h5>
+                    </div>
+                </div>
+                <div class="col-2 " > 
+                    <div class="row border border-dark border-left-0 border-bottom-0 border-top-0">
+                         Form No.:
+                    </div>
+                    <div class="row border border-left-0 ">
+                         Rev.No:
+                    </div>
+                    <div class="row border border-left-0 border-bottom-0 border-top-0">
+                         Effectivity Date:
+                    </div>
+                </div>
+                <div class="col-2 "> 
+                    <div class="row justify-content-center border border-dark  border-left-0 border-bottom-0 border-top-0 border-right-0">
+                        HS - GSS - 008
+                    </div>
+                    <div class="row justify-content-center border border-dark  border-left-0 border-right-0">
+                        1
+                    </div>
+                    <div class="row justify-content-center border border-dark  border-left-0 border-bottom-0 border-top-0 border-right-0">
+                        August 16, 2019
+                    </div>
+                </div>
+
+            </div>
+          </div>
+          
         </div>
-    </div>                    
+        <div class="row justify-content-center">
+            <div class="col-12 border border-dark "><br>
+                
+               
+                <table class="table table-sm table-bordered " id="itemsTable">
+                        <thead>
+                            <tr class="text-center">
+                                <th width='10%'>QUANTITY</th>
+                                <th width='10%'>UNIT</th>
+                                <th width='30%'>ITEM DESCRIPTION</th>
+                                <th width='10%'>AMOUNT</th>
+                                <th width='10%'>DATE ISSUED</th>
+                                <th width='20%'>ESTIMATED USEFUL<br>LIFE(in years)</th>
+                                <th width='10%'>REMARKS</th>
+                            </tr>
+                          </thead>
+                          <tbody id="issueItemsTbody">
+                            
+                            
+                            
+                            
+                            
+                          </tbody>
+                          <tfoot class="text-center">
+                              <tr>
+                               
+                                    <td colspan="3" ><strong>
+                                        RECEIVED BY:</strong> <br>
+                                        __________________________<br>
+                                        Signature Over Printed Name<br>
+                                        __________________________<br>
+                                        Position<br>
+                                        Date:
+                                    </td>
+                                    
+                                  <td colspan ="4" ><strong>RECEIVED FROM:</strong><br>
+                                    __________________________<br>
+                                    Signature Over Printed Name<br>
+                                    __________________________<br>
+                                    Position<br>
+                                    Date:
+                                  </td>
+                                </div>  
+                              </tr> 
 
-
-   
+                            </tfoot>
+                       
+                </table> 
+            </div>
+              
+            
+        </div>
+    </div>
+    </div>  
 </div>
-   
+
 @endsection
 
 
 
 @push('scripts')
-
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <script>
+
 $(document).ready(function () {
+    let issuedItemsList = [];
+    $("#issueItems").click(function() {
+        $('#issuanceForm').removeAttr("hidden",false);
+        let quantity = $('#quantity').val();
+        let unit = $('#tdUnit').val();
+        let item = $('#tdItem').val();
+        let cost = $('#tdCost').val();
+        let issuedDate = $('#tdDateIssued').val();
+        let trId = $('#trId').val();
+
+       
+        issuedItemsList.push({               
+               availableProducts : $('#availableProducts').val(),              
+               finishedProduct : $('#trId').val(),                
+               availableProductsOriginal : $('#availableProductsOriginal').val(),
+               productIds : $('#productIds').val(),
+               quantity : $('#quantity').val(),
+               ward : $("#ward").val(),
+               office : $("#office").val(),
+               });
+        
+        console.log(issuedItemsList);
+        $('#itemsIssuedListObject').val(JSON.stringify(issuedItemsList));
+        productIdsArray = $('#productIds').val().split(',');
+        console.log(productIdsArray);
+        // $("#listProducts").find('[data-id="639"]').remove();
+        productIdsArray.forEach(removeItems);      
+
+                $("#issueItemsTbody").append(
+                    `<tr class="text-center" id =${trId}>
+                        <td width="10%">${quantity}</td>
+                        <td width="10%" id="unit">${unit}</td>
+                        <td width="30%">${item}</td>
+                        <td width="10%">${cost}</td>
+                        <td width="10%">${issuedDate}</td>
+                        <td width="20%"></td>
+                        <td width="10%"></td>
+                    </tr> `   
+                ); 
+                
+             
+
+    });
+
+    function removeItems(item, index) {
+        $("#listProducts").find(`[data-id="${item}"]`).remove()
+    }
+
+    $(function() {
+      $('#itemsTable').on('click', 'tbody tr', function(event) {
+        $(this).addClass('highlight').siblings().removeClass('highlight');
+      });
+
+      $('#removeItems').click(function(e) {
+        var rows = getHighlightRow();
+        if (rows != undefined) {
+          rows.remove();
+        }
+      });
+
+      var getHighlightRow = function() {
+        return $('table > tbody > tr.highlight');
+      }
+
+    });
+
+
+
+    $("#printItems").click(function() {
+        window.print();
+    });
 
 
     var usedNames = {};
@@ -351,6 +404,7 @@ $(document).ready(function () {
 $("#material_used").change(function() {
     
         let id = $(this).children(":selected").val();
+        $('#tdMaterial').val(id);
         
         $("#finishedProduct").find('option').remove();
         $("#finishedProduct").append('<option value="" selected disabled hidden> Choose Product</option>'); 
@@ -367,6 +421,7 @@ $("#material_used").change(function() {
     });
 
 $("#finishedProduct").change(function() {   
+    
     let bulkId = $(this).children(":selected").val();
     var selectedProductArray = new Array();
     $("#listProducts").find('div').remove();
@@ -386,9 +441,14 @@ $("#finishedProduct").change(function() {
     $.each(selectedProductArray, function(key, value) {
         // while(selectedProductArray.length) {
         //     console.log(selectedProductArray.splice(0,10));
-        // }   
+        // }  
+        console.log(value); 
+        $('#tdUnit').val(value.product_unit);
+        $('#tdItem').val(value.product_name);
+        $('#tdCost').val(value.product_unit_cost);
+        $('#trId').val(value.product_bulk_id);
         $('#listProducts').append(  
-                        `<li class="list-group-item">
+                        `<li class="list-group-item" data-id="${value.id}">
                          <div class="form-check">                            
                             <input class="form-control form-check-input" type="checkbox"  value="" id="${value.id}">
                             <label class="form-control form-check-label checkbox-inline" style="font-size:small" for="${value.id}">
@@ -471,7 +531,7 @@ $("#finishedProduct").change(function() {
                 $("#ward").prop('disabled', true);
             }
 
-
+            $("#issueItems").removeAttr('disabled',false);
         });   
 
     $("#quantity").change(function(i){
@@ -513,7 +573,11 @@ $("#finishedProduct").change(function() {
         }            
        }         
       ); 
-   
+       
+      $('.printMe').click(function () {
+                window.print();
+                // pop_searchPatient();
+            });
   
     
 })
@@ -542,6 +606,81 @@ body {
     zoom: 0.9; /* Other non-webkit browsers */
     zoom: 90%; /* Webkit browsers */
 }
+
+@media print {
+             
+   
+    @page {
+                size: landscape !important;
+                margin-left: 0.25in;
+                margin-right: 0.5in;
+                margin-top: 0;
+                margin-bottom: 0;
+               
+            }
+
+            table, th, td {
+                        border: 1px solid black !important;
+                        }
+       
+     
+    }
+        
+        body {
+            background-color: #fff;
+            /* color: #636b6f; */
+            font-family: 'Roboto', sans-serif;
+            font-weight: 200;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .border {
+            border: 1px solid black !important;
+        }
+
+        .border-right-0 {
+            border-right: none !important;
+        }
+
+        .border-top-0 {
+            border-top: none !important;
+        }
+
+        .border-left-0 {
+            border-left: none !important;
+        }
+
+        .border-bottom-0 {
+            border-bottom: none !important;
+        }
+        table, th, td {
+            border: 1px solid black !important;
+            }
+
+            td,
+th {
+  border: 1px solid #999;
+  padding: 1.5rem;
+}
+
+.row tbody tr.highlight td {
+  background-color: #ccc;
+}
+
+
+
+.button:hover {
+  border-top-color: #28597a;
+  background: #28597a;
+  color: #ccc;
+}
+
+.button:active {
+  border-top-color: #1b435e;
+  background: #1b435e;
+} 
+
      
 </style> 
 @endpush

@@ -225,15 +225,15 @@
                                 <th>id</th>              
                                 <th>PRODUCT</th>
                                 <th>PRODUCT <br> UNIT</th>
-                                <th>ISSUED QUANTITY</th>
+                                <th>QUANTITY</th>
                                 <th>WARD/OFFICE</th>     
                                 <th>DATE CREATED</th>  
                                 <th>DATE ISSUED</th>
-                                @if(Auth::user()->role_id  == 1 || Auth::user()->role_id== 2)
+                                
                                 <th>DATE RETURNED</th>
                                 <th>DATE CONDEMNED</th>
                                 <th>DATE LOSSED</th> 
-                                @endif
+                                
                                 
                                 </tr>
                             </thead>
@@ -266,11 +266,11 @@
                                 
                                 <td id="created_date">{{$products->create_date}}</td>
                                 <td id="issued_date">{{$products->issued_date}}</td>
-                                @if(Auth::user()->role_id  == 1 || Auth::user()->role_id== 2)
+                                
                                 <td id="returned_date">{{$products->returned_date}}</td>
                                 <td id="condemned_date">{{$products->condemned_date}}</td>
                                 <td id="condemned_date">{{$products->lossed_date}}</td> 
-                                @endif
+                               
                                 </tr>
 
                                 @endforeach

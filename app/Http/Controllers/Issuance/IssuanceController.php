@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
+
 class IssuanceController extends Controller
 {
     public function index(Request $request){
@@ -56,37 +57,66 @@ class IssuanceController extends Controller
     }
 
     public function issueProduct(Request $request){
-     
-        Validator::make($request->all(), [
-            'availableProducts' =>  'required|numeric|gt:-1', 
-        ])->validate();
+       
+       
+        // Validator::make($request->all(), [
+        //     'availableProducts' =>  'required|numeric|gt:-1', 
+        // ])->validate();
 
-        $productIds = explode(',', $request->productIds);
+        // $productIds = explode(',', $request->productIds);
 
-        DB::table('nora.paul.linen_activity_logs')->insert([
+        // DB::table('nora.paul.linen_activity_logs')->insert([
+        //     'employee_id' => Auth::user()->employee_id,
+        //     'activity_details' => 'Product issued: '.$request->productIds.' Ward: '.$request->ward.' Office: '.$request->office,
+        //     "created_at" =>  \Carbon\Carbon::now(), 
+        // ]);
+        
+        // Products::where('product_bulk_id', $request->finishedProduct)->decrement('product_available_quantity',(int)$request->quantity);
+
+        
+        // DB::table('nora.paul.linen_products')
+        // ->whereIn('id', $productIds)
+        // ->update([
+        //     'is_available' => false,	
+        //     'issued_office_id' => $request->office,	
+        //     'issued_ward_id' => $request->ward,	
+        //     'issued_date' => \Carbon\Carbon::now() ,
+        //     "returned_date" => null,
+        //     'product_issued_quantity' => count($productIds)           
+        // ]);
+        $itemsToBeIssued = json_decode($request->itemsIssuedListObject);
+        
+        
+
+         foreach ($itemsToBeIssued as $items) {
+            
+            $productIds = explode(',', $items->productIds);
+
+            DB::table('nora.paul.linen_activity_logs')->insert([
             'employee_id' => Auth::user()->employee_id,
-            'activity_details' => 'Product issued: '.$request->productIds.' Ward: '.$request->ward.' Office: '.$request->office,
+            'activity_details' => 'Product issued: '.$items->productIds.' Ward: '.$items->ward.' Office: '.$items->office,
             "created_at" =>  \Carbon\Carbon::now(), 
-        ]);
-        
-        Products::where('product_bulk_id', $request->finishedProduct)->decrement('product_available_quantity',(int)$request->quantity);
+            ]);
+            
+            Products::where('product_bulk_id', $items->finishedProduct)->decrement('product_available_quantity',(int)$items->quantity);
+                DB::table('nora.paul.linen_products')
+            ->whereIn('id', $productIds)
+            ->update([
+                'is_available' => false,	
+                'issued_office_id' => $items->office,	
+                'issued_ward_id' => $items->ward,	
+                'issued_date' => \Carbon\Carbon::now() ,
+                "returned_date" => null,
+                'product_issued_quantity' => count($productIds)           
+            ]);
+         }
 
-        
-        DB::table('nora.paul.linen_products')
-        ->whereIn('id', $productIds)
-        ->update([
-            'is_available' => false,	
-            'issued_office_id' => $request->office,	
-            'issued_ward_id' => $request->ward,	
-            'issued_date' => \Carbon\Carbon::now() ,
-            "returned_date" => null          
-        ]);
-
+       
         
 
     
 
-        return redirect()->route('home')->with('success', 'Issued product successfully');
+        return redirect()->route('issuance')->with('success', 'Issued product successfully');
     }
 
     public function destroy(Request $request)

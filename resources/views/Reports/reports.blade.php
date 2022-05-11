@@ -277,7 +277,7 @@
                             <tr> 
                                 <td width='40%'>{{$linen->product_name}}</td>
                                 <td width='10%'>to-do</td>
-                                <td width='10%'>{{$linen->products_issued_quantity}}</td>
+                                <td width='10%'>{{$linen->product_issued_quantity}}</td>
                                 <td width='10%'>{{$linen->product_quantity}}</td>                                
                                 <td width='10%'>{{$linen->product_condemned_quantity}}</td>
                                 <td width='10%'>to-do</td>
@@ -291,7 +291,7 @@
               
             
         </div>
-      </div>
+    </div>
 
     
    

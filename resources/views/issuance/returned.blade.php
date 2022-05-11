@@ -12,6 +12,7 @@
                     <fieldset>
                         <legend>Return Products <legend>
                         <div class="row">
+                            @if(Auth::user()->role_id  == 1 || Auth::user()->role_id== 2)
                             <div class="col">
                                 <div class="input-group input-group-sm mb-3">
                                     <div class="input-group-prepend">                      
@@ -20,7 +21,7 @@
                                         </label>
                                     </div>                    
                                     
-                                
+                                    
                                         <select class="form-control @error('ward') is-invalid @enderror" id="ward" name="ward" required autocomplete="ward" autofocus disabled>
                                             <option value="" selected disabled hidden> Choose Ward</option>
                                         @foreach(\App\Http\Controllers\Department\DepartmentController::wardList() as $ward)                                                                
@@ -62,6 +63,49 @@
                                     
                                 </div>
                             </div> 
+                            @else
+                                @if(Auth::user()->office_id != null)
+                                    @foreach(\App\Http\Controllers\Department\DepartmentController::officeList() as $office)                                                                
+                                        @if($office->id == Auth::user()->office_id) 
+                                            <div class="col">
+                                                <div class="input-group input-group-sm mb-3">
+                                                    <div class="input-group-prepend">                      
+                                                    <label for="office" class="input-group-text">{{ __('Office') }}</label>
+                                                    </div>                    
+                                                        <input id="office" type="text" class="form-control @error('office') is-invalid @enderror" name="office" value="{{ $office->office_name }}" required readonly="readonly" autocomplete="office" autofocus>
+                                                       
+                                                        @error('office')
+                                                            <span class="invalid-feedback" role="alert">
+                                                                <strong>{{ $message }}</strong>
+                                                            </span>
+                                                        @enderror                    
+                                                </div>
+                                            </div>   
+                                        @endif
+                                    @endforeach
+                                @endif    
+                                @if(Auth::user()->ward_id != null)
+                                    @foreach(\App\Http\Controllers\Department\DepartmentController::wardList() as $ward)                                                                
+                                        @if($ward->id == Auth::user()->ward_id)
+                                        <div class="col">
+                                            <div class="input-group input-group-sm mb-3">
+                                                <div class="input-group-prepend">                      
+                                                <label for="ward" class="input-group-text">{{ __('Ward') }}</label>
+                                                </div>                    
+                                                    <input id="ward" type="text" class="form-control @error('ward') is-invalid @enderror" name="ward" value="{{ $ward->ward_name }}" required readonly="readonly" autocomplete="ward" autofocus>
+                                                   
+                                                    @error('ward')
+                                                        <span class="invalid-feedback" role="alert">
+                                                            <strong>{{ $message }}</strong>
+                                                        </span>
+                                                    @enderror                    
+                                            </div>
+                                        </div>   
+                                        @endif
+                                    @endforeach
+                               
+                            @endif
+                            @endif
                             <div class="col">
                                 <div class="input-group input-group-sm mb-3">
                                     <div class="input-group-prepend">                      
@@ -84,16 +128,16 @@
                                     <div class="input-group-prepend">
                                         <label for="material_used" class="input-group-text">{{ __('Material used') }}</label>
                                     </div>
-                                        <select class="form-control @error('material_used') is-invalid @enderror" id="material_used" name="material_used" required readonly="readoonly" autocomplete="material_used" autofocus >
-                                            <option value="" selected disabled hidden> Choose Material</option>                                                                                   
-                                            {{-- @foreach($productsList as $product)     
-                                                                                                    
-                                                <option value="{{$product->raw_material_id}}">
-                                                    {{$product->raw_material_stock_number}} : {{$product->material_used}}
-                                                </option>
-                                            @endforeach --}}
-                                        
-                                        </select>
+                                        @if(Auth::user()->role_id  == 1 || Auth::user()->role_id== 2)
+                                            <select class="form-control @error('material_used') is-invalid @enderror" id="material_used" name="material_used" required readonly="readoonly" autocomplete="material_used" autofocus >
+                                                <option value="" selected disabled hidden> Choose Material</option>    
+                                            </select>
+                                        @else
+                                            <select class="form-control @error('material_used') is-invalid @enderror" id="material_used" name="material_used" required readonly="readoonly" autocomplete="material_used" autofocus >
+                                                <option value="" selected disabled hidden> Choose Material</option>    
+                                            </select>
+
+                                        @endif
                                         @error('material_used')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -124,6 +168,7 @@
                                     <label for="quantity" class="input-group-text">{{ __('Total Quantity') }}</label>
                                     </div>                    
                                         <input id="quantity" type="number" class="form-control @error('quantity') is-invalid @enderror" name="quantity" value="{{ old('quantity') }}"  readonly="readonly" autocomplete="quantity" autofocus>
+                                       
                                         @error('quantity')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -174,6 +219,7 @@
                     <fieldset>
                         <legend>Condemned Products <legend>
                         <div class="row">
+                            @if(Auth::user()->role_id  == 1 || Auth::user()->role_id== 2)
                             <div class="col">
                                 <div class="input-group input-group-sm mb-3">
                                     <div class="input-group-prepend">                      
@@ -182,7 +228,7 @@
                                         </label>
                                     </div>                    
                                     
-                                
+                                    
                                         <select class="form-control @error('wardCondemn') is-invalid @enderror" id="wardCondemn" name="wardCondemn" required autocomplete="wardCondemn" autofocus disabled>
                                             <option value="" selected disabled hidden> Choose Ward</option>
                                         @foreach(\App\Http\Controllers\Department\DepartmentController::wardList() as $ward)                                                                
@@ -224,6 +270,49 @@
                                     
                                 </div>
                             </div> 
+                            @else
+                                @if(Auth::user()->office_id != null)
+                                    @foreach(\App\Http\Controllers\Department\DepartmentController::officeList() as $office)                                                                
+                                        @if($office->id == Auth::user()->office_id) 
+                                            <div class="col">
+                                                <div class="input-group input-group-sm mb-3">
+                                                    <div class="input-group-prepend">                      
+                                                    <label for="officeCondemn" class="input-group-text">{{ __('Office') }}</label>
+                                                    </div>                    
+                                                        <input id="officeCondemn" type="text" class="form-control @error('officeCondemn') is-invalid @enderror" name="officeCondemn" value="{{ $office->office_name }}" required readonly="readonly" autocomplete="officeCondemn" autofocus>
+                                                       
+                                                        @error('officeCondemn')
+                                                            <span class="invalid-feedback" role="alert">
+                                                                <strong>{{ $message }}</strong>
+                                                            </span>
+                                                        @enderror                    
+                                                </div>
+                                            </div>   
+                                        @endif
+                                    @endforeach
+                                @endif    
+                                @if(Auth::user()->ward_id != null)
+                                    @foreach(\App\Http\Controllers\Department\DepartmentController::wardList() as $ward)                                                                
+                                        @if($ward->id == Auth::user()->ward_id)
+                                        <div class="col">
+                                            <div class="input-group input-group-sm mb-3">
+                                                <div class="input-group-prepend">                      
+                                                <label for="wardCondemn" class="input-group-text">{{ __('Ward') }}</label>
+                                                </div>                    
+                                                    <input id="wardCondemn" type="text" class="form-control @error('wardCondemn') is-invalid @enderror" name="wardCondemn" value="{{ $ward->ward_name }}" required readonly="readonly" autocomplete="wardCondemn" autofocus>
+                                                   
+                                                    @error('wardCondemn')
+                                                        <span class="invalid-feedback" role="alert">
+                                                            <strong>{{ $message }}</strong>
+                                                        </span>
+                                                    @enderror                    
+                                            </div>
+                                        </div>   
+                                        @endif
+                                    @endforeach
+                               
+                            @endif
+                            @endif
                             <div class="col">
                                 <div class="input-group input-group-sm mb-3">
                                     <div class="input-group-prepend">                      
@@ -336,6 +425,7 @@
                     <fieldset>
                         <legend>Lossed Products <legend>
                         <div class="row">
+                            @if(Auth::user()->role_id  == 1 || Auth::user()->role_id== 2)
                             <div class="col">
                                 <div class="input-group input-group-sm mb-3">
                                     <div class="input-group-prepend">                      
@@ -344,7 +434,7 @@
                                         </label>
                                     </div>                    
                                     
-                                
+                                    
                                         <select class="form-control @error('wardLosses') is-invalid @enderror" id="wardLosses" name="wardLosses" required autocomplete="wardLosses" autofocus disabled>
                                             <option value="" selected disabled hidden> Choose Ward</option>
                                         @foreach(\App\Http\Controllers\Department\DepartmentController::wardList() as $ward)                                                                
@@ -386,6 +476,52 @@
                                     
                                 </div>
                             </div> 
+                            @else
+                                @if(Auth::user()->office_id != null)
+                               
+                                    @foreach(\App\Http\Controllers\Department\DepartmentController::officeList() as $office)                                                                
+                                        @if($office->id == Auth::user()->office_id) 
+                                            <div class="col">
+                                                <div class="input-group input-group-sm mb-3">
+                                                    <div class="input-group-prepend">                      
+                                                    <label for="officeLosses" class="input-group-text">{{ __('Office') }}</label>
+                                                    </div>                    
+                                                        <input id="officeLosses" type="text" class="form-control @error('officeLosses') is-invalid @enderror" name="officeLosses" value="{{ $office->office_name }}" required readonly="readonly" autocomplete="officeLosses" autofocus>
+                                                       
+                                                        @error('officeLosses')
+                                                            <span class="invalid-feedback" role="alert">
+                                                                <strong>{{ $message }}</strong>
+                                                            </span>
+                                                        @enderror                    
+                                                </div>
+                                            </div>   
+                                        @endif
+                                    @endforeach
+                                @endif    
+                                @if(Auth::user()->ward_id != null)
+                               
+                                    @foreach(\App\Http\Controllers\Department\DepartmentController::wardList() as $ward)       
+                                                                                             
+                                        @if($ward->id == Auth::user()->ward_id)
+                                        <div class="col">
+                                            <div class="input-group input-group-sm mb-3">
+                                                <div class="input-group-prepend">                      
+                                                <label for="wardLosses" class="input-group-text">{{ __('Ward') }}</label>
+                                                </div>                    
+                                                    <input id="wardLosses" type="text" class="form-control @error('wardLosses') is-invalid @enderror" name="wardLosses" value="{{ $ward->ward_name }}" required readonly="readonly" autocomplete="wardLosses" autofocus>
+                                                   
+                                                    @error('wardLosses')
+                                                        <span class="invalid-feedback" role="alert">
+                                                            <strong>{{ $message }}</strong>
+                                                        </span>
+                                                    @enderror                    
+                                            </div>
+                                        </div>   
+                                        @endif
+                                    @endforeach
+                               
+                                @endif
+                            @endif
                             <div class="col">
                                 <div class="input-group input-group-sm mb-3">
                                     <div class="input-group-prepend">                      
@@ -498,6 +634,7 @@
       
 </div>  
 <br>
+@if(Auth::user()->role_id  == 1 || Auth::user()->role_id== 2)
 <div class="row">
     <div class="container">
         <div class="row justify-content-center">
@@ -516,6 +653,7 @@
                             <th>PRODUCT <br> UNIT</th>
                             <th>AVAILABLE <br> QUANTITY</th>
                             <th>TOTAL <br> CONDEMNED</th> 
+                            <th>TOTAL <br> LOSSED</th> 
                             <th>ORIGINAL TOTAL <br> QUANTITY</th>                           
                             <th>UNIT <br> COST</th>
                             <th>TOTAL <br> COST</th>                           
@@ -540,6 +678,7 @@
                             <td id="product_unit">{{$products->product_unit}}</td>
                             <td id="product_available_quantity">{{$products->product_available_quantity}}</td>  
                             <td id="product_condemned_quantity">{{$products->product_condemned_quantity}}</td> 
+                            <td id="product_lossed_quantity">{{$products->product_losses_quantity}}</td> 
                             <td id="product_quantity">{{$products->product_quantity}}</td>                            
                             <td id="product_unit_cost">{{$products->product_unit_cost}}</td>
                             <td id="total_cost">{{$products->total_cost}}</td>
@@ -642,6 +781,7 @@
         </div>
     </div>                    
 </div>
+@endif
 
    
 @endsection
@@ -652,6 +792,84 @@
 
 <script>
 $(document).ready(function () {
+        if({{ auth()->user()->role_id }} == 3){
+            $("#material_used").removeAttr("readonly");
+            $("#material_used").find('option').remove(); 
+            $("#finishedProduct").find('option').remove();     
+            $("#material_used").append('<option value="" selected disabled hidden> Choose Material Used</option>'); 
+            $.each({!! json_encode($productsList, JSON_HEX_TAG) !!}, function(key, value) {
+                console.log($("#ward").val(),$("#office").val() )
+                if($("#ward").val() == value.issued_ward_id){
+                    $("#material_used").append('<option value="'+value.raw_material_id+'">'+value.material_used+'</option>'); 
+                }    
+                if($("#office").val() == value.issued_office_id){
+                    $("#material_used").append('<option value="'+value.raw_material_id+'">'+value.material_used+'</option>'); 
+                }  
+            });
+
+            var usedNames = {};
+            $("select[name='material_used'] > option").each(function () {
+                if(usedNames[this.text]) {
+                    $(this).remove();
+                } else {
+                    usedNames[this.text] = this.value;
+                }
+            });
+
+            $("#material_usedCondemn").removeAttr("readonly");
+            
+            $("#material_usedCondemn").find('option').remove(); 
+            $("#finishedProductCondemn").find('option').remove();     
+            $("#material_usedCondemn").append('<option value="" selected disabled hidden> Choose Material Used</option>'); 
+            $.each({!! json_encode($productsList, JSON_HEX_TAG) !!}, function(key, value) {
+                if($("#wardCondemn").val() == value.issued_ward_id){
+                    $("#material_usedCondemn").append('<option value="'+value.raw_material_id+'">'+value.material_used+'</option>'); 
+                }   
+                if($("#officeCondemn").val() == value.issued_office_id){
+                    $("#material_usedCondemn").append('<option value="'+value.raw_material_id+'">'+value.material_used+'</option>'); 
+                }   
+            });
+
+            var usedNamesCondemn = {};
+            $("select[name='material_usedCondemn'] > option").each(function () {
+                if(usedNamesCondemn[this.text]) {
+                    $(this).remove();
+                } else {
+                    usedNamesCondemn[this.text] = this.value;
+                }
+            });
+
+            $("#material_usedLosses").removeAttr("readonly");
+            
+            $("#material_usedLosses").find('option').remove(); 
+            $("#finishedProductLosses").find('option').remove();     
+            $("#material_usedLosses").append('<option value="" selected disabled hidden> Choose Material Used</option>'); 
+            $.each({!! json_encode($productsList, JSON_HEX_TAG) !!}, function(key, value) {
+                
+                if($("#wardLosses").val() == value.issued_ward_id){
+                    $("#material_usedLosses").append('<option value="'+value.raw_material_id+'">'+value.material_used+'</option>'); 
+                }   
+                if($("#officeLosses").val() == value.issued_office_id){
+                    $("#material_usedLosses").append('<option value="'+value.raw_material_id+'">'+value.material_used+'</option>'); 
+                }   
+            });
+
+            var usedNamesLosses = {};
+            $("select[name='material_usedLosses'] > option").each(function () {
+                if(usedNamesLosses[this.text]) {
+                    $(this).remove();
+                } else {
+                    usedNamesLosses[this.text] = this.value;
+                }
+            });
+
+           
+            
+
+            
+
+            
+        }
     $("#wardRadio, #officeRadio").change(function(){
         console.log('radio ward office');
             
@@ -674,7 +892,7 @@ $(document).ready(function () {
             }
        
             $("#material_used").find('option').remove(); 
-        });  
+    });  
 
         
 
@@ -701,32 +919,11 @@ $(document).ready(function () {
                     usedNames[this.text] = this.value;
                 }
             });
-
-
-            // $("#material_used").change(function() {
-            //     let id = $(this).children(":selected").val();
-                
-            //     $("#finishedProduct").find('option').remove();
-            //     $("#finishedProduct").append('<option value="" selected disabled hidden> Choose Product</option>'); 
-            //     $.each({!! json_encode($productsList, JSON_HEX_TAG) !!}, function(key, value) {
-            //         if($("#ward").val() == value.issued_ward_id){
-                   
-            //             var optionExists = $("#finishedProduct option[value="+value.product_bulk_id+"]").length > 0;
-            //                     console.log(value)
-            //             if(value.raw_material_id == id){
-            //                 if(optionExists == false){
-            //                             $("#finishedProduct").append('<option value="'+value.product_bulk_id+'">'+value.product_name+'</option>'); 
-            //                 }
-            //             }
-            //         }
-            //        });
-                        
-            // }); 
         }); 
 
         $("#material_used").change(function(){
             let raw_material_id =  $(this).val();
-            console.log(raw_material_id);
+            console.log("----------" ,raw_material_id);
             $("#finishedProduct").removeAttr("readonly");
             $("#finishedProduct").find('option').remove();
             $("#finishedProduct").append('<option value="" selected disabled hidden> Choose Material Used</option>');
@@ -744,7 +941,7 @@ $(document).ready(function () {
                 } else {
                     usedNames[this.text] = this.value;
                 }
-            });
+        });
             console.log( $("#ward").val());
             $("#finishedProduct").change(function() {   
                     let bulkId = $(this).children(":selected").val();
@@ -752,18 +949,26 @@ $(document).ready(function () {
                     var selectedProductArray = new Array();
                     $("#listProducts").find('ul').remove();
                    
-                    
+                    console.log($('#ward').val)
                     let totalQuantity = 0;
                     $.each({!! json_encode($productsList, JSON_HEX_TAG) !!}, function(key, value) {
                         if(value.product_bulk_id == bulkId){
                             totalQuantity =value. product_quantity
                         }
-                        if(value.product_bulk_id == bulkId && value.is_available == 0 && value.is_condemned == 0 && value.issued_ward_id == $('#ward').val() && value.is_lossed == 0){
-                            console.log(value)
-                            selectedProductArray.push(value);
-                    
-                        }
+                        if(value.issued_office_id != null){
+                            if(value.product_bulk_id == bulkId && value.is_available == 0 && value.is_condemned == 0 && value.issued_ward_id == $('#ward').val() && value.is_lossed == 0){
+                                console.log(value)
+                                selectedProductArray.push(value);
                         
+                            }
+                        }
+                        if(value.issued_ward_id != null){
+                            if(value.product_bulk_id == bulkId && value.is_available == 0 && value.is_condemned == 0 && value.issued_office_id == $('#office').val() && value.is_lossed == 0){
+                                console.log(value)
+                                selectedProductArray.push(value);
+                        
+                            }
+                        }
                     });
                     $('#quantity').val(totalQuantity);
                     $('#availableProductsOriginal').val(selectedProductArray.length);
@@ -812,8 +1017,8 @@ $(document).ready(function () {
 
         
         $("#office").change(function(){
-        console.log('office change');
-        console.log($("#office").val());
+            console.log('office change');
+            console.log($("#office").val());
             $("#material_used").removeAttr("readonly");
             
             $("#material_used").find('option').remove(); 
@@ -840,7 +1045,7 @@ $(document).ready(function () {
         }); 
 
         $("#wardRadioCondemn, #officeRadioCondemn").change(function(){
-        console.log('radio ward office');
+            console.log('radio ward office');
             
             $("#wardCondemn, #officeCondemn").val("").attr("readonly",true);
             if($("#wardRadioCondemn").is(":checked")){
@@ -866,7 +1071,7 @@ $(document).ready(function () {
         
 
         $("#wardCondemn").change(function(){
-            console.log($("#ward").val());
+            //console.log($("#ward").val());
             $("#material_usedCondemn").removeAttr("readonly");
             
             $("#material_usedCondemn").find('option').remove(); 
@@ -911,7 +1116,7 @@ $(document).ready(function () {
                 } else {
                     usedNamesCondemn[this.text] = this.value;
                 }
-            });
+        });
             console.log( $("#wardCondemn").val());
             $("#finishedProductCondemn").change(function() {   
                     let bulkIdCondemn = $(this).children(":selected").val();
@@ -925,10 +1130,21 @@ $(document).ready(function () {
                         if(value.product_bulk_id == bulkIdCondemn){
                             totalQuantityCondemn =value. product_quantity
                         }
-                        if(value.product_bulk_id == bulkIdCondemn && value.is_available == 0 && value.is_condemned == 0 && value.issued_ward_id == $('#wardCondemn').val() && value.is_lossed == 0){
-                            console.log(value)
-                            selectedProductArrayCondemn.push(value);
-                    
+                        
+
+                        if(value.issued_office_id != null){
+                            if(value.product_bulk_id == bulkIdCondemn && value.is_available == 0 && value.is_condemned == 0 && value.issued_ward_id == $('#ward').val() && value.is_lossed == 0){
+                                console.log(value)
+                                selectedProductArrayCondemn.push(value);
+                        
+                            }
+                        }
+                        if(value.issued_ward_id != null){
+                            if(value.product_bulk_id == bulkIdCondemn && value.is_available == 0 && value.is_condemned == 0 && value.issued_office_id == $('#office').val() && value.is_lossed == 0){
+                                console.log(value)
+                                selectedProductArrayCondemn.push(value);
+                        
+                            }
                         }
                         
                     });
@@ -1034,7 +1250,7 @@ $(document).ready(function () {
         
 
         $("#wardLosses").change(function(){
-            console.log($("#ward").val());
+            
             $("#material_usedLosses").removeAttr("readonly");
             
             $("#material_usedLosses").find('option').remove(); 
@@ -1093,11 +1309,21 @@ $(document).ready(function () {
 							if(value.product_bulk_id == bulkIdLosses){
 								totalQuantityLosses =value. product_quantity
 							}
-							if(value.product_bulk_id == bulkIdLosses && value.is_available == 0 && value.is_condemned == 0 && value.issued_ward_id == $('#wardLosses').val() && value.is_lossed == 0){
-								console.log(value)
-								selectedProductArrayLosses.push(value);
-						
-							}
+
+                            if(value.issued_office_id != null){
+                            if(value.product_bulk_id == bulkIdLosses && value.is_available == 0 && value.is_condemned == 0 && value.issued_ward_id == $('#ward').val() && value.is_lossed == 0){
+                                console.log(value)
+                                selectedProductArrayLosses.push(value);
+                        
+                            }
+                            }
+                            if(value.issued_ward_id != null){
+                                if(value.product_bulk_id == bulkIdLosses && value.is_available == 0 && value.is_condemned == 0 && value.issued_office_id == $('#office').val() && value.is_lossed == 0){
+                                    console.log(value)
+                                    selectedProductArrayLosses.push(value);
+                            
+                                }
+                            }
 							
 						});
 						$('#quantityLosses').val(totalQuantityLosses);
