@@ -5,7 +5,7 @@
     <div class="container d-print-none">
         <div class="row justify-content-center">        
             <div class="col-md-9">
-               
+                <form id="myForm" class = 'card p-3 bg-light' action = "issueProduct" method = "post">
                     <fieldset>
                     <legend>Issue Products <legend>
                     <div class="row">
@@ -112,7 +112,7 @@
                                                 </span>
                                             @enderror                    
                                     </div>
-                                <form id="myForm" class = 'card p-3 bg-light' action = "issueProduct" method = "post">
+                                
                                         @csrf
                                         <div class="input-group input-group-sm mb-3">
                                             <div class="input-group-prepend">                      
@@ -170,11 +170,11 @@
         
         
                                     </div> 
-                                    <div class="card-footer">
+                                    <div class="card-footer text-center">
                                         <button type="button" id="issueItems" class="btn btn-primary " disabled >Add</button>
                                         <button type="button" id="removeItems" class="btn btn-primary " >Remove</button>
                                         <button type="button" id="printItems" class="btn btn-primary " >Print</button>
-                                        <button type="submit" class="btn btn-primary " >Submit</button> 
+                                        {{-- <button type="submit" class="btn btn-primary " >Submit</button>  --}}
                                     
                                     </div>
                                 </form>       
@@ -263,10 +263,10 @@
                             <tr class="text-center">
                                 <th width='10%'>QUANTITY</th>
                                 <th width='10%'>UNIT</th>
-                                <th width='30%'>ITEM DESCRIPTION</th>
-                                <th width='10%'>AMOUNT</th>
-                                <th width='10%'>DATE ISSUED</th>
-                                <th width='20%'>ESTIMATED USEFUL<br>LIFE(in years)</th>
+                                <th width='40%'>ITEM DESCRIPTION</th>
+                                <th width='10%'>UNIT AMOUNT</th>
+                                <th width='10%'>TOTAL AMOUNT</th>
+                                <th width='10%'>DATE ISSUED</th>                                
                                 <th width='10%'>REMARKS</th>
                             </tr>
                           </thead>
@@ -316,11 +316,22 @@
 
 @push('scripts')
 <meta name="csrf-token" content="{{ csrf_token() }}">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />     
 <script>
 
 $(document).ready(function () {
-    let issuedItemsList = [];
-    $("#issueItems").click(function() {
+    var issuedItemsList = [];
+    var selectedItemCount =0
+    $("#issueItems").click(function(event) {
+
+        event.preventDefault();
+
+        if($('#availableProducts').val() == 0 || $("#ward").val() == null || $("#office").val() == null){
+            console.log("disable add button");
+            $(this).attr("disabled",true);
+        }
+
         $('#issuanceForm').removeAttr("hidden",false);
         let quantity = $('#quantity').val();
         let unit = $('#tdUnit').val();
@@ -328,6 +339,7 @@ $(document).ready(function () {
         let cost = $('#tdCost').val();
         let issuedDate = $('#tdDateIssued').val();
         let trId = $('#trId').val();
+        let totalCost = quantity*cost
 
        
         issuedItemsList.push({               
@@ -351,14 +363,45 @@ $(document).ready(function () {
                     `<tr class="text-center" id =${trId}>
                         <td width="10%">${quantity}</td>
                         <td width="10%" id="unit">${unit}</td>
-                        <td width="30%">${item}</td>
+                        <td width="40%">${item}</td>
                         <td width="10%">${cost}</td>
+                        <td width="10%">${totalCost}</td>
                         <td width="10%">${issuedDate}</td>
-                        <td width="20%"></td>
                         <td width="10%"></td>
                     </tr> `   
                 ); 
                 
+                $.ajax({
+                    headers: {
+                            'X-CSRF-TOKEN': "{{csrf_token()}}",
+                        },
+                    url:"/issueProduct",
+                    type:"POST",
+                    data:{
+                        availableProducts : $('#availableProducts').val(),              
+                        finishedProduct : $('#trId').val(),                
+                        availableProductsOriginal : $('#availableProductsOriginal').val(),
+                        productIds : $('#productIds').val(),
+                        quantity : $('#quantity').val(),
+                        ward : $("#ward").val(),
+                        office : $("#office").val(),
+                        },
+                    success:function(response){
+                        $('#quantity').val(0);
+                        selectedItemCount = 0;
+                        $("#wardRadio, #officeRadio").prop('checked', false);
+                        console.log('radio ward office reset');
+                            
+                        $("#ward, #office").val("").attr("readonly",true);
+                             
+                            toastr.success("Items issued successfully!", 'Success');                 
+                        
+                    
+                    },
+                    error: function(error) {
+                    console.log(error);
+                    }
+                });    
              
 
     });
@@ -367,28 +410,31 @@ $(document).ready(function () {
         $("#listProducts").find(`[data-id="${item}"]`).remove()
     }
 
-    $(function() {
-      $('#itemsTable').on('click', 'tbody tr', function(event) {
-        $(this).addClass('highlight').siblings().removeClass('highlight');
-      });
+    // $(function() {
+    //   $('#itemsTable').on('click', 'tbody tr', function(event) {
+    //     $(this).addClass('highlight').siblings().removeClass('highlight');
+    //   });
 
-      $('#removeItems').click(function(e) {
-        var rows = getHighlightRow();
-        if (rows != undefined) {
-          rows.remove();
-        }
-      });
+    //   $('#removeItems').click(function(e) {
+    //     var rows = getHighlightRow();
+    //     if (rows != undefined) {
+    //       rows.remove();
+    //     }
+    //   });
 
-      var getHighlightRow = function() {
-        return $('table > tbody > tr.highlight');
-      }
+    //   var getHighlightRow = function() {
+    //     return $('table > tbody > tr.highlight');
+    //   }
 
-    });
+    // });
 
 
 
     $("#printItems").click(function() {
         window.print();
+        window.onafterprint = function(){
+        console.log("Printing completed...");
+        }
     });
 
 
@@ -487,7 +533,7 @@ $("#finishedProduct").change(function() {
 
 
     var availableCount = selectedProductArray.length;
-    var selectedItemCount =0
+   
     $('input[type="checkbox"]').click(function(){
             if($(this).prop("checked") == true){
                 console.log("Checkbox is checked.",$(this).attr('id'));
