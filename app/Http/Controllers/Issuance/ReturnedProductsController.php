@@ -13,6 +13,10 @@ use Illuminate\Support\Facades\Validator;
 
 class ReturnedProductsController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     public function index(){
 
         $productsList  = DB::select("SELECT	products.id ,

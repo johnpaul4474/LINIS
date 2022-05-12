@@ -10,10 +10,15 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use App\Models\Linen\Requests;
 
 
 class IssuanceController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     public function index(Request $request){
       
         $productsList  = DB::select("SELECT	products.id ,
@@ -51,9 +56,18 @@ class IssuanceController extends Controller
         inner join nora.paul.linen_raw_materials as raw_material
         on products.raw_material_id = raw_material.id  where products.deleted_at is null  order by products.is_available desc");
         
-       
+        if(Auth::user()->role_id == 1 || Auth::user()->role_id == 2 ){ 
+            $requestList = Requests::select()->orderBy('created_at', 'desc' )->get();
+        }else{
+            if(Auth::user()->ward_id != null){
+                $requestList = Requests::select()->where('ward_id',Auth::user()->ward_id)->orderBy('created_at', 'desc' )->get();
+            }
+            if(Auth::user()->office_id  != null ){
+                $requestList = Requests::select()->where('office_id',Auth::user()->office_id)->orderBy('created_at', 'desc' )->get();  
+            }
+        }
          
-        return view('issuance.issuance', compact('productsList'));
+        return view('issuance.issuance', compact('productsList','requestList'));
     }
 
     public function issueProduct(Request $request){
@@ -151,6 +165,7 @@ class IssuanceController extends Controller
         inner join nora.paul.linen_raw_materials as raw_material
         on products.raw_material_id = raw_material.id  where products.deleted_at is null  order by products.is_available desc");
     
+
 
         //return redirect()->route('issuance')->with('success', 'Issued product successfully');
         return view('issuance.issuance', compact('productsList'));

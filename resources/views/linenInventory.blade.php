@@ -403,8 +403,16 @@ $("#material_used").change(function() {
     //     // });
 
     // });
-    let pendingCount = {!!$requestList!!};
-    $('#pendingRequestCount').text(pendingCount.length);
+
+    let pendingCount = 0
+    $.each({!! json_encode($requestList, JSON_HEX_TAG) !!}, function(key, value) {    
+    console.log(value)       
+    if(value.status != 4){
+      pendingCount ++;
+    }
+   
+ });
+    $('#pendingRequestCount').text(pendingCount);
   
 });
 

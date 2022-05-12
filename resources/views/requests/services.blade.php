@@ -16,15 +16,15 @@
           <div class="card bg-primary">
             <h5 class="card-header text-center">PROCESSING</h5>
             <div class="card-body">
-                <h1 class="text-center">0</h1>    
+                <h1 class="text-center" id="processingRequest">0</h1>    
             </div>
           </div>
         </div>
         <div class="col">
           <div class="card bg-success">
-            <h5 class="card-header text-center">FINISHED</h5>
+            <h5 class="card-header text-center">READY FOR PICK UP</h5>
             <div class="card-body">
-                <h1 class="text-center">0</h1>    
+                <h1 class="text-center" id="finishedRequest">0</h1>    
             </div>
           </div>
         </div>
@@ -92,9 +92,9 @@
                                 @elseif($req->status == 2)
                                  <td style="background-color:#2196F3;color:white">IN PROGRESS</td>                                
                                 @elseif($req->status == 3)
-                                <td style="background-color:#4CAF50;color:white">READY FOR <br> PICK-UP </td> 
+                                <td style="background-color:#f0ad4e;color:white">READY FOR <br> PICK-UP </td> 
                                 @elseif($req->status == 4)
-                                  <td>REOPENED REQUEST</td>
+                                <td style="background-color:#4CAF50;color:white">ISSUED </td> 
                                 @elseif($req->status == 5)
                                   <td>DELETED</td>
                                 @endif
@@ -123,7 +123,7 @@
                                       </td>
                                   </form>
                                   @elseif($req->status == 3)
-                                  <form action = "/products" method = "post">
+                                  <form action = "/issueProductRequest/{{$req->id}}" method = "post">
                                     @csrf
                                       <input id="id" type="hidden" class="form-control @error('id') is-invalid @enderror" name="id" value="{{$req->id}}">
                                       <input id="product_name_request" type="hidden" class="form-control @error('id') is-invalid @enderror" name="product_name_request" value="{{$req->product_name_request}}">
@@ -133,9 +133,8 @@
                                       </td>
                                   </form>
                                   @elseif($req->status == 4)
-                                      <td>REOPENED REQUEST</td>
-                                  @elseif($req->status == 5)
-                                      <td>DELETED</td>
+                                  <td style="background-color:#4CAF50;color:white">ISSUED </td> 
+                                 
                                   @endif 
                                 @endif   
            
@@ -168,10 +167,28 @@
 
 <script>
 $(document).ready(function () {
-  let pendingCount = {!!$requestList!!};
-  $('#pendingRequest').text(pendingCount.length);
-
+  let pendingCount = 0;
+  let processingCount = 0;
+  let finishedCount = 0;
+ 
   
+  $.each({!! json_encode($requestList, JSON_HEX_TAG) !!}, function(key, value) {    
+    console.log(value)       
+    if(value.status == 1){
+      pendingCount ++;
+    }
+    if(value.status == 2){
+      processingCount ++;
+    }
+    if(value.status == 3){
+      finishedCount ++;
+    }
+ });
+
+ $('#pendingRequest').text(pendingCount);
+ $('#processingRequest').text(processingCount);
+ $('#finishedRequest').text(finishedCount);
+
   $('#productsRequest').DataTable({
             "lengthMenu": [[5, 25, 50, -1], [5, 25, 50, "All"]],
             "search": true,     
