@@ -172,7 +172,7 @@
                                     </div> 
                                     <div class="card-footer text-center">
                                         <button type="button" id="issueItems" class="btn btn-primary " disabled >Add</button>
-                                        <button type="button" id="removeItems" class="btn btn-primary " >Remove</button>
+                                        <button type="button" id="removeItemsBtn" class="btn btn-primary " >Remove</button>
                                         <button type="button" id="printItems" class="btn btn-primary " >Print</button>
                                         {{-- <button type="submit" class="btn btn-primary " >Submit</button>  --}}
                                     
@@ -458,6 +458,7 @@ $(document).ready(function () {
         let issuedDate = $('#tdDateIssued').val();
         let trId = $('#trId').val();
         let totalCost = quantity*cost
+        let productIds = $('#productIds').val();
 
        
         issuedItemsList.push({               
@@ -478,7 +479,7 @@ $(document).ready(function () {
         productIdsArray.forEach(removeItems);      
 
                 $("#issueItemsTbody").append(
-                    `<tr class="text-center" id =${trId}>
+                    `<tr class="text-center" id =${productIds}>
                         <td width="10%">${quantity}</td>
                         <td width="10%" id="unit">${unit}</td>
                         <td width="40%">${item}</td>
@@ -524,27 +525,64 @@ $(document).ready(function () {
 
     });
 
-    function removeItems(item, index) {
+    function removeItems(item, index) {       
         $("#listProducts").find(`[data-id="${item}"]`).remove()
     }
 
-    // $(function() {
-    //   $('#itemsTable').on('click', 'tbody tr', function(event) {
-    //     $(this).addClass('highlight').siblings().removeClass('highlight');
-    //   });
+    $(function() {
+      $('#itemsTable').on('click', 'tbody tr', function(event) {
+        $(this).addClass('highlight').siblings().removeClass('highlight');
+      });
 
-    //   $('#removeItems').click(function(e) {
-    //     var rows = getHighlightRow();
-    //     if (rows != undefined) {
-    //       rows.remove();
-    //     }
-    //   });
+      $('#removeItemsBtn').click(function(e) {
+        var rows = getHighlightRow();
+        if (rows != undefined) {
+          rows.remove();
+          console.log(rows.attr('id'));
+          let requestId = $('#requestId').val()
+          console.log(requestId);
+          bulkId = $('#trId').val();
+          
+          $.ajax({
+                    headers: {
+                            'X-CSRF-TOKEN': "{{csrf_token()}}",
+                        },
+                    url:"/retrieveItemsList",
+                    type:"GET",
+                    data:{                        
+                        productIds : rows.attr('id'),  
+                        bulkId : bulkId                      
+                        },
+                    success:function(response){
+                        console.log(response);  
+                        style=""
+                        $.each(response, function(key, value) {
+                                                               
+                                $('#listProducts').prepend(  
+                                                `<li class="list-group-item" data-id="${value.id}">
+                                                <div class="form-check">                            
+                                                    <input class="form-control form-check-input" type="checkbox"  value="" id="${value.id}">
+                                                    <label class="form-control form-check-label checkbox-inline" style="font-size:small; background-color:#FF5252;" for="${value.id}">
+                                                    ${value.product_stock_id} - ${value.product_name}
+                                                    </label>
+                                                </div>
+                                                
+                                                </li>`);
+                                            
+                            });                 
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                }); 
+        }
+      });
 
-    //   var getHighlightRow = function() {
-    //     return $('table > tbody > tr.highlight');
-    //   }
+      var getHighlightRow = function() {
+        return $('table > tbody > tr.highlight');
+      }
 
-    // });
+    });
 
 
 

@@ -69,7 +69,8 @@ Route::any('/request', [App\Http\Controllers\Request\RequestController::class, '
 Route::post('/newRequest', [App\Http\Controllers\Request\RequestController::class, 'newRequest'])->name('newRequest');
 Route::post('/processRequest', [App\Http\Controllers\Request\RequestController::class, 'processRequest'])->name('processRequest');
 Route::post('/pickUpProductRequest', [App\Http\Controllers\Request\RequestController::class, 'pickUpProductRequest'])->name('pickUpProductRequest');
-Route::post('/issueProductRequest/{requestId}', [App\Http\Controllers\Request\RequestController::class, 'issueProductRequest'])->name('issueProductRequest/{requestId}');
+Route::get('/issueProductRequest', [App\Http\Controllers\Request\RequestController::class, 'issueProductRequest'])->name('issueProductRequest');
+Route::get('/retrieveItemsList', [App\Http\Controllers\Request\RequestController::class, 'retrieveItemsList'])->name('issueProductRequest');
 
 //reports
 Route::any('/reports', [App\Http\Controllers\Reports\ReportsController::class, 'index'])->name('reports');

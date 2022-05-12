@@ -119,17 +119,15 @@
                                       <input id="product_name_request" type="hidden" class="form-control @error('id') is-invalid @enderror" name="product_name_request" value="{{$req->product_name_request}}">
                                       <input id="product_quantity_request" type="hidden" class="form-control @error('id') is-invalid @enderror" name="product_quantity_request" value="{{$req->product_quantity_request}}">
                                       <td>
-                                        <button type="submit" class="editProductsButton btn btn-success btn-sm" >READY</button>
+                                        <button type="submit" class="editProductsButton btn btn-info btn-sm" >READY</button>
                                       </td>
                                   </form>
                                   @elseif($req->status == 3)
-                                  <form action = "/issueProductRequest/{{$req->id}}" method = "post">
+                                  <form action = "/issueProductRequest" method = "get">
                                     @csrf
-                                      <input id="id" type="hidden" class="form-control @error('id') is-invalid @enderror" name="id" value="{{$req->id}}">
-                                      <input id="product_name_request" type="hidden" class="form-control @error('id') is-invalid @enderror" name="product_name_request" value="{{$req->product_name_request}}">
-                                      <input id="product_quantity_request" type="hidden" class="form-control @error('id') is-invalid @enderror" name="product_quantity_request" value="{{$req->product_quantity_request}}">
+                                      <input id="id" type="hidden" class="form-control @error('id') is-invalid @enderror" name="id" value="{{$req->id}}">                                      
                                       <td>
-                                        <button type="submit" class="editProductsButton btn btn-info btn-sm" >ISSUE</button>
+                                        <button type="submit" class="editProductsButton btn btn-warning btn-sm" >ISSUE</button>
                                       </td>
                                   </form>
                                   @elseif($req->status == 4)
@@ -192,7 +190,7 @@ $(document).ready(function () {
   $('#productsRequest').DataTable({
             "lengthMenu": [[5, 25, 50, -1], [5, 25, 50, "All"]],
             "search": true,     
-            "ordering": false,
+            "ordering": true,
             //  "order": [[ 1, "desc" ]],
             "paging": true,
             "pageLength": 5,
