@@ -77,7 +77,7 @@ class ReturnedProductsController extends Controller
 
         DB::table('nora.paul.linen_activity_logs')->insert([
             'employee_id' => Auth::user()->employee_id,
-            'activity_details' => 'Product Re-issued: '.$request->productIds.' Ward: '.$request->ward.' Office: '.$request->office,
+            'activity_details' => 'Product Returned: '.$request->productIds.' Ward: '.$request->ward.' Office: '.$request->office,
             "created_at" =>  \Carbon\Carbon::now(), 
         ]);
         
@@ -93,6 +93,7 @@ class ReturnedProductsController extends Controller
         'issued_date' =>null,
         "updated_at" => \Carbon\Carbon::now(),  
         "returned_date" => \Carbon\Carbon::now(),
+        'product_returned_quantity' => count($productIds) 
       
     ]);
 

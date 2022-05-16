@@ -25,36 +25,23 @@
             @csrf
             <h5 class="card-title">Select Date</h5>
             <div class="row">
-                <div class="col-3">
+                <div class="col-4">
                     <div class="input-group input-group-sm mb-3">                            
                         <div class="input-group-prepend">
-                            <label for="start_date" class="input-group-text">{{ __('Start Date') }}</label>
+                            <label for="month" class="input-group-text">{{ __('Choose month') }}</label>
                         </div>
-                            <input id="start_date" type="date" class="form-control @error('start_date') is-invalid @enderror" name="start_date" value="{{ old('start_date') }}" required autocomplete="start_date" autofocus>
+                            <input id="month" type="month" class="form-control @error('month') is-invalid @enderror" name="month" value="{{ old('month') }}" required autocomplete="month" autofocus>
 
-                            @error('start_date')
+                            @error('month')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
                             @enderror                    
                     </div>
                 </div> 
-                <div class="col-3">
-                    <div class="input-group input-group-sm mb-3">                            
-                        <div class="input-group-prepend">
-                            <label for="end_date" class="input-group-text">{{ __('End Date') }}</label>
-                        </div>
-                            <input id="end_date" type="date" class="form-control @error('end_date') is-invalid @enderror" name="end_date" value="{{ old('end_date') }}" required autocomplete="end_date" autofocus>
-
-                            @error('end_date')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror                    
-                    </div>
-                </div>
+                
                 @if(Auth::user()->role_id  == 1 || Auth::user()->role_id== 2)
-                <div class="col-3">
+                <div class="col-4">
                     <div class="input-group input-group-sm mb-3">
                         <div class="input-group-prepend">                      
                             <label for="ward" class="col col-form-label text-md-end" style="font-size:medium"> 
@@ -78,7 +65,7 @@
                             @enderror
                     </div>
                 </div>
-                <div class="col-3">
+                <div class="col-4">
                     <div class="input-group input-group-sm mb-3">
                         <div class="input-group-prepend">
                             <label for="office" class="col col-form-label text-md-end" style="font-size:medium">

@@ -53,8 +53,8 @@
                                 <div class="input-group-prepend">                      
                                 <label for="availableProducts" class="input-group-text">{{ __('Available Products') }}</label>
                                 </div>                    
-                                    <input id="availableProducts" type="number" class="form-control @error('availableProducts') is-invalid @enderror" name="availableProducts" value="{{ old('availableProducts') }}" required readonly="readonly" autocomplete="availableProducts" autofocus>
-                                    <input id="availableProductsOriginal" type="number" class="form-control @error('availableProductsOriginal') is-invalid @enderror" name="availableProductsOriginal" value="" required readonly="readonly" autocomplete="availableProductsOriginal" hidden autofocus>
+                                    <input id="availableProducts" type="number" class="form-control @error('availableProducts') is-invalid @enderror" name="availableProducts" value="" required readonly="readonly" autocomplete="availableProducts" autofocus>
+                                    <input id="availableProductsOriginal" type="number" class="form-control @error('availableProductsOriginal') is-invalid @enderror" name="availableProductsOriginal" value="" required readonly="readonly" autocomplete="availableProductsOriginal"  autofocus>
                                     <input id="productIds" type="text" class="form-control @error('productIds') is-invalid @enderror" name="productIds" value="" required readonly="readonly" autocomplete="productIds"  autofocus hidden>
                                     @error('availableProducts')
                                         <span class="invalid-feedback" role="alert">
@@ -172,7 +172,7 @@
                                     </div> 
                                     <div class="card-footer text-center">
                                         <button type="button" id="issueItems" class="btn btn-primary " disabled >Add</button>
-                                        <button type="button" id="removeItems" class="btn btn-primary " >Remove</button>
+                                        <button type="button" id="removeItemsBtn" class="btn btn-primary " >Remove</button>
                                         <button type="button" id="printItems" class="btn btn-primary " >Print</button>
                                         {{-- <button type="submit" class="btn btn-primary " >Submit</button>  --}}
                                     
@@ -322,13 +322,14 @@
 
 $(document).ready(function () {
     var issuedItemsList = [];
-    var selectedItemCount =0
+    var selectedItemCount = 0;
+    var availableCount = 0;
     $("#issueItems").click(function(event) {
 
         event.preventDefault();
 
-        if($('#availableProducts').val() == 0 || $("#ward").val() == null || $("#office").val() == null){
-            console.log("disable add button");
+        if($('#availableProducts').val() <= 0 || $("#ward").val() == null || $("#office").val() == null){
+            //console.log("disable add button");
             $(this).attr("disabled",true);
         }
 
@@ -339,7 +340,8 @@ $(document).ready(function () {
         let cost = $('#tdCost').val();
         let issuedDate = $('#tdDateIssued').val();
         let trId = $('#trId').val();
-        let totalCost = quantity*cost
+        let totalCost = quantity*cost;
+        let productIds = $('#productIds').val();
 
        
         issuedItemsList.push({               
@@ -352,15 +354,15 @@ $(document).ready(function () {
                office : $("#office").val(),
                });
         
-        console.log(issuedItemsList);
+        //console.log(issuedItemsList);
         $('#itemsIssuedListObject').val(JSON.stringify(issuedItemsList));
         productIdsArray = $('#productIds').val().split(',');
-        console.log(productIdsArray);
+        //console.log(productIdsArray);
         // $("#listProducts").find('[data-id="639"]').remove();
         productIdsArray.forEach(removeItems);      
 
                 $("#issueItemsTbody").append(
-                    `<tr class="text-center" id =${trId}>
+                    `<tr class="text-center" id =${productIds}>
                         <td width="10%">${quantity}</td>
                         <td width="10%" id="unit">${unit}</td>
                         <td width="40%">${item}</td>
@@ -390,7 +392,7 @@ $(document).ready(function () {
                         $('#quantity').val(0);
                         selectedItemCount = 0;
                         $("#wardRadio, #officeRadio").prop('checked', false);
-                        console.log('radio ward office reset');
+                        //console.log('radio ward office reset');
                             
                         $("#ward, #office").val("").attr("readonly",true);
                              
@@ -399,7 +401,7 @@ $(document).ready(function () {
                     
                     },
                     error: function(error) {
-                    console.log(error);
+                    //console.log(error);
                     }
                 });    
              
@@ -428,12 +430,111 @@ $(document).ready(function () {
 
     // });
 
+    $(function() {
+      $('#itemsTable').on('click', 'tbody tr', function(event) {
+        $(this).addClass('highlight').siblings().removeClass('highlight');
+        //console.log($(this));
+      });
+      
+      $('#removeItemsBtn').click(function(e) {
+        var rows = getHighlightRow();
+        if (rows != undefined) {
+          rows.remove();
+          //console.log(rows.attr('id'));
+          let requestId = $('#requestId').val()
+          //console.log(requestId);
+          bulkId = $('#trId').val();
+          availableQuantityOld = parseInt($('#availableProducts').val());     
+          $.ajax({
+                    headers: {
+                            'X-CSRF-TOKEN': "{{csrf_token()}}",
+                        },
+                    url:"/retrieveItemsList",
+                    type:"GET",
+                    data:{                        
+                        productIds : rows.attr('id'),  
+                        bulkId : bulkId                      
+                        },
+                    success:function(response){
+                        console.log(response);  
+                        
+                        // $.each(response, function(key, value) {
+                                                               
+                        //         $('#listProducts').prepend(  
+                        //                         `<li class="list-group-item" data-id="${value.id}">
+                        //                         <div class="form-check">                            
+                        //                             <input class="form-control form-check-input" type="checkbox"  value="" id="${value.id}">
+                        //                             <label class="form-control form-check-label checkbox-inline" style="font-size:small; background-color:#FF5252;" for="${value.id}">
+                        //                             ${value.product_stock_id} - ${value.product_name}
+                        //                             </label>
+                        //                         </div>
+                                                
+                        //                         </li>`);
+                                            
+                        //     });     
+                        // $('#availableProducts').val(availableQuantityOld + response.length ); 
+                        // $('#availableProductsOriginal').val(availableQuantityOld + response.length );   
+                        
+                        // //console.log($('#availableProducts').val())        +
+                        //console.log("-----------", + availableCount, $('#finishedProduct').children(":selected").val());
+                            let bulkId = $(finishedProduct).children(":selected").val();
+                            var selectedProductArray = new Array();
+                            $("#listProducts").find('div').remove();
+                            
+                            //console.log(bulkId);
+                            $.each(response, function(key, value) {
+                                if(value.product_bulk_id == bulkId && value.is_available == 1){
+                                    selectedProductArray.push(value);
+                            
+                                }
+                            
+                            });
+                            console.log(selectedProductArray);
+                            $('#availableProductsOriginal').val(selectedProductArray.length);
+                            $('#availableProducts').val(selectedProductArray.length);
+                            availableCount = selectedProductArray.length;
+                            $("#listProducts").find('li').remove();
+                        
+                                $.each(selectedProductArray, function(key, value) {
+                                    // while(selectedProductArray.length) {
+                                    //     //console.log(selectedProductArray.splice(0,10));
+                                    // }  
+                                    //console.log(value); 
+                                    $('#tdUnit').val(value.product_unit);
+                                    $('#tdItem').val(value.product_name);
+                                    $('#tdCost').val(value.product_unit_cost);
+                                    $('#trId').val(value.product_bulk_id);
+                                    $('#listProducts').append(  
+                                                    `<li class="list-group-item" data-id="${value.id}">
+                                                    <div class="form-check">                            
+                                                        <input class="form-control form-check-input" type="checkbox"  value="" id="${value.id}">
+                                                        <label class="form-control form-check-label checkbox-inline" style="font-size:small" for="${value.id}">
+                                                        ${value.product_stock_id} - ${value.product_name}
+                                                        </label>
+                                                    </div>
+                                                    
+                                                    </li>`);
+                                                
+                                });
+                    },
+                    error: function(error) {
+                        //console.log(error);
+                    }
+                }); 
+        }
+      });
 
+
+      var getHighlightRow = function() {
+        return $('table > tbody > tr.highlight');
+      }
+
+    }); 
 
     $("#printItems").click(function() {
         window.print();
         window.onafterprint = function(){
-        console.log("Printing completed...");
+        //console.log("Printing completed...");
         }
     });
 
@@ -468,11 +569,11 @@ $("#material_used").change(function() {
 
 $("#finishedProduct").change(function() {   
     
-    let bulkId = $(this).children(":selected").val();
+    let bulkId = $(finishedProduct).children(":selected").val();
     var selectedProductArray = new Array();
     $("#listProducts").find('div').remove();
     
-    console.log(bulkId);
+    //console.log(bulkId);
     $.each({!! json_encode($productsList, JSON_HEX_TAG) !!}, function(key, value) {
         if(value.product_bulk_id == bulkId && value.is_available == 1){
             selectedProductArray.push(value);
@@ -480,84 +581,45 @@ $("#finishedProduct").change(function() {
         }
     
     });
+    //console.log(selectedProductArray);
     $('#availableProductsOriginal').val(selectedProductArray.length);
     $('#availableProducts').val(selectedProductArray.length);
+    availableCount = selectedProductArray.length;
     $("#listProducts").find('li').remove();
    
-    $.each(selectedProductArray, function(key, value) {
-        // while(selectedProductArray.length) {
-        //     console.log(selectedProductArray.splice(0,10));
-        // }  
-        console.log(value); 
-        $('#tdUnit').val(value.product_unit);
-        $('#tdItem').val(value.product_name);
-        $('#tdCost').val(value.product_unit_cost);
-        $('#trId').val(value.product_bulk_id);
-        $('#listProducts').append(  
-                        `<li class="list-group-item" data-id="${value.id}">
-                         <div class="form-check">                            
-                            <input class="form-control form-check-input" type="checkbox"  value="" id="${value.id}">
-                            <label class="form-control form-check-label checkbox-inline" style="font-size:small" for="${value.id}">
-                              ${value.product_stock_id} - ${value.product_name}
-                            </label>
-                          </div>
-                          
-                        </li>`);
-                            //  <div class="accordion" id="accordionStockNumbers${value.id}">
-                            //         <div class="accordion-item">
-                            //           <h2 class="accordion-header" id="headingOne">
-                            //             <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseNumber${value.id}" aria-expanded="true" aria-controls="collapseNumber${value.id}">
-                            //               Stock Numbers:${value.id}
-                            //             </button>
-                            //           </h2>
-                            //           <div id="collapseNumber${value.id}" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionStockNumbers${value.id}">
-                            //             <div class="accordion-body">
-                            //                 <label class="checkbox-inline">
-                            //                 <input type="checkbox" style="font-size:small" 'value="">Option 1
-                            //                 </label>
-                            //                 <label class="checkbox-inline">
-                            //                 <input type="checkbox" value="">Option 2
-                            //                 </label>
-                            //                 <label class="checkbox-inline">
-                            //                 <input type="checkbox" value="">Option 3
-                            //                 </label>
-                            //             </div>
-                            //           </div>
-                            //         </div>                                    
-                            //       </div> );
-
-                    
-    });
+        $.each(selectedProductArray, function(key, value) {
+            // while(selectedProductArray.length) {
+            //     //console.log(selectedProductArray.splice(0,10));
+            // }  
+            //console.log(value); 
+            $('#tdUnit').val(value.product_unit);
+            $('#tdItem').val(value.product_name);
+            $('#tdCost').val(value.product_unit_cost);
+            $('#trId').val(value.product_bulk_id);
+            $('#listProducts').append(  
+                            `<li class="list-group-item" data-id="${value.id}">
+                            <div class="form-check">                            
+                                <input class="form-control form-check-input" type="checkbox"  value="" id="${value.id}">
+                                <label class="form-control form-check-label checkbox-inline" style="font-size:small" for="${value.id}">
+                                ${value.product_stock_id} - ${value.product_name}
+                                </label>
+                            </div>
+                            
+                            </li>`);
+                        
+        });
 
     
 
+    availableCount = selectedProductArray.length;
+    //console.log("*********" + availableCount);
 
-    var availableCount = selectedProductArray.length;
-   
-    $('input[type="checkbox"]').click(function(){
-            if($(this).prop("checked") == true){
-                console.log("Checkbox is checked.",$(this).attr('id'));
-                availableCount --;
-                selectedItemCount ++;
-                
-            }
-            else if($(this).prop("checked") == false){
-                console.log("Checkbox is unchecked.",$(this).attr('id'));
-                availableCount ++;
-                selectedItemCount --;
-               
-            }
-           
-            $('#quantity').val(selectedItemCount);
-            $('#availableProducts').val(availableCount);
-            $('#availableProductsOriginal').val(availableCount);
-        });
        
     
     });
     
     $("#wardRadio, #officeRadio").change(function(){
-        console.log('radio ward office');
+        //console.log('radio ward office');
             
             $("#ward, #office").val("").attr("readonly",true);
             if($("#wardRadio").is(":checked")){
@@ -592,7 +654,7 @@ $("#finishedProduct").change(function() {
         });
 
         $('#availableProducts').val(oldValueProducts-$(this).val())
-        console.log("availableProducts: " ,$(this).val());
+        //console.log("availableProducts: " ,$(this).val());
     });
     $('#productsTable').DataTable(
         {
@@ -624,6 +686,30 @@ $("#finishedProduct").change(function() {
                 window.print();
                 // pop_searchPatient();
             });
+
+
+          
+   $('#listProducts').on('click' ,'.form-check-input',function(){
+       
+       
+           if($(this).prop("checked") == true){
+               //console.log("Checkbox is checked.",$(this).attr('id'));
+               availableCount --;
+               selectedItemCount ++;
+               
+           }
+           else if($(this).prop("checked") == false){
+               //console.log("Checkbox is unchecked.",$(this).attr('id'));
+               availableCount ++;
+               selectedItemCount --;
+              
+           }
+          
+           $('#quantity').val(selectedItemCount);
+           $('#availableProducts').val(availableCount);
+           $('#availableProductsOriginal').val(availableCount);
+          
+       });      
   
     
 })

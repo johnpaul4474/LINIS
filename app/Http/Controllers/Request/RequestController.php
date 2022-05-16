@@ -322,6 +322,18 @@ class RequestController extends Controller
 
         $productIds = explode(',', $request->productIds);
 
+        DB::table('nora.paul.linen_products')
+        ->whereIn('id', $productIds)
+        ->update([
+            'is_available' => true,	
+            'issued_office_id' => null,	
+            'issued_ward_id' => null,	
+            'issued_date' =>null,
+            "updated_at" => \Carbon\Carbon::now(),  
+            "returned_date" => \Carbon\Carbon::now(),
+        
+        ]);
+        
         $productsList  = DB::select("SELECT	products.id ,
         products.raw_material_id,		
         products.raw_material_stock_number,
@@ -355,19 +367,9 @@ class RequestController extends Controller
         inner join nora.paul.linen_storage as storages
         on products.storage_room_id = storages.id
         inner join nora.paul.linen_raw_materials as raw_material
-        on products.raw_material_id = raw_material.id  where products.deleted_at  is null  and products.id in ( $request->productIds ) order by products.is_available desc");
+        on products.raw_material_id = raw_material.id  where products.deleted_at  is null  and products.id in ( $request->productIds ) or products.is_available = 1 order by products.is_available desc");
 
-        DB::table('nora.paul.linen_products')
-        ->whereIn('id', $productIds)
-        ->update([
-            'is_available' => true,	
-            'issued_office_id' => null,	
-            'issued_ward_id' => null,	
-            'issued_date' =>null,
-            "updated_at" => \Carbon\Carbon::now(),  
-            "returned_date" => \Carbon\Carbon::now(),
-        
-        ]);
+       
 
         return Response::json($productsList);
     }

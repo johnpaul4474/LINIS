@@ -71,7 +71,7 @@ class IssuanceController extends Controller
     }
 
     public function issueProduct(Request $request){
-       
+      
       
         Validator::make($request->all(), [
             'availableProducts' =>  'required|numeric|gt:-1', 

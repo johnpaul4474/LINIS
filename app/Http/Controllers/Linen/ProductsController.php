@@ -104,6 +104,7 @@ class ProductsController extends Controller
                         'product_condemned_quantity' =>0,	
                         'products.product_losses_quantity' =>0,
                         'products.product_issued_quantity' =>0,
+                        'products.product_returned_quantity' =>0,
                         'product_unit_cost' => $request->unit_cost, 
                         'is_available' => true,  
                         'is_condemned' => false, 
