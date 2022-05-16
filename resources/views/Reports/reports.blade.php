@@ -40,7 +40,8 @@
                     </div>
                 </div> 
                 
-                @if(Auth::user()->role_id  == 1 || Auth::user()->role_id== 2)
+                {{-- @if(Auth::user()->role_id  == 1 || Auth::user()->role_id== 2) --}}
+                @if(Auth::user()->role_id  == 1)
                 <div class="col-4">
                     <div class="input-group input-group-sm mb-3">
                         <div class="input-group-prepend">                      

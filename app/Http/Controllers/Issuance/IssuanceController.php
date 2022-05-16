@@ -57,6 +57,7 @@ class IssuanceController extends Controller
         on products.raw_material_id = raw_material.id  where products.deleted_at is null  order by products.is_available desc");
         
         if(Auth::user()->role_id == 1 || Auth::user()->role_id == 2 ){ 
+        
             $requestList = Requests::select()->orderBy('created_at', 'desc' )->get();
         }else{
             if(Auth::user()->ward_id != null){

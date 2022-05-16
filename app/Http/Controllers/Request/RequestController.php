@@ -305,6 +305,49 @@ class RequestController extends Controller
             "created_at" =>  \Carbon\Carbon::now(), 
         ]);
 
+        
+         
+        return view('requests.issuanceRequest', compact('productsList','requestList'));
+        
+    }
+
+    public function issueFinalRequest(Request $request){
+
+        $wardList = DB::Select("SELECT * FROM jhay.linen_ward ORDER BY ward_name ASC");
+        $officeList = DB::Select("SELECT * FROM jhay.linen_office ORDER BY office_name ASC");
+
+        
+        $wardName = null;
+        $officeName= null;
+        $wardId = null;
+        $officeId = null;
+        if(Auth::user()->ward_id != null){
+            $wardId = Auth::user()->ward_id; 
+            foreach($wardList as $ward){
+                if($ward->id ==  $request->ward_id ){
+                    $wardName = $ward->ward_name;
+                }
+            }
+        }
+        if(Auth::user()->office_id  != null ){
+            $officeId = Auth::user()->office_id;
+            foreach($officeList as $office){
+                if($office->id ==  $request->office_id ){
+                    $officeName = $office->office_name;
+                }
+            }
+        }
+
+        $requestorDetails =Requests::select()->where('id',$request->id)->first();
+        event(new LinisNotification('processRequest',
+        Auth::user(),        
+        $request->product_name_request,
+        $request->product_quantity_request,
+        $wardName,
+        $officeName,
+        $requestorDetails
+        ));
+        
         DB::table('nora.paul.linen_requests')
         ->where('id', $request->id)
         ->update([
@@ -313,9 +356,8 @@ class RequestController extends Controller
             'processed_by_emp_id' => Auth::user()->employee_id,
             'processed_at' => \Carbon\Carbon::now()
         ]);
-         
-        return view('requests.issuanceRequest', compact('productsList','requestList'));
-        
+
+        return redirect()->route('services')->with('success', 'Request succesfully  issued');
     }
 
     public function retrieveItemsList(Request $request){

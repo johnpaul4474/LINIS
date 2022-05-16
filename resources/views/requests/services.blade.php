@@ -50,7 +50,8 @@
                                 <th>Status</th>
                                 <th>Processed By</th>
                                 <th>Processed Date</th>
-                                @if(Auth::user()->role_id  == 1 || Auth::user()->role_id== 2)
+                                {{-- @if(Auth::user()->role_id  == 1 || Auth::user()->role_id== 2) --}}
+                                @if(Auth::user()->role_id  == 1)
                                 <th>Action</th>
                                 @endif
                               </tr>
@@ -101,7 +102,8 @@
                                 <td>{{$req->processed_by}}</td>
                                 <td>{{$req->processed_at}}</td>
 
-                                @if(Auth::user()->role_id  == 1 || Auth::user()->role_id== 2)
+                                {{-- @if(Auth::user()->role_id  == 1 || Auth::user()->role_id== 2) --}}
+                                @if(Auth::user()->role_id  == 1)
                                   @if($req->status == 1)
                                     <form action = "/processRequest" method = "post">
                                       @csrf
@@ -190,7 +192,7 @@ $(document).ready(function () {
   $('#productsRequest').DataTable({
             "lengthMenu": [[5, 25, 50, -1], [5, 25, 50, "All"]],
             "search": true,     
-            "ordering": true,
+            "ordering": false,
             //  "order": [[ 1, "desc" ]],
             "paging": true,
             "pageLength": 5,

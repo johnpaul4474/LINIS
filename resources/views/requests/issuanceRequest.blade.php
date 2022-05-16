@@ -209,7 +209,8 @@
                                     <th>Status</th>
                                     <th>Processed By</th>
                                     <th>Processed Date</th>
-                                    @if(Auth::user()->role_id  == 1 || Auth::user()->role_id== 2)
+                                    {{-- @if(Auth::user()->role_id  == 1 || Auth::user()->role_id== 2) --}}
+                                    @if(Auth::user()->role_id  == 1)
                                     <th>Action</th>
                                     @endif
                                   </tr>
@@ -260,7 +261,8 @@
                                     <td>{{$req->processed_by}}</td>
                                     <td>{{$req->processed_at}}</td>
     
-                                    @if(Auth::user()->role_id  == 1 || Auth::user()->role_id== 2)
+                                    {{-- @if(Auth::user()->role_id  == 1 || Auth::user()->role_id== 2) --}}
+                                    @if(Auth::user()->role_id  == 1)
                                       @if($req->status == 1)
                                         <form action = "/processRequest" method = "post">
                                           @csrf
@@ -288,7 +290,7 @@
                                           <input id="product_name_request" type="hidden" class="form-control @error('id') is-invalid @enderror" name="product_name_request" value="{{$req->product_name_request}}">
                                           <input id="product_quantity_request" type="hidden" class="form-control @error('id') is-invalid @enderror" name="product_quantity_request" value="{{$req->product_quantity_request}}">
                                           <td>
-                                            <button type="submit" class="editProductsButton btn btn-info btn-sm" >ISSUE</button>
+                                            <button type="button" class="editProductsButton btn btn-info btn-sm" id="issueItemsRequest">ISSUE</button>
                                           </td>
                                       </form>
                                       @elseif($req->status == 4)
@@ -440,12 +442,14 @@
 
 $(document).ready(function () {
     var issuedItemsList = [];
-    var selectedItemCount =0
+    var selectedItemCount =0;
+    var selectedItemCount = 0;
+    var availableCount = 0;
     $("#issueItems").click(function(event) {
 
         event.preventDefault();
 
-        if($('#availableProducts').val() == 0 || $("#ward").val() == null || $("#office").val() == null){
+        if($('#availableProducts').val() <= 0 || $("#ward").val() == null || $("#office").val() == null){
             console.log("disable add button");
             $(this).attr("disabled",true);
         }
@@ -540,9 +544,9 @@ $(document).ready(function () {
           rows.remove();
           console.log(rows.attr('id'));
           let requestId = $('#requestId').val()
-          console.log(requestId);
+          //console.log(requestId);
           bulkId = $('#trId').val();
-          
+          availableQuantityOld = parseInt($('#availableProducts').val());     
           $.ajax({
                     headers: {
                             'X-CSRF-TOKEN': "{{csrf_token()}}",
@@ -554,29 +558,58 @@ $(document).ready(function () {
                         bulkId : bulkId                      
                         },
                     success:function(response){
-                        console.log(response);  
-                        style=""
-                        $.each(response, function(key, value) {
-                                                               
-                                $('#listProducts').prepend(  
-                                                `<li class="list-group-item" data-id="${value.id}">
-                                                <div class="form-check">                            
-                                                    <input class="form-control form-check-input" type="checkbox"  value="" id="${value.id}">
-                                                    <label class="form-control form-check-label checkbox-inline" style="font-size:small; background-color:#FF5252;" for="${value.id}">
-                                                    ${value.product_stock_id} - ${value.product_name}
-                                                    </label>
-                                                </div>
+                        console.log(response); 
+                        
+                     
+                            let bulkId = $(finishedProduct).children(":selected").val();
+                            var selectedProductArray = new Array();
+                            $("#listProducts").find('div').remove();
+                            
+                            //console.log(bulkId);
+                            $.each(response, function(key, value) {
+                                if(value.product_bulk_id == bulkId && value.is_available == 1){
+                                    selectedProductArray.push(value);
+                            
+                                }
+                            
+                            });
+                            console.log(selectedProductArray);
+                            $('#availableProductsOriginal').val(selectedProductArray.length);
+                            $('#availableProducts').val(selectedProductArray.length);
+                            availableCount = selectedProductArray.length;
+                            $("#listProducts").find('li').remove();
+                        
+                                $.each(selectedProductArray, function(key, value) {
+                                    // while(selectedProductArray.length) {
+                                    //     //console.log(selectedProductArray.splice(0,10));
+                                    // }  
+                                    //console.log(value); 
+                                    $('#tdUnit').val(value.product_unit);
+                                    $('#tdItem').val(value.product_name);
+                                    $('#tdCost').val(value.product_unit_cost);
+                                    $('#trId').val(value.product_bulk_id);
+                                    $('#listProducts').append(  
+                                                    `<li class="list-group-item" data-id="${value.id}">
+                                                    <div class="form-check">                            
+                                                        <input class="form-control form-check-input" type="checkbox"  value="" id="${value.id}">
+                                                        <label class="form-control form-check-label checkbox-inline" style="font-size:small" for="${value.id}">
+                                                        ${value.product_stock_id} - ${value.product_name}
+                                                        </label>
+                                                    </div>
+                                                    
+                                                    </li>`);
                                                 
-                                                </li>`);
-                                            
-                            });                 
+                                });
                     },
                     error: function(error) {
-                        console.log(error);
+                        //console.log(error);
                     }
                 }); 
         }
       });
+
+
+      
 
       var getHighlightRow = function() {
         return $('table > tbody > tr.highlight');
@@ -641,74 +674,28 @@ $("#finishedProduct").change(function() {
     $("#listProducts").find('li').remove();
    
     $.each(selectedProductArray, function(key, value) {
-        // while(selectedProductArray.length) {
-        //     console.log(selectedProductArray.splice(0,10));
-        // }  
-        console.log(value); 
-        $('#tdUnit').val(value.product_unit);
-        $('#tdItem').val(value.product_name);
-        $('#tdCost').val(value.product_unit_cost);
-        $('#trId').val(value.product_bulk_id);
-        $('#listProducts').append(  
-                        `<li class="list-group-item" data-id="${value.id}">
-                         <div class="form-check">                            
-                            <input class="form-control form-check-input" type="checkbox"  value="" id="${value.id}">
-                            <label class="form-control form-check-label checkbox-inline" style="font-size:small" for="${value.id}">
-                              ${value.product_stock_id} - ${value.product_name}
-                            </label>
-                          </div>
-                          
-                        </li>`);
-                            //  <div class="accordion" id="accordionStockNumbers${value.id}">
-                            //         <div class="accordion-item">
-                            //           <h2 class="accordion-header" id="headingOne">
-                            //             <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseNumber${value.id}" aria-expanded="true" aria-controls="collapseNumber${value.id}">
-                            //               Stock Numbers:${value.id}
-                            //             </button>
-                            //           </h2>
-                            //           <div id="collapseNumber${value.id}" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionStockNumbers${value.id}">
-                            //             <div class="accordion-body">
-                            //                 <label class="checkbox-inline">
-                            //                 <input type="checkbox" style="font-size:small" 'value="">Option 1
-                            //                 </label>
-                            //                 <label class="checkbox-inline">
-                            //                 <input type="checkbox" value="">Option 2
-                            //                 </label>
-                            //                 <label class="checkbox-inline">
-                            //                 <input type="checkbox" value="">Option 3
-                            //                 </label>
-                            //             </div>
-                            //           </div>
-                            //         </div>                                    
-                            //       </div> );
-
-                    
-    });
-
-    
-
-
-    var availableCount = selectedProductArray.length;
-   
-    $('input[type="checkbox"]').click(function(){
-            if($(this).prop("checked") == true){
-                console.log("Checkbox is checked.",$(this).attr('id'));
-                availableCount --;
-                selectedItemCount ++;
-                
-            }
-            else if($(this).prop("checked") == false){
-                console.log("Checkbox is unchecked.",$(this).attr('id'));
-                availableCount ++;
-                selectedItemCount --;
-               
-            }
-           
-            $('#quantity').val(selectedItemCount);
-            $('#availableProducts').val(availableCount);
-            $('#availableProductsOriginal').val(availableCount);
+            // while(selectedProductArray.length) {
+            //     //console.log(selectedProductArray.splice(0,10));
+            // }  
+            //console.log(value); 
+            $('#tdUnit').val(value.product_unit);
+            $('#tdItem').val(value.product_name);
+            $('#tdCost').val(value.product_unit_cost);
+            $('#trId').val(value.product_bulk_id);
+            $('#listProducts').append(  
+                            `<li class="list-group-item" data-id="${value.id}">
+                            <div class="form-check">                            
+                                <input class="form-control form-check-input" type="checkbox"  value="" id="${value.id}">
+                                <label class="form-control form-check-label checkbox-inline" style="font-size:small" for="${value.id}">
+                                ${value.product_stock_id} - ${value.product_name}
+                                </label>
+                            </div>
+                            
+                            </li>`);
+                        
         });
-       
+    
+    availableCount = selectedProductArray.length;
     
     });
     
@@ -768,6 +755,48 @@ $("#finishedProduct").change(function() {
             finishedCount ++;
             }
         });
+
+    $('#issueItemsRequest').click(function(e) {
+        let product_name_request = "";
+        let product_quantity_request = "";
+        let ward_id = "";
+        let office_id= "";
+        $.each({!! json_encode($requestList, JSON_HEX_TAG) !!}, function(key, value) {
+            product_name_request = value.product_name_request;
+            product_quantity_request = value.product_quantity_request;
+            ward_id = value.ward_id;
+            office_id = value.office_id;
+
+        });
+          $.ajax({
+                    headers: {
+                            'X-CSRF-TOKEN': "{{csrf_token()}}",
+                        },
+                    url:"/issueFinalRequest",
+                    type:"post",
+                    data:{       
+                        'id' : '{{ Request::get("id") }}',   
+                        'product_name_request' : product_name_request,   
+                        'product_name_quantity' : product_quantity_request,
+                        'ward_id': ward_id,
+                        'office_id' : office_id,  
+                        'status' : 4,
+                        'processed_by' : '{{ auth()->user()->name }}' ,
+                        'processed_by_emp_id' : '{{ auth()->user()->employee_id }}',
+                        'processed_at' : '{{\Carbon\Carbon::now() }}'                
+                        },
+                    success:function(response){
+                        window.location = "services";
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                }); 
+    
+
+
+    });    
+
     $('#productsTable').DataTable(
         {
         "lengthMenu": [[5, 25, 50, -1], [5, 25, 50, "All"]],
@@ -799,7 +828,7 @@ $("#finishedProduct").change(function() {
                 // pop_searchPatient();
             });
 
-            $('#finishedRequest').text(finishedCount);
+        $('#finishedRequest').text(finishedCount);
 
         $('#productsRequest').DataTable({
           "lengthMenu": [[5, 25, 50, -1], [5, 25, 50, "All"]],
@@ -823,7 +852,28 @@ $("#finishedProduct").change(function() {
               left:0,
               right: 2
           }    
-  });      
+        });  
+    $('#listProducts').on('click' ,'.form-check-input',function(){
+       
+       
+       if($(this).prop("checked") == true){
+           //console.log("Checkbox is checked.",$(this).attr('id'));
+           availableCount --;
+           selectedItemCount ++;
+           
+       }
+       else if($(this).prop("checked") == false){
+           //console.log("Checkbox is unchecked.",$(this).attr('id'));
+           availableCount ++;
+           selectedItemCount --;
+          
+       }
+      
+       $('#quantity').val(selectedItemCount);
+       $('#availableProducts').val(availableCount);
+       $('#availableProductsOriginal').val(availableCount);
+      
+   });          
   
     
 })

@@ -293,7 +293,8 @@
             <li class="nav-item">
               <a class="nav-link active" aria-current="page" href="{{route('home')}}">Home</a>
             </li>
-            @if(Auth::user()->role_id  == 1 || Auth::user()->role_id== 2)
+            {{-- @if(Auth::user()->role_id  == 1 || Auth::user()->role_id== 2) --}}
+            @if(Auth::user()->role_id  == 1)
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Inventory Management

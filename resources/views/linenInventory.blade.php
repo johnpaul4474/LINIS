@@ -11,7 +11,8 @@
 		<div class="card text-center">
             
 			<h5 class="card-header ">
-                @if(Auth::user()->role_id  == 1 || Auth::user()->role_id== 2)
+                {{-- @if(Auth::user()->role_id  == 1 || Auth::user()->role_id== 2) --}}
+                @if(Auth::user()->role_id  == 1)
                 AVAILABLE PRODUCTS FOR 
                 @else                
                 ISSUED PRODUCTS FOR
@@ -55,7 +56,8 @@
                         <a href="services" class="btn btn-primary">Request Status</a>
                     </div>
                 </div>
-            @if(Auth::user()->role_id  == 1 || Auth::user()->role_id== 2)
+            {{-- @if(Auth::user()->role_id  == 1 || Auth::user()->role_id== 2) --}}
+            @if(Auth::user()->role_id  == 1)
                 
                 <br>
                     <div class="card text-center">
@@ -94,8 +96,8 @@
 			</div>
 			<br>
 			<div class="card-body">
-                    @if(Auth::user()->role_id  == 1 || Auth::user()->role_id== 2)
-   
+                    {{-- @if(Auth::user()->role_id  == 1 || Auth::user()->role_id== 2) --}}
+                    @if(Auth::user()->role_id  == 1)
 					<div class="row">
                         
 						<div class="col-2">

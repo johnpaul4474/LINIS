@@ -12,7 +12,8 @@
                     <fieldset>
                         <legend>Return Products <legend>
                         <div class="row">
-                            @if(Auth::user()->role_id  == 1 || Auth::user()->role_id== 2)
+                            {{-- @if(Auth::user()->role_id  == 1 || Auth::user()->role_id== 2) --}}
+                            @if(Auth::user()->role_id  == 1)
                             <div class="col">
                                 <div class="input-group input-group-sm mb-3">
                                     <div class="input-group-prepend">                      
@@ -128,7 +129,8 @@
                                     <div class="input-group-prepend">
                                         <label for="material_used" class="input-group-text">{{ __('Material used') }}</label>
                                     </div>
-                                        @if(Auth::user()->role_id  == 1 || Auth::user()->role_id== 2)
+                                        {{-- @if(Auth::user()->role_id  == 1 || Auth::user()->role_id== 2) --}}
+                                        @if(Auth::user()->role_id  == 1)
                                             <select class="form-control @error('material_used') is-invalid @enderror" id="material_used" name="material_used" required readonly="readoonly" autocomplete="material_used" autofocus >
                                                 <option value="" selected disabled hidden> Choose Material</option>    
                                             </select>
@@ -219,7 +221,8 @@
                     <fieldset>
                         <legend>Condemned Products <legend>
                         <div class="row">
-                            @if(Auth::user()->role_id  == 1 || Auth::user()->role_id== 2)
+                            {{-- @if(Auth::user()->role_id  == 1 || Auth::user()->role_id== 2) --}}
+                            @if(Auth::user()->role_id  == 1)
                             <div class="col">
                                 <div class="input-group input-group-sm mb-3">
                                     <div class="input-group-prepend">                      
@@ -425,7 +428,8 @@
                     <fieldset>
                         <legend>Lossed Products <legend>
                         <div class="row">
-                            @if(Auth::user()->role_id  == 1 || Auth::user()->role_id== 2)
+                            {{-- @if(Auth::user()->role_id  == 1 || Auth::user()->role_id== 2) --}}
+                            @if(Auth::user()->role_id  == 1)
                             <div class="col">
                                 <div class="input-group input-group-sm mb-3">
                                     <div class="input-group-prepend">                      
@@ -634,7 +638,8 @@
       
 </div>  
 <br>
-@if(Auth::user()->role_id  == 1 || Auth::user()->role_id== 2)
+{{-- @if(Auth::user()->role_id  == 1 || Auth::user()->role_id== 2) --}}
+@if(Auth::user()->role_id  == 1)
 <div class="row">
     <div class="container">
         <div class="row justify-content-center">

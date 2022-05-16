@@ -34,7 +34,8 @@ class LinenInventoryController extends Controller
 
         $materialCount = DB::table('nora.paul.linen_raw_materials')->count() ;
 
-        if(Auth::user()->role_id == 1 || Auth::user()->role_id == 2 ){ 
+         if(Auth::user()->role_id == 1 || Auth::user()->role_id == 2 ){
+           
             $requestList = Requests::select()->orderBy('created_at', 'desc' )->get();
         }else{
             if(Auth::user()->ward_id != null){
@@ -47,6 +48,7 @@ class LinenInventoryController extends Controller
 
        // dd(Auth::user()->role_id,Auth::user()->ward_id,Auth::user()->office_id);
         if(Auth::user()->role_id == 1 || Auth::user()->role_id == 2){
+        
              $productsList = DB::select('EXEC nora.paul.linen_getBulkProducts');
             
              $productCount = DB::table('nora.paul.linen_products')->where('is_condemned',0)->where('is_lossed',0)->where('is_available',1)->count();
