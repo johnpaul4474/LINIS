@@ -77,6 +77,9 @@ Route::post('/issueFinalRequest', [App\Http\Controllers\Request\RequestControlle
 Route::any('/reports', [App\Http\Controllers\Reports\ReportsController::class, 'index'])->name('reports');
 Route::post('/generateInventoryReport', [App\Http\Controllers\Reports\ReportsController::class, 'linenInventory'])->name('generateInventoryReport');
 
+//role
+Route::any('/roleManagement', [App\Http\Controllers\Role\RoleController::class, 'index'])->name('roleManagement');
+Route::any('/roleManagement/assignAdmin', [App\Http\Controllers\Role\RoleController::class, 'assignAdmin'])->name('/roleManagement/assignAdmin');
 
 Route::get('test', function () {
     event(new App\Events\LinisNotification('This is  a test'));
