@@ -54,7 +54,7 @@
                                 <label for="availableProducts" class="input-group-text">{{ __('Available Products') }}</label>
                                 </div>                    
                                     <input id="availableProducts" type="number" class="form-control @error('availableProducts') is-invalid @enderror" name="availableProducts" value="" required readonly="readonly" autocomplete="availableProducts" autofocus>
-                                    <input id="availableProductsOriginal" type="number" class="form-control @error('availableProductsOriginal') is-invalid @enderror" name="availableProductsOriginal" value="" required readonly="readonly" autocomplete="availableProductsOriginal"  autofocus>
+                                    <input id="availableProductsOriginal" type="number" class="form-control @error('availableProductsOriginal') is-invalid @enderror" name="availableProductsOriginal" value="" required readonly="readonly" autocomplete="availableProductsOriginal" hidden  autofocus>
                                     <input id="productIds" type="text" class="form-control @error('productIds') is-invalid @enderror" name="productIds" value="" required readonly="readonly" autocomplete="productIds"  autofocus hidden>
                                     @error('availableProducts')
                                         <span class="invalid-feedback" role="alert">
