@@ -43,6 +43,7 @@ class IssuanceController extends Controller
         products.is_available,
         products.is_condemned,
         products.is_lossed,
+        products.is_returned,
         products.issued_office_id,
         products.issued_ward_id,
         products.create_date,
@@ -92,7 +93,8 @@ class IssuanceController extends Controller
         DB::table('nora.paul.linen_products')
         ->whereIn('id', $productIds)
         ->update([
-            'is_available' => false,	
+            'is_available' => false,
+            'is_issued' => true,            
             'issued_office_id' => $request->office,	
             'issued_ward_id' => $request->ward,	
             'issued_date' => \Carbon\Carbon::now() ,
@@ -153,6 +155,7 @@ class IssuanceController extends Controller
         products.is_available,
         products.is_condemned,
         products.is_lossed,
+        products.is_returned,
         products.issued_office_id,
         products.issued_ward_id,
         products.create_date,
@@ -212,7 +215,8 @@ class IssuanceController extends Controller
         DB::table('nora.paul.linen_products')
         ->whereIn('id', $productIds)
         ->update([
-            'is_available' => false,	
+            'is_available' => false, 
+            'is_issued' => true,           	
             'issued_office_id' => $request->office,	
             'issued_ward_id' => $request->ward,	
             'issued_date' => \Carbon\Carbon::now() ,

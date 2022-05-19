@@ -106,9 +106,11 @@ class ProductsController extends Controller
                         'products.product_issued_quantity' =>0,
                         'products.product_returned_quantity' =>0,
                         'product_unit_cost' => $request->unit_cost, 
+                        'is_issued' => false,
                         'is_available' => true,  
                         'is_condemned' => false, 
                         'is_lossed'     =>false,
+                        'is_returned' => false,                        
                         'created_at' => \Carbon\Carbon::now(),
                         'product_bulk_id'=>$product_bulk_id
                 ]);

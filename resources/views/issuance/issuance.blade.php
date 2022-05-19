@@ -172,7 +172,7 @@
                                     </div> 
                                     <div class="card-footer text-center">
                                         <button type="button" id="issueItems" class="btn btn-primary " disabled >Add</button>
-                                        <button type="button" id="removeItemsBtn" class="btn btn-primary " >Remove</button>
+                                        {{-- <button type="button" id="removeItemsBtn" class="btn btn-primary " >Remove</button> --}}
                                         <button type="button" id="printItems" class="btn btn-primary " >Print</button>
                                         {{-- <button type="submit" class="btn btn-primary " >Submit</button>  --}}
                                     
@@ -430,106 +430,106 @@ $(document).ready(function () {
 
     // });
 
-    $(function() {
-      $('#itemsTable').on('click', 'tbody tr', function(event) {
-        $(this).addClass('highlight').siblings().removeClass('highlight');
-        //console.log($(this));
-      });
+    // $(function() {
+    //   $('#itemsTable').on('click', 'tbody tr', function(event) {
+    //     $(this).addClass('highlight').siblings().removeClass('highlight');
+    //     //console.log($(this));
+    //   });
       
-      $('#removeItemsBtn').click(function(e) {
-        var rows = getHighlightRow();
-        if (rows != undefined) {
-          rows.remove();
-          //console.log(rows.attr('id'));
-          let requestId = $('#requestId').val()
-          //console.log(requestId);
-          bulkId = $('#trId').val();
-          availableQuantityOld = parseInt($('#availableProducts').val());     
-          $.ajax({
-                    headers: {
-                            'X-CSRF-TOKEN': "{{csrf_token()}}",
-                        },
-                    url:"/retrieveItemsList",
-                    type:"GET",
-                    data:{                        
-                        productIds : rows.attr('id'),  
-                        bulkId : bulkId                      
-                        },
-                    success:function(response){
-                        console.log(response);  
+    //   $('#removeItemsBtn').click(function(e) {
+    //     var rows = getHighlightRow();
+    //     if (rows != undefined) {
+    //       rows.remove();
+    //       //console.log(rows.attr('id'));
+    //       let requestId = $('#requestId').val()
+    //       //console.log(requestId);
+    //       bulkId = $('#trId').val();
+    //       availableQuantityOld = parseInt($('#availableProducts').val());     
+    //       $.ajax({
+    //                 headers: {
+    //                         'X-CSRF-TOKEN': "{{csrf_token()}}",
+    //                     },
+    //                 url:"/retrieveItemsList",
+    //                 type:"GET",
+    //                 data:{                        
+    //                     productIds : rows.attr('id'),  
+    //                     bulkId : bulkId                      
+    //                     },
+    //                 success:function(response){
+    //                     console.log(response);  
                         
-                        // $.each(response, function(key, value) {
+    //                     // $.each(response, function(key, value) {
                                                                
-                        //         $('#listProducts').prepend(  
-                        //                         `<li class="list-group-item" data-id="${value.id}">
-                        //                         <div class="form-check">                            
-                        //                             <input class="form-control form-check-input" type="checkbox"  value="" id="${value.id}">
-                        //                             <label class="form-control form-check-label checkbox-inline" style="font-size:small; background-color:#FF5252;" for="${value.id}">
-                        //                             ${value.product_stock_id} - ${value.product_name}
-                        //                             </label>
-                        //                         </div>
+    //                     //         $('#listProducts').prepend(  
+    //                     //                         `<li class="list-group-item" data-id="${value.id}">
+    //                     //                         <div class="form-check">                            
+    //                     //                             <input class="form-control form-check-input" type="checkbox"  value="" id="${value.id}">
+    //                     //                             <label class="form-control form-check-label checkbox-inline" style="font-size:small; background-color:#FF5252;" for="${value.id}">
+    //                     //                             ${value.product_stock_id} - ${value.product_name}
+    //                     //                             </label>
+    //                     //                         </div>
                                                 
-                        //                         </li>`);
+    //                     //                         </li>`);
                                             
-                        //     });     
-                        // $('#availableProducts').val(availableQuantityOld + response.length ); 
-                        // $('#availableProductsOriginal').val(availableQuantityOld + response.length );   
+    //                     //     });     
+    //                     // $('#availableProducts').val(availableQuantityOld + response.length ); 
+    //                     // $('#availableProductsOriginal').val(availableQuantityOld + response.length );   
                         
-                        // //console.log($('#availableProducts').val())        +
-                        //console.log("-----------", + availableCount, $('#finishedProduct').children(":selected").val());
-                            let bulkId = $(finishedProduct).children(":selected").val();
-                            var selectedProductArray = new Array();
-                            $("#listProducts").find('div').remove();
+    //                     // //console.log($('#availableProducts').val())        +
+    //                     //console.log("-----------", + availableCount, $('#finishedProduct').children(":selected").val());
+    //                         let bulkId = $(finishedProduct).children(":selected").val();
+    //                         var selectedProductArray = new Array();
+    //                         $("#listProducts").find('div').remove();
                             
-                            //console.log(bulkId);
-                            $.each(response, function(key, value) {
-                                if(value.product_bulk_id == bulkId && value.is_available == 1){
-                                    selectedProductArray.push(value);
+    //                         //console.log(bulkId);
+    //                         $.each(response, function(key, value) {
+    //                             if(value.product_bulk_id == bulkId && value.is_available == 1){
+    //                                 selectedProductArray.push(value);
                             
-                                }
+    //                             }
                             
-                            });
-                            console.log(selectedProductArray);
-                            $('#availableProductsOriginal').val(selectedProductArray.length);
-                            $('#availableProducts').val(selectedProductArray.length);
-                            availableCount = selectedProductArray.length;
-                            $("#listProducts").find('li').remove();
+    //                         });
+    //                         console.log(selectedProductArray);
+    //                         $('#availableProductsOriginal').val(selectedProductArray.length);
+    //                         $('#availableProducts').val(selectedProductArray.length);
+    //                         availableCount = selectedProductArray.length;
+    //                         $("#listProducts").find('li').remove();
                         
-                                $.each(selectedProductArray, function(key, value) {
-                                    // while(selectedProductArray.length) {
-                                    //     //console.log(selectedProductArray.splice(0,10));
-                                    // }  
-                                    //console.log(value); 
-                                    $('#tdUnit').val(value.product_unit);
-                                    $('#tdItem').val(value.product_name);
-                                    $('#tdCost').val(value.product_unit_cost);
-                                    $('#trId').val(value.product_bulk_id);
-                                    $('#listProducts').append(  
-                                                    `<li class="list-group-item" data-id="${value.id}">
-                                                    <div class="form-check">                            
-                                                        <input class="form-control form-check-input" type="checkbox"  value="" id="${value.id}">
-                                                        <label class="form-control form-check-label checkbox-inline" style="font-size:small" for="${value.id}">
-                                                        ${value.product_stock_id} - ${value.product_name}
-                                                        </label>
-                                                    </div>
+    //                             $.each(selectedProductArray, function(key, value) {
+    //                                 // while(selectedProductArray.length) {
+    //                                 //     //console.log(selectedProductArray.splice(0,10));
+    //                                 // }  
+    //                                 //console.log(value); 
+    //                                 $('#tdUnit').val(value.product_unit);
+    //                                 $('#tdItem').val(value.product_name);
+    //                                 $('#tdCost').val(value.product_unit_cost);
+    //                                 $('#trId').val(value.product_bulk_id);
+    //                                 $('#listProducts').append(  
+    //                                                 `<li class="list-group-item" data-id="${value.id}">
+    //                                                 <div class="form-check">                            
+    //                                                     <input class="form-control form-check-input" type="checkbox"  value="" id="${value.id}">
+    //                                                     <label class="form-control form-check-label checkbox-inline" style="font-size:small" for="${value.id}">
+    //                                                     ${value.product_stock_id} - ${value.product_name}
+    //                                                     </label>
+    //                                                 </div>
                                                     
-                                                    </li>`);
+    //                                                 </li>`);
                                                 
-                                });
-                    },
-                    error: function(error) {
-                        //console.log(error);
-                    }
-                }); 
-        }
-      });
+    //                             });
+    //                 },
+    //                 error: function(error) {
+    //                     //console.log(error);
+    //                 }
+    //             }); 
+    //     }
+    //   });
 
 
-      var getHighlightRow = function() {
-        return $('table > tbody > tr.highlight');
-      }
+    //   var getHighlightRow = function() {
+    //     return $('table > tbody > tr.highlight');
+    //   }
 
-    }); 
+    // }); 
 
     $("#printItems").click(function() {
         window.print();

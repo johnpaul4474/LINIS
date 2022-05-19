@@ -231,11 +231,11 @@
                                 <th>WARD/OFFICE</th>     
                                 <th>DATE CREATED</th>  
                                 <th>DATE ISSUED</th>
-                                
+                                @if(Auth::user()->role_id  == 1)
                                 <th>DATE RETURNED</th>
                                 <th>DATE CONDEMNED</th>
                                 <th>DATE LOSSED</th> 
-                                
+                                @endif
                                 
                                 </tr>
                             </thead>
@@ -249,30 +249,38 @@
                                 
                                 
                                 
-                                <td id="issued_quantity">{{$products->products_issued_quantity}}</td>      
-                                @if($products->issued_office_id != null)
-                                    @foreach(\App\Http\Controllers\Department\DepartmentController::officeList() as $office)                                                                
-                                        @if($office->id == $products->issued_office_id) 
-                                            <td>{{$office->office_name}}</td>
+                                <td id="issued_quantity">{{$products->products_issued_quantity}}</td>  
+                                @if($products->product_condemned_quantity > 0)
+                                    <td style="background-color:#ff0000">CONDEMNED</td>
+                                @elseif($products->product_returned_quantity > 0)
+                                    <td style="background-color:#00FF00">RE-ISSUE</td>
+                                @elseif($products->product_losses_quantity > 0)
+                                    <td style="background-color:#FF0000">LOSSED</td>        
+                                @else
+                                    @if($products->issued_office_id != null)
+                                        @foreach(\App\Http\Controllers\Department\DepartmentController::officeList() as $office)                                                                
+                                            @if($office->id == $products->issued_office_id) 
+                                                <td>{{$office->office_name}}</td>
+                                            @endif
+                                        @endforeach
+                                    @elseif($products->issued_ward_id != null)
+                                        @foreach(\App\Http\Controllers\Department\DepartmentController::wardList() as $ward)                                                                
+                                        @if($ward->id == $products->issued_ward_id )
+                                                <td>{{$ward->ward_name}}</td>
                                         @endif
-                                    @endforeach
-                                @elseif($products->issued_ward_id != null)
-                                    @foreach(\App\Http\Controllers\Department\DepartmentController::wardList() as $ward)                                                                
-                                    @if($ward->id == $products->issued_ward_id )
-                                            <td>{{$ward->ward_name}}</td>
-                                    @endif
-                                    @endforeach
-                                @else  
-                                    <td style="background-color:#00FF00">NOT YET ISSUED</td>  
-                                @endif                    
+                                        @endforeach
+                                    @else  
+                                        <td style="background-color:#00FF00">NOT YET ISSUED</td>  
+                                    @endif 
+                                @endif                   
                                 
                                 <td id="created_date">{{$products->create_date}}</td>
                                 <td id="issued_date">{{$products->issued_date}}</td>
-                                
+                                @if(Auth::user()->role_id  == 1)
                                 <td id="returned_date">{{$products->returned_date}}</td>
                                 <td id="condemned_date">{{$products->condemned_date}}</td>
                                 <td id="condemned_date">{{$products->lossed_date}}</td> 
-                               
+                                @endif
                                 </tr>
 
                                 @endforeach

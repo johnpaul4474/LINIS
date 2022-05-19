@@ -88,9 +88,8 @@ class ReturnedProductsController extends Controller
     ->whereIn('id', $productIds)
     ->update([
         'is_available' => true,	
-        'issued_office_id' => null,	
-        'issued_ward_id' => null,	
-        'issued_date' =>null,
+        'is_returned' => true,	 
+        'is_issued' => false,         
         "updated_at" => \Carbon\Carbon::now(),  
         "returned_date" => \Carbon\Carbon::now(),
         'product_returned_quantity' => count($productIds) 
@@ -140,24 +139,25 @@ class ReturnedProductsController extends Controller
             "created_at" =>  \Carbon\Carbon::now(), 
         ]);
 
+        Products::where('product_bulk_id', $request->finishedProduct)->increment('product_available_quantity',count($productIds));
+
+
+
 
         DB::table('nora.paul.linen_products')
         ->whereIn('id', $productIds)
         ->update([
-            'is_available' => false,
-            'issued_date' => null ,
-            "returned_date" => null,
-            'is_available' => false,	
+            'is_available' => false, 
             'is_condemned' => true,  
+            'is_returned' => false,	
+            'is_issued' => false,
+            "returned_date" => null, 
+            "updated_at" => \Carbon\Carbon::now(),
             'condemned_date' => \Carbon\Carbon::now(),
             'product_condemned_quantity' => count($productIds) 
         ]);
         
-        DB::table('nora.paul.linen_products')
-        ->where('product_bulk_id', $request->finishedProductCondemn)        
-        ->update([
-            'product_condemned_quantity' => count($productIds) 
-        ]);   
+  
         return redirect()->route('returnedProducts')->with('error', 'Condemned Product added successfully');
     }
 
@@ -177,21 +177,18 @@ class ReturnedProductsController extends Controller
         DB::table('nora.paul.linen_products')
         ->whereIn('id', $productIds)
         ->update([
-            'is_available' => false,	            
-            'issued_date' => null ,
+            'is_available' => false, 
             "returned_date" => null,
-            'is_available' => false,	
+            'is_returned' => false,	
             'is_condemned' => false,  
             'is_lossed' => true,
+            'is_issued' => false,
+            "updated_at" => \Carbon\Carbon::now(),
             'lossed_date' => \Carbon\Carbon::now(),
             'product_losses_quantity' => count($productIds) 
         ]);
         
-        DB::table('nora.paul.linen_products')
-        ->where('product_bulk_id', $request->finishedProductLosses)
-        ->update([
-            'product_losses_quantity' => count($productIds) 
-        ]);   
+ 
         return redirect()->route('returnedProducts')->with('error', 'Lossed Product added successfully');
     }
 }

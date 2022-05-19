@@ -245,31 +245,34 @@
                                     </span>
                                 @endif
                             </small></th>
-                              <th  colspan="3"><small><b>DATE: {{\Carbon\Carbon::now()->format('F d,Y h:i A')}}</b></small></th>
+                              <th  colspan="4"><small><b>DATE: {{\Carbon\Carbon::now()->format('F d,Y h:i A')}}</b></small></th>
                             </tr>
                           </thead>
                           <tbody>
                             <tr>
-                              <td " rowspan="2"  style="vertical-align : middle;text-align:center;"  width='40%'>DESCRIPTION</td>
-                              <td  colspan="6" style="vertical-align : middle;text-align:center;">QUANTITY</td>
+                              <td  rowspan="2"  style="vertical-align : middle;text-align:center;"  width='30%'>DESCRIPTION</td>
+                              <td  colspan="7" style="vertical-align : middle;text-align:center;">QUANTITY</td>
                             </tr>
                             <tr>
                                 <td width='10%'>Beg. Bal</td>
                                 <td width='10%'>Issue</td>
                                 <td width='10%'>Total</td>
-                                <td width='10%'>Cond/Ret</td>
-                                <td width='10%'>Ending Balance</td>
+                                <td width='10%'>Condemned</td>
+                                <td width='10%'>Returned</td>
                                 <td width='10%'>Losses</td>
+                                <td width='10%'>Ending Balance</td>
+                                
                             </tr>
-                            @foreach($linenInventory as $linen) 
+                            @foreach($linenInventoryReport as $linen) 
                             <tr> 
-                                <td width='40%'>{{$linen->product_name}}</td>
-                                <td width='10%'>to-do</td>
-                                <td width='10%'>{{$linen->product_issued_quantity}}</td>
-                                <td width='10%'>{{$linen->product_quantity}}</td>                                
-                                <td width='10%'>{{$linen->product_condemned_quantity}}</td>
-                                <td width='10%'>to-do</td>
-                                <td width='10%'>to-do</td>
+                                <td width='30%'>{{$linen->product_name}}</td>
+                                <td width='10%'>{{$linen->beg_bal}}</td>
+                                <td width='10%'>{{$linen->issued}}</td>
+                                <td width='10%'>{{$linen->total}}</td>
+                                <td width='10%'>{{$linen->condemned}}</td>                                
+                                <td width='10%'>{{$linen->returned}}</td>
+                                <td width='10%'>{{$linen->lossed}}</td>
+                                <td width='10%'>{{$linen->ending_bal}}</td>
                             </tr>
                             @endforeach
                           </tbody>
