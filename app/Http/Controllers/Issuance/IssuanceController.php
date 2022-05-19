@@ -94,7 +94,8 @@ class IssuanceController extends Controller
         ->whereIn('id', $productIds)
         ->update([
             'is_available' => false,
-            'is_issued' => true,            
+            'is_issued' => true,
+            'is_returned' => false,            
             'issued_office_id' => $request->office,	
             'issued_ward_id' => $request->ward,	
             'issued_date' => \Carbon\Carbon::now() ,

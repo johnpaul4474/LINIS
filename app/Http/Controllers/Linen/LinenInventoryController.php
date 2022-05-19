@@ -55,15 +55,16 @@ class LinenInventoryController extends Controller
         }
         else{
             if(Auth::user()->office_id != null){      
-                $productsList = DB::select('EXEC nora.paul.linen_getProductsListByWardOffice @ward =null'.', @office='.Auth::user()->office_id);
+                $productsList = DB::select('EXEC nora.paul.linen_getProductsListByOffice @office='.Auth::user()->office_id);
                 $productCount = DB::table('nora.paul.linen_products')
                                 ->where('is_condemned',0)
                                 ->where('is_lossed',0)
                                 ->where('is_available',0)
                                 ->where('is_returned',0)
                                 ->where('issued_office_id',Auth::user()->office_id)->count();
-            }else if(Auth::user()->ward_id != null){
-                $productsList = DB::select('EXEC nora.paul.linen_getProductsListByWardOffice @ward ='.Auth::user()->ward_id.', @office=null');
+            }
+            if(Auth::user()->ward_id != null){
+                $productsList = DB::select('EXEC nora.paul.linen_getProductsListByWard @ward ='.Auth::user()->ward_id);
                 $productCount = DB::table('nora.paul.linen_products')
                                 ->where('is_condemned',0)
                                 ->where('is_lossed',0)
@@ -74,7 +75,7 @@ class LinenInventoryController extends Controller
             }
         }
             
-        //dd($productsList);
+       //dd($productsList);
        
         return view('linenInventory', compact('materialCount','productCount','rawMaterials','stockRooms','storageList','productsList','requestList'));
            

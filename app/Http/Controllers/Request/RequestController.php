@@ -363,7 +363,11 @@ class RequestController extends Controller
     public function retrieveItemsList(Request $request){
 
         $productIds = explode(',', $request->productIds);
-
+        dd($request);
+        Products::where('product_bulk_id', $request->bulkId)->increment('product_available_quantity',count($productIds))
+                                                            ->decrement('product_issued_quantity',count($productIds));
+        
+        
         DB::table('nora.paul.linen_products')
         ->whereIn('id', $productIds)
         ->update([
@@ -372,7 +376,8 @@ class RequestController extends Controller
             'issued_ward_id' => null,	
             'issued_date' =>null,
             "updated_at" => \Carbon\Carbon::now(),  
-            "returned_date" => \Carbon\Carbon::now(),
+            "returned_date" => \Carbon\Carbon::now()
+           
         
         ]);
         

@@ -252,7 +252,7 @@
                                 <td id="issued_quantity">{{$products->products_issued_quantity}}</td>  
                                 @if($products->product_condemned_quantity > 0)
                                     <td style="background-color:#ff0000">CONDEMNED</td>
-                                @elseif($products->product_returned_quantity > 0)
+                                @elseif($products->product_returned_quantity > 0 && $products->product_available_quantity > 0)
                                     <td style="background-color:#00FF00">RE-ISSUE</td>
                                 @elseif($products->product_losses_quantity > 0)
                                     <td style="background-color:#FF0000">LOSSED</td>        
