@@ -533,9 +533,10 @@ $(document).ready(function () {
 
     $("#printItems").click(function() {
         window.print();
-        window.onafterprint = function(){
-        //console.log("Printing completed...");
-        }
+        console.log("print issuance");
+        // window.onafterprint = function(){
+        // //console.log("Printing completed...");
+        // }
     });
 
 

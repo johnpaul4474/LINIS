@@ -65,7 +65,7 @@
                         <div class="card-body">
                             <h3 class="card-title">{{$materialCount}}</h3>
                             <a href="material" class="btn btn-primary">Add Materials</a>
-                            <button type="button" class="btn btn-primary" id="viewMaterialsButton">View Materials</button>
+                            {{-- <button type="button" class="btn btn-primary" id="viewMaterialsButton">View Materials</button> --}}
                         </div>
                     </div>
             @endif
@@ -231,7 +231,7 @@
                                 <th>WARD/OFFICE</th>     
                                 <th>DATE CREATED</th>  
                                 <th>DATE ISSUED</th>
-                                @if(Auth::user()->role_id  == 1)
+                                @if(Auth::user()->role_id  == 1 )
                                 <th>DATE RETURNED</th>
                                 <th>DATE CONDEMNED</th>
                                 <th>DATE LOSSED</th> 
@@ -252,7 +252,7 @@
                                 <td id="issued_quantity">{{$products->products_issued_quantity}}</td>  
                                 @if($products->product_condemned_quantity > 0)
                                     <td style="background-color:#ff0000">CONDEMNED</td>
-                                @elseif($products->product_returned_quantity > 0 && $products->product_available_quantity > 0)
+                                @elseif($products->returned_date != null)
                                     <td style="background-color:#00FF00">RE-ISSUE</td>
                                 @elseif($products->product_losses_quantity > 0)
                                     <td style="background-color:#FF0000">LOSSED</td>        
@@ -276,7 +276,7 @@
                                 
                                 <td id="created_date">{{$products->create_date}}</td>
                                 <td id="issued_date">{{$products->issued_date}}</td>
-                                @if(Auth::user()->role_id  == 1)
+                                @if(Auth::user()->role_id  == 1 )
                                 <td id="returned_date">{{$products->returned_date}}</td>
                                 <td id="condemned_date">{{$products->condemned_date}}</td>
                                 <td id="condemned_date">{{$products->lossed_date}}</td> 
@@ -378,18 +378,22 @@ $("#material_used").change(function() {
     let bulkId = $(this).children(":selected").val();
     $('#finishedProductId').val(bulkId);
     
-
+    var condemnedCount = 0;
+    var lossedCount = 0;
     $.each({!! json_encode($productsList, JSON_HEX_TAG) !!}, function(key, value) {
         if(value.product_bulk_id == bulkId ){
             console.log(value);
           $('#productsTotalQuantity').val(value.product_quantity);
           $('#productsAvailable').val(value.product_available_quantity);
-          $('#productsCondemned').val(value.product_condemned_quantity);
-          $('#productsLosses').val(value.product_losses_quantity);
-    
+         
+          condemnedCount += parseInt(value.product_condemned_quantity);
+          lossedCount += parseInt(value.product_losses_quantity);
         }
       });  
+      $('#productsCondemned').val(condemnedCount);
+      $('#productsLosses').val(lossedCount);
       console.log(bulkId);    
+
     var table = $('#productsTable').DataTable();
 
      table.search(bulkId ).draw();
@@ -430,11 +434,11 @@ $("#material_used").change(function() {
 
 </script>
 <style>
-    body {
-    -moz-transform: scale(0.9, 0.9); /* Moz-browsers */
-    zoom: 0.9; /* Other non-webkit browsers */
-    zoom: 90%; /* Webkit browsers */
-}  
+    /* body {
+    -moz-transform: scale(0.9, 0.9); 
+    zoom: 0.9; 
+    zoom: 90%; 
+}   */
 tr.group,
 tr.group:hover {
     background-color: #ddd !important;

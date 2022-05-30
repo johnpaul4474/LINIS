@@ -95,11 +95,15 @@ class IssuanceController extends Controller
         ->update([
             'is_available' => false,
             'is_issued' => true,
-            'is_returned' => false,            
+            'is_returned' => false,
+            'is_lossed' => false,
+            'is_condemned' => false,            
             'issued_office_id' => $request->office,	
             'issued_ward_id' => $request->ward,	
             'issued_date' => \Carbon\Carbon::now() ,
-            "returned_date" => null,
+            'returned_date' => null,
+            'condemned_date' => null,
+            'lossed_date' => null,
             'product_issued_quantity' => count($productIds)           
         ]);
 
@@ -216,12 +220,18 @@ class IssuanceController extends Controller
         DB::table('nora.paul.linen_products')
         ->whereIn('id', $productIds)
         ->update([
-            'is_available' => false, 
-            'is_issued' => true,           	
+            'is_available' => false,
+            'is_issued' => true,
+            'is_returned' => false,
+            'is_lossed' => false,
+            'is_condemned' => false,          	
             'issued_office_id' => $request->office,	
             'issued_ward_id' => $request->ward,	
             'issued_date' => \Carbon\Carbon::now() ,
-            "returned_date" => null          
+            "returned_date" => null,
+            'condemned_date' => null,
+            'lossed_date' => null,
+            'product_issued_quantity' => count($productIds)         
         ]);
 
         return redirect()->route('home')->with('success', 'Issued product successfully');

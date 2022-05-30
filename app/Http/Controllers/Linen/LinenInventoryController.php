@@ -75,7 +75,7 @@ class LinenInventoryController extends Controller
             }
         }
             
-       //dd($productsList);
+      // dd($productsList);
        
         return view('linenInventory', compact('materialCount','productCount','rawMaterials','stockRooms','storageList','productsList','requestList'));
            
@@ -248,6 +248,14 @@ class LinenInventoryController extends Controller
 
         return redirect()->route('material')->with('error', 'Raw material deleted successfully');
     }
+
+    // public function getCondemnedCount($bulkId){
+
+    //     $condemnedCount = DB::select("select sum(is_condemned) from nora.paul.linen_products where product_bulk_id = ".$bulkId." and is_condemned ='1'");
+
+                        
+    //     return $condemnedCount;
+    // }
 
 
 }

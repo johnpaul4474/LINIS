@@ -394,11 +394,11 @@ $(document).ready(function () {
         table, th, td {
             border: 1px solid black !important;
             }
-    body {
-    -moz-transform: scale(0.9, 0.9); /* Moz-browsers */
-    zoom: 0.9; /* Other non-webkit browsers */
-    zoom: 90%; /* Webkit browsers */
-}    
+    /* body {
+    -moz-transform: scale(0.9, 0.9);
+    zoom: 0.9; 
+    zoom: 90%; 
+}     */
     
 </style> 
 @endpush

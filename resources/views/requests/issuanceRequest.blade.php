@@ -2,9 +2,9 @@
 
 @section('content')
 <div class="row">
-    <div class="container d-print-none">
+    <div class="container ">
         <div class="row justify-content-center">        
-            <div class="col-6">
+            <div class="col-6 d-print-none" >
                 <form id="myForm" class = 'card p-3 bg-light' action = "issueProduct" method = "post">
                     <fieldset>
                     <legend>Issue Products <legend>
@@ -191,7 +191,7 @@
                 
             </div>
             <div class="col-6">
-                <div class="row justify-content-center">
+                <div class="row justify-content-center d-print-none">
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-header text-white" style="background-color: #00AA9E;">{{ __('ISSUE PRODUCTS') }}</div>
@@ -309,127 +309,130 @@
                             </div>
                         </div>
                     </div>
-                </div>
                 <input id="trId" type="hidden" value="">
                 <input id="tdUnit" type="hidden" value="">
                 <input id="tdItem" type="hidden" value="">
                 <input id="tdCost" type="hidden" value="">
                 <input id="tdDateIssued" type="hidden" value="{{\Carbon\Carbon::now()->format('F d,Y')}}">
                 <input id="tdMaterial" type="hidden" value="">
-                <div class="row" id = "issuanceForm" hidden>    
-                    <div class="container ">
-                        <div class="col-md-9 mx-auto">  
-                        <div class="row justify-content-center">
-                          <div class="col-2 border border-dark border-bottom-0"><br>
-                
-                            <img src="../img/bghmc.png" class="mx-auto d-block" width="120" height="120" alt="">
-                            <br>
-                          </div>
-                          <div class="col-10 border border-dark border-left-0 border-bottom-0">
-                            <div class="row">
-                                <div class="col-12 border border-light border-left-0 border-top-0 border-right-0" >
-                                    <div class="text-center"><small>Republic of the Philippines</small></div>
-                                    <div class="text-center"><small>Department of Health</small></div>
-                                    <div class="text-center text-uppercase font-weight-bold">baguio general hospital and medical
-                                        center</small> </div>
-                                    <div class="text-center"><small>Baguio City</small> </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-8 border border-dark border-left-0 border-bottom-0 border-top-0">                                    
-                                    <div class="text-center mt-3">
-                                        <span class="font-weight-bold">GENERAL SERVICES SECTION - LINEN ROOM</span>
-                                        <h5 class="font-weight-bold">INVENTORY (LINEN) CUSTODIAN SLIP</h5>
-                                    </div>
-                                </div>
-                                <div class="col-2 " > 
-                                    <div class="row border border-dark border-left-0 border-bottom-0 border-top-0">
-                                         Form No.:
-                                    </div>
-                                    <div class="row border border-left-0 ">
-                                         Rev.No:
-                                    </div>
-                                    <div class="row border border-left-0 border-bottom-0 border-top-0">
-                                         Effectivity Date:
-                                    </div>
-                                </div>
-                                <div class="col-2 "> 
-                                    <div class="row justify-content-center border border-dark  border-left-0 border-bottom-0 border-top-0 border-right-0">
-                                        HS - GSS - 008
-                                    </div>
-                                    <div class="row justify-content-center border border-dark  border-left-0 border-right-0">
-                                        1
-                                    </div>
-                                    <div class="row justify-content-center border border-dark  border-left-0 border-bottom-0 border-top-0 border-right-0">
-                                        August 16, 2019
-                                    </div>
-                                </div>
-                
-                            </div>
-                          </div>
-                          
-                        </div>
-                        <div class="row justify-content-center">
-                            <div class="col-12 border border-dark "><br>
-                                
-                               
-                                <table class="table table-sm table-bordered " id="itemsTable">
-                                        <thead>
-                                            <tr class="text-center">
-                                                <th width='10%'>QUANTITY</th>
-                                                <th width='10%'>UNIT</th>
-                                                <th width='40%'>ITEM DESCRIPTION</th>
-                                                <th width='10%'>UNIT AMOUNT</th>
-                                                <th width='10%'>TOTAL AMOUNT</th>
-                                                <th width='10%'>DATE ISSUED</th>                                
-                                                <th width='10%'>REMARKS</th>
-                                            </tr>
-                                          </thead>
-                                          <tbody id="issueItemsTbody">
-                                            
-                                            
-                                            
-                                            
-                                            
-                                          </tbody>
-                                          <tfoot class="text-center">
-                                              <tr>
-                                               
-                                                    <td colspan="3" ><strong>
-                                                        RECEIVED BY:</strong> <br>
-                                                        __________________________<br>
-                                                        Signature Over Printed Name<br>
-                                                        __________________________<br>
-                                                        Position<br>
-                                                        Date:
-                                                    </td>
-                                                    
-                                                  <td colspan ="4" ><strong>RECEIVED FROM:</strong><br>
-                                                    __________________________<br>
-                                                    Signature Over Printed Name<br>
-                                                    __________________________<br>
-                                                    Position<br>
-                                                    Date:
-                                                  </td>
-                                                </div>  
-                                              </tr> 
-                
-                                            </tfoot>
-                                       
-                                </table> 
-                            </div>
-                              
-                            
-                        </div>
-                    </div>
-                    </div>  
                 </div>
+                
+                
             </div>
         </div>    
     </div> 
 </div>    
     <br>
-
+<div class="row">
+    <div class="row" id = "issuanceForm" hidden>    
+        <div class="container text-center ">
+            <div class="col-md-9 mx-auto">  
+            <div class="row justify-content-center">
+              <div class="col-2 border border-dark border-bottom-0"><br>
+    
+                <img src="../img/bghmc.png" class="mx-auto d-block" width="120" height="120" alt="">
+                <br>
+              </div>
+              <div class="col-10 border border-dark border-left-0 border-bottom-0">
+                <div class="row">
+                    <div class="col-12 border border-light border-left-0 border-top-0 border-right-0" >
+                        <div class="text-center"><small>Republic of the Philippines</small></div>
+                        <div class="text-center"><small>Department of Health</small></div>
+                        <div class="text-center text-uppercase font-weight-bold">baguio general hospital and medical
+                            center</small> </div>
+                        <div class="text-center"><small>Baguio City</small> </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-8 border border-dark border-left-0 border-bottom-0 border-top-0">                                    
+                        <div class="text-center mt-3">
+                            <span class="font-weight-bold">GENERAL SERVICES SECTION - LINEN ROOM</span>
+                            <h5 class="font-weight-bold">INVENTORY (LINEN) CUSTODIAN SLIP</h5>
+                        </div>
+                    </div>
+                    <div class="col-2 " > 
+                        <div class="row border border-dark border-left-0 border-bottom-0 border-top-0">
+                             Form No.:
+                        </div>
+                        <div class="row border border-left-0 ">
+                             Rev.No:
+                        </div>
+                        <div class="row border border-left-0 border-bottom-0 border-top-0">
+                             Effectivity Date:
+                        </div>
+                    </div>
+                    <div class="col-2 "> 
+                        <div class="row justify-content-center border border-dark  border-left-0 border-bottom-0 border-top-0 border-right-0">
+                            HS - GSS - 008
+                        </div>
+                        <div class="row justify-content-center border border-dark  border-left-0 border-right-0">
+                            1
+                        </div>
+                        <div class="row justify-content-center border border-dark  border-left-0 border-bottom-0 border-top-0 border-right-0">
+                            August 16, 2019
+                        </div>
+                    </div>
+    
+                </div>
+              </div>
+              
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-12 border border-dark "><br>
+                    
+                   
+                    <table class="table table-sm table-bordered " id="itemsTable">
+                            <thead>
+                                <tr class="text-center">
+                                    <th width='10%'>QUANTITY</th>
+                                    <th width='10%'>UNIT</th>
+                                    <th width='40%'>ITEM DESCRIPTION</th>
+                                    <th width='10%'>UNIT AMOUNT</th>
+                                    <th width='10%'>TOTAL AMOUNT</th>
+                                    <th width='10%'>DATE ISSUED</th>                                
+                                    <th width='10%'>REMARKS</th>
+                                </tr>
+                              </thead>
+                              <tbody id="issueItemsTbody">
+                                
+                                
+                                
+                                
+                                
+                              </tbody>
+                              <tfoot class="text-center">
+                                  <tr>
+                                   
+                                        <td colspan="3" ><strong>
+                                            RECEIVED BY:</strong> <br>
+                                            __________________________<br>
+                                            Signature Over Printed Name<br>
+                                            __________________________<br>
+                                            Position<br>
+                                            Date:
+                                        </td>
+                                        
+                                      <td colspan ="4" ><strong>RECEIVED FROM:</strong><br>
+                                        __________________________<br>
+                                        Signature Over Printed Name<br>
+                                        __________________________<br>
+                                        Position<br>
+                                        Date:
+                                      </td>
+                                    </div>  
+                                  </tr> 
+    
+                                </tfoot>
+                           
+                    </table> 
+                </div>
+                  
+                
+            </div>
+        </div>
+        </div>  
+    </div>
+</div>    
 
 @endsection
 

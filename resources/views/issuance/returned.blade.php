@@ -1461,11 +1461,11 @@ $(document).change(function () {
 input[type=checkbox] , {
     transform: scale(0.5);
 }
- body {
-    -moz-transform: scale(0.9, 0.9); /* Moz-browsers */
-    zoom: 0.9; /* Other non-webkit browsers */
-    zoom: 90%; /* Webkit browsers */
-} 
+ /* body {
+    -moz-transform: scale(0.9, 0.9); 
+    zoom: 0.9; 
+    zoom: 90%; 
+}  */
     
 </style> 
 @endpush
