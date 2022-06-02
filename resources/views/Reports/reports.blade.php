@@ -259,8 +259,8 @@
                                 <td width='10%'>Total</td>
                                 <td width='10%'>Condemned</td>
                                 <td width='10%'>Returned</td>
-                                <td width='10%'>Losses</td>
                                 <td width='10%'>Ending Balance</td>
+                                <td width='10%'>Losses</td>
                                 
                             </tr>
                             @foreach($linenInventoryReport as $linen) 
@@ -271,8 +271,9 @@
                                 <td width='10%'>{{$linen->total}}</td>
                                 <td width='10%'>{{$linen->condemned}}</td>                                
                                 <td width='10%'>{{$linen->returned}}</td>
-                                <td width='10%'>{{$linen->lossed}}</td>
                                 <td width='10%'>{{$linen->ending_bal}}</td>
+                                <td width='10%'>{{$linen->lossed}}</td>
+                                
                             </tr>
                             @endforeach
                           </tbody>
@@ -309,7 +310,7 @@ $(document).ready(function () {
         });
 
     $("#wardRadio, #officeRadio").change(function(){
-        console.log('radio ward office');
+        //console.log('radio ward office');
             
             $("#ward, #office").val("").attr("readonly",true);
             if($("#wardRadio").is(":checked")){

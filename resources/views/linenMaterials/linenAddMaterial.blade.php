@@ -533,7 +533,7 @@
                         {{-- @if ($errors->any())
                         @foreach ($errors->all() as $error)
                             <script>
-                            console.log('{{$error}}');
+                            //console.log('{{$error}}');
                             if({{$error}} != 'The selected stock number is invalid.'){
                                 $('#editRawMaterialModal').modal('show')
                             }
@@ -561,7 +561,7 @@
 
 <script>  
 $(document).ready(function () {
-        console.log('add materials');
+        //console.log('add materials');
     $('#rawMaterialTable').DataTable(
         {
         "lengthMenu": [[5, 25, 50, -1], [5, 25, 50, "All"]],
@@ -599,7 +599,7 @@ $(document).ready(function () {
         $('#editRawMaterialModal').modal('show')
 
         var currentRow=$(this).closest("tr"); 
-        // console.log(currentRow.attr('id'));
+        // //console.log(currentRow.attr('id'));
 
          $('#editRawMaterialModal #idRawMaterial').val(currentRow.attr('id'));
          $('#editRawMaterialModal #stock_number').val(currentRow.find("td:eq(0)").text());
@@ -615,7 +615,7 @@ $(document).ready(function () {
          $.each({!!$stockRooms!!}, function(key, value) {       
              
                 if(value.stock_room == currentRow.find("td:eq(6)").text()){
-                    console.log(value.id);
+                    //console.log(value.id);
                     $('#editRawMaterialModal #stockRoom').val(value.id).change();
                 }
         });
@@ -635,17 +635,17 @@ $(document).ready(function () {
 
         if(currentRow.find("td:eq(8)").text() == "YES"){                   
             $('#isArchivedEdit').prop( "checked", true );
-            console.log($('#isArchivedEdit').is(':checked'));     
+            //console.log($('#isArchivedEdit').is(':checked'));     
         }else{             
-             console.log($('#isArchivedEdit').is(':checked'));      
+             //console.log($('#isArchivedEdit').is(':checked'));      
             $('#isArchivedEdit').prop( "checked", false );
         }
 
         if(currentRow.find("td:eq(9)").text() == "YES"){                   
             $('#isAvailableEdit').prop( "checked", true );
-            console.log($('#isAvailableEdit').is(':checked'));     
+            //console.log($('#isAvailableEdit').is(':checked'));     
         }else{             
-             console.log($('#isAvailableEdit').is(':checked'));      
+             //console.log($('#isAvailableEdit').is(':checked'));      
             $('#isAvailableEdit').prop( "checked", false );
         }
 

@@ -405,7 +405,7 @@
 
 <script>
 $(document).ready(function () {
-        console.log('add storage/stockroom');
+        //console.log('add storage/stockroom');
     $('#stockRoomTable').DataTable(
         {
         "lengthMenu": [[5, 25, 50, -1], [5, 25, 50, "All"]],
@@ -455,7 +455,7 @@ $(document).ready(function () {
         var currentRow=$(this).closest("tr"); 
          
       
-        console.log(currentRow.attr('id'));
+        //console.log(currentRow.attr('id'));
          $('#editStockRoomModal #idStockRoom').val(currentRow.attr('id'));
          $('#editStockRoomModal #edit_stock_room').val(currentRow.find("td:eq(0)").text());
 
@@ -477,8 +477,8 @@ $(document).ready(function () {
       
         var stock_room_id = $('#storageTable').DataTable().row(currentRow).data();
 
-        console.log(currentRow.attr('id'));
-        console.log(stock_room_id[0]);
+        //console.log(currentRow.attr('id'));
+        //console.log(stock_room_id[0]);
          $('#editStorageModal #idStorage').val(currentRow.attr('id'));
          $('#editStorageModal #edit_storage').val(currentRow.find("td:eq(1)").text());
          $('#editStorageModal #editStockRoomStorage').val(stock_room_id[0])

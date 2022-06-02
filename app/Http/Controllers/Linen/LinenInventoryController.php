@@ -89,7 +89,13 @@ class LinenInventoryController extends Controller
         $stockRooms = StockRoom::select()->orderBy('stock_room','asc')->get();
         $storageList = Storage::select()->orderBy('storage_name','asc')->get();
         $lastRecord = DB::table('nora.paul.linen_raw_materials')->latest()->first();
-        $lastRecord =$lastRecord->stock_number + 1;
+       
+        if($lastRecord == null){
+            $lastRecord = 1;
+        }else{
+            $lastRecord =$lastRecord->stock_number + 1;
+        }
+        
         
 
         return view('linenMaterials.linenAddMaterial', compact('rawMaterials','stockRooms','storageList','lastRecord'));

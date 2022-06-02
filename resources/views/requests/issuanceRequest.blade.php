@@ -454,7 +454,7 @@ $(document).ready(function () {
         event.preventDefault();
 
         if($('#availableProducts').val() <= 0 || $("#ward").val() == null || $("#office").val() == null){
-            console.log("disable add button");
+            //console.log("disable add button");
             $(this).attr("disabled",true);
         }
 
@@ -479,10 +479,10 @@ $(document).ready(function () {
                office : $("#office").val(),
                });
         
-        console.log(issuedItemsList);
+        //console.log(issuedItemsList);
         $('#itemsIssuedListObject').val(JSON.stringify(issuedItemsList));
         productIdsArray = $('#productIds').val().split(',');
-        console.log(productIdsArray);
+        //console.log(productIdsArray);
         // $("#listProducts").find('[data-id="639"]').remove();
         productIdsArray.forEach(removeItems);      
 
@@ -517,7 +517,7 @@ $(document).ready(function () {
                         $('#quantity').val(0);
                         selectedItemCount = 0;
                         $("#wardRadio, #officeRadio").prop('checked', false);
-                        console.log('radio ward office reset');
+                        //console.log('radio ward office reset');
                             
                         $("#ward, #office").val("").attr("readonly",true);
                              
@@ -526,7 +526,7 @@ $(document).ready(function () {
                     
                     },
                     error: function(error) {
-                    console.log(error);
+                    //console.log(error);
                     }
                 });    
              
@@ -546,9 +546,9 @@ $(document).ready(function () {
         var rows = getHighlightRow();
         if (rows != undefined) {
           rows.remove();
-          console.log(rows.attr('id'));
+          //console.log(rows.attr('id'));
           let requestId = $('#requestId').val()
-          //console.log(requestId);
+          ////console.log(requestId);
           bulkId = $('#trId').val();
           availableQuantityOld = parseInt($('#availableProducts').val());     
           $.ajax({
@@ -562,14 +562,14 @@ $(document).ready(function () {
                         bulkId : bulkId                      
                         },
                     success:function(response){
-                        console.log(response); 
+                        //console.log(response); 
                         
                      
                             let bulkId = $(finishedProduct).children(":selected").val();
                             var selectedProductArray = new Array();
                             $("#listProducts").find('div').remove();
                             
-                            //console.log(bulkId);
+                            ////console.log(bulkId);
                             $.each(response, function(key, value) {
                                 if(value.product_bulk_id == bulkId && value.is_available == 1){
                                     selectedProductArray.push(value);
@@ -577,7 +577,7 @@ $(document).ready(function () {
                                 }
                             
                             });
-                            console.log(selectedProductArray);
+                            //console.log(selectedProductArray);
                             $('#availableProductsOriginal').val(selectedProductArray.length);
                             $('#availableProducts').val(selectedProductArray.length);
                             availableCount = selectedProductArray.length;
@@ -585,9 +585,9 @@ $(document).ready(function () {
                         
                                 $.each(selectedProductArray, function(key, value) {
                                     // while(selectedProductArray.length) {
-                                    //     //console.log(selectedProductArray.splice(0,10));
+                                    //     ////console.log(selectedProductArray.splice(0,10));
                                     // }  
-                                    //console.log(value); 
+                                    ////console.log(value); 
                                     $('#tdUnit').val(value.product_unit);
                                     $('#tdItem').val(value.product_name);
                                     $('#tdCost').val(value.product_unit_cost);
@@ -606,7 +606,7 @@ $(document).ready(function () {
                                 });
                     },
                     error: function(error) {
-                        //console.log(error);
+                        ////console.log(error);
                     }
                 }); 
         }
@@ -626,7 +626,7 @@ $(document).ready(function () {
     $("#printItems").click(function() {
         window.print();
         window.onafterprint = function(){
-        console.log("Printing completed...");
+        //console.log("Printing completed...");
         }
     });
 
@@ -665,7 +665,7 @@ $("#finishedProduct").change(function() {
     var selectedProductArray = new Array();
     $("#listProducts").find('div').remove();
     
-    console.log(bulkId);
+    //console.log(bulkId);
     $.each({!! json_encode($productsList, JSON_HEX_TAG) !!}, function(key, value) {
         if(value.product_bulk_id == bulkId && value.is_available == 1){
             selectedProductArray.push(value);
@@ -679,9 +679,9 @@ $("#finishedProduct").change(function() {
    
     $.each(selectedProductArray, function(key, value) {
             // while(selectedProductArray.length) {
-            //     //console.log(selectedProductArray.splice(0,10));
+            //     ////console.log(selectedProductArray.splice(0,10));
             // }  
-            //console.log(value); 
+            ////console.log(value); 
             $('#tdUnit').val(value.product_unit);
             $('#tdItem').val(value.product_name);
             $('#tdCost').val(value.product_unit_cost);
@@ -704,7 +704,7 @@ $("#finishedProduct").change(function() {
     });
     
     $("#wardRadio, #officeRadio").change(function(){
-        console.log('radio ward office');
+        //console.log('radio ward office');
             
             $("#ward, #office").val("").attr("readonly",true);
             if($("#wardRadio").is(":checked")){
@@ -739,7 +739,7 @@ $("#finishedProduct").change(function() {
         });
 
         $('#availableProducts').val(oldValueProducts-$(this).val())
-        console.log("availableProducts: " ,$(this).val());
+        //console.log("availableProducts: " ,$(this).val());
     });
 
         let pendingCount = 0;
@@ -748,7 +748,7 @@ $("#finishedProduct").change(function() {
         
         
         $.each({!! json_encode($requestList, JSON_HEX_TAG) !!}, function(key, value) {    
-            console.log(value)       
+            //console.log(value)       
             if(value.status == 1){
             pendingCount ++;
             }
@@ -793,7 +793,7 @@ $("#finishedProduct").change(function() {
                         window.location = "services";
                     },
                     error: function(error) {
-                        console.log(error);
+                        //console.log(error);
                     }
                 }); 
     
@@ -861,13 +861,13 @@ $("#finishedProduct").change(function() {
        
        
        if($(this).prop("checked") == true){
-           //console.log("Checkbox is checked.",$(this).attr('id'));
+           ////console.log("Checkbox is checked.",$(this).attr('id'));
            availableCount --;
            selectedItemCount ++;
            
        }
        else if($(this).prop("checked") == false){
-           //console.log("Checkbox is unchecked.",$(this).attr('id'));
+           ////console.log("Checkbox is unchecked.",$(this).attr('id'));
            availableCount ++;
            selectedItemCount --;
           

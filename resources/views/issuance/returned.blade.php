@@ -803,7 +803,7 @@ $(document).ready(function () {
             $("#finishedProduct").find('option').remove();     
             $("#material_used").append('<option value="" selected disabled hidden> Choose Material Used</option>'); 
             $.each({!! json_encode($productsList, JSON_HEX_TAG) !!}, function(key, value) {
-                console.log($("#ward").val(),$("#office").val() )
+                //console.log($("#ward").val(),$("#office").val() )
                 if($("#ward").val() == value.issued_ward_id){
                     $("#material_used").append('<option value="'+value.raw_material_id+'">'+value.material_used+'</option>'); 
                 }    
@@ -876,7 +876,7 @@ $(document).ready(function () {
             
         }
     $("#wardRadio, #officeRadio").change(function(){
-        console.log('radio ward office');
+        //console.log('radio ward office');
             
             $("#ward, #office").val("").attr("readonly",true);
             if($("#wardRadio").is(":checked")){
@@ -902,7 +902,7 @@ $(document).ready(function () {
         
 
         $("#ward").change(function(){
-            console.log($("#ward").val());
+            //console.log($("#ward").val());
             $("#material_used").removeAttr("readonly");
             
             $("#material_used").find('option').remove(); 
@@ -910,7 +910,7 @@ $(document).ready(function () {
             $("#material_used").append('<option value="" selected disabled hidden> Choose Material Used</option>'); 
             $.each({!! json_encode($productsList, JSON_HEX_TAG) !!}, function(key, value) {
                 if($("#ward").val() == value.issued_ward_id){
-                    //console.log(value);
+                    ////console.log(value);
                     
                     $("#material_used").append('<option value="'+value.raw_material_id+'">'+value.material_used+'</option>'); 
                 }    
@@ -928,14 +928,14 @@ $(document).ready(function () {
 
         $("#material_used").change(function(){
             let raw_material_id =  $(this).val();
-            console.log("----------" ,raw_material_id);
+            //console.log("----------" ,raw_material_id);
             $("#finishedProduct").removeAttr("readonly");
             $("#finishedProduct").find('option').remove();
             $("#finishedProduct").append('<option value="" selected disabled hidden> Choose Material Used</option>');
             $.each({!! json_encode($productsList, JSON_HEX_TAG) !!}, function(key, value) {
                 
                 if(value.raw_material_id == raw_material_id){
-                    //console.log(value);
+                    ////console.log(value);
                     $("#finishedProduct").append('<option value="'+value.product_bulk_id+'">'+value.product_name+'</option>'); 
                 }
             });
@@ -947,14 +947,14 @@ $(document).ready(function () {
                     usedNames[this.text] = this.value;
                 }
         });
-            console.log( $("#ward").val());
+            //console.log( $("#ward").val());
             $("#finishedProduct").change(function() {   
                     let bulkId = $(this).children(":selected").val();
-                    console.log(bulkId);
+                    //console.log(bulkId);
                     var selectedProductArray = new Array();
                     $("#listProducts").find('ul').remove();
                    
-                    console.log($('#ward').val)
+                    //console.log($('#ward').val)
                     let totalQuantity = 0;
                     $.each({!! json_encode($productsList, JSON_HEX_TAG) !!}, function(key, value) {
                         if(value.product_bulk_id == bulkId){
@@ -962,14 +962,14 @@ $(document).ready(function () {
                         }
                         if(value.issued_office_id != null){
                             if(value.product_bulk_id == bulkId && value.is_available == 0 && value.is_condemned == 0 && value.issued_ward_id == $('#ward').val() && value.is_lossed == 0){
-                                console.log(value)
+                                //console.log(value)
                                 selectedProductArray.push(value);
                         
                             }
                         }
                         if(value.issued_ward_id != null){
                             if(value.product_bulk_id == bulkId && value.is_available == 0 && value.is_condemned == 0 && value.issued_office_id == $('#office').val() && value.is_lossed == 0){
-                                console.log(value)
+                                //console.log(value)
                                 selectedProductArray.push(value);
                         
                             }
@@ -994,7 +994,7 @@ $(document).ready(function () {
                         // // names must be equal
                         // return 0;
                         // });
-                        console.log(selectedProductArray);
+                        //console.log(selectedProductArray);
                         $.each(selectedProductArray, function(key, value) {
                             let office_ward ="";
                             if(value.office_name != null){
@@ -1022,8 +1022,8 @@ $(document).ready(function () {
 
         
         $("#office").change(function(){
-            console.log('office change');
-            console.log($("#office").val());
+            //console.log('office change');
+            //console.log($("#office").val());
             $("#material_used").removeAttr("readonly");
             
             $("#material_used").find('option').remove(); 
@@ -1031,7 +1031,7 @@ $(document).ready(function () {
             $("#material_used").append('<option value="" selected disabled hidden> Choose Material Used</option>'); 
             $.each({!! json_encode($productsList, JSON_HEX_TAG) !!}, function(key, value) {
                 if($("#office").val() == value.issued_office_id){
-                    //console.log(value);
+                    ////console.log(value);
                     
                     $("#material_used").append('<option value="'+value.raw_material_id+'">'+value.material_used+'</option>'); 
                 }    
@@ -1050,7 +1050,7 @@ $(document).ready(function () {
         }); 
 
         $("#wardRadioCondemn, #officeRadioCondemn").change(function(){
-            console.log('radio ward office');
+            //console.log('radio ward office');
             
             $("#wardCondemn, #officeCondemn").val("").attr("readonly",true);
             if($("#wardRadioCondemn").is(":checked")){
@@ -1076,7 +1076,7 @@ $(document).ready(function () {
         
 
         $("#wardCondemn").change(function(){
-            //console.log($("#ward").val());
+            ////console.log($("#ward").val());
             $("#material_usedCondemn").removeAttr("readonly");
             
             $("#material_usedCondemn").find('option').remove(); 
@@ -1084,7 +1084,7 @@ $(document).ready(function () {
             $("#material_usedCondemn").append('<option value="" selected disabled hidden> Choose Material Used</option>'); 
             $.each({!! json_encode($productsList, JSON_HEX_TAG) !!}, function(key, value) {
                 if($("#wardCondemn").val() == value.issued_ward_id){
-                    //console.log(value);
+                    ////console.log(value);
                     
                     $("#material_usedCondemn").append('<option value="'+value.raw_material_id+'">'+value.material_used+'</option>'); 
                 }    
@@ -1103,14 +1103,14 @@ $(document).ready(function () {
 
         $("#material_usedCondemn").change(function(){
             let raw_material_idCondemn =  $(this).val();
-            console.log(raw_material_idCondemn);
+            //console.log(raw_material_idCondemn);
             $("#finishedProductCondemn").removeAttr("readonly");
             $("#finishedProductCondemn").find('option').remove();
             $("#finishedProductCondemn").append('<option value="" selected disabled hidden> Choose Material Used</option>');
             $.each({!! json_encode($productsList, JSON_HEX_TAG) !!}, function(key, value) {
                 
                 if(value.raw_material_id == raw_material_idCondemn){
-                    console.log(value.raw_material_id , raw_material_idCondemn);
+                    //console.log(value.raw_material_id , raw_material_idCondemn);
                     $("#finishedProductCondemn").append('<option value="'+value.product_bulk_id+'">'+value.product_name+'</option>'); 
                 }
             });
@@ -1122,10 +1122,10 @@ $(document).ready(function () {
                     usedNamesCondemn[this.text] = this.value;
                 }
         });
-            console.log( $("#wardCondemn").val());
+            //console.log( $("#wardCondemn").val());
             $("#finishedProductCondemn").change(function() {   
                     let bulkIdCondemn = $(this).children(":selected").val();
-                    console.log(bulkIdCondemn);
+                    //console.log(bulkIdCondemn);
                     var selectedProductArrayCondemn = new Array();
                     $("#listProductsCondemn").find('ul').remove();
                    
@@ -1139,14 +1139,14 @@ $(document).ready(function () {
 
                         if(value.issued_office_id != null){
                             if(value.product_bulk_id == bulkIdCondemn && value.is_available == 0 && value.is_condemned == 0 && value.issued_ward_id == $('#ward').val() && value.is_lossed == 0){
-                                console.log(value)
+                                //console.log(value)
                                 selectedProductArrayCondemn.push(value);
                         
                             }
                         }
                         if(value.issued_ward_id != null){
                             if(value.product_bulk_id == bulkIdCondemn && value.is_available == 0 && value.is_condemned == 0 && value.issued_office_id == $('#office').val() && value.is_lossed == 0){
-                                console.log(value)
+                                //console.log(value)
                                 selectedProductArrayCondemn.push(value);
                         
                             }
@@ -1172,7 +1172,7 @@ $(document).ready(function () {
                         // // names must be equal
                         // return 0;
                         // });
-                        console.log(selectedProductArrayCondemn);
+                        //console.log(selectedProductArrayCondemn);
                         $.each(selectedProductArrayCondemn, function(key, value) {
                             let office_wardCondemn ="";
                             if(value.office_name != null){
@@ -1202,8 +1202,8 @@ $(document).ready(function () {
 
         
         $("#officeCondemn").change(function(){
-            console.log('office change');
-            console.log($("#officeCondemn").val());
+            //console.log('office change');
+            //console.log($("#officeCondemn").val());
             $("#material_usedCondemn").removeAttr("readonly");
             
             $("#material_usedCondemn").find('option').remove(); 
@@ -1211,7 +1211,7 @@ $(document).ready(function () {
             $("#material_usedCondemn").append('<option value="" selected disabled hidden> Choose Material Used</option>'); 
             $.each({!! json_encode($productsList, JSON_HEX_TAG) !!}, function(key, value) {
                 if($("#officeCondemn").val() == value.issued_office_id){
-                    //console.log(value);
+                    ////console.log(value);
                     
                     $("#material_usedCondemn").append('<option value="'+value.raw_material_id+'">'+value.material_used+'</option>'); 
                 }    
@@ -1230,7 +1230,7 @@ $(document).ready(function () {
         }); 
 
         $("#wardRadioLosses, #officeRadioLosses").change(function(){
-        console.log('radio ward office Losses');
+        //console.log('radio ward office Losses');
             
             $("#wardLosses, #officeLosses").val("").attr("readonly",true);
             if($("#wardRadioLosses").is(":checked")){
@@ -1263,7 +1263,7 @@ $(document).ready(function () {
             $("#material_usedLosses").append('<option value="" selected disabled hidden> Choose Material Used</option>'); 
             $.each({!! json_encode($productsList, JSON_HEX_TAG) !!}, function(key, value) {
                 if($("#wardLosses").val() == value.issued_ward_id){
-                    //console.log(value);
+                    ////console.log(value);
                     
                     $("#material_usedLosses").append('<option value="'+value.raw_material_id+'">'+value.material_used+'</option>'); 
                 }    
@@ -1282,14 +1282,14 @@ $(document).ready(function () {
 
 		$("#material_usedLosses").change(function(){
 				let raw_material_idLosses =  $(this).val();
-				console.log(raw_material_idLosses);
+				//console.log(raw_material_idLosses);
 				$("#finishedProductLosses").removeAttr("readonly");
 				$("#finishedProductLosses").find('option').remove();
 				$("#finishedProductLosses").append('<option value="" selected disabled hidden> Choose Material Used</option>');
 				$.each({!! json_encode($productsList, JSON_HEX_TAG) !!}, function(key, value) {
 					
 					if(value.raw_material_id == raw_material_idLosses){
-						console.log(value.raw_material_id , raw_material_idLosses);
+						//console.log(value.raw_material_id , raw_material_idLosses);
 						$("#finishedProductLosses").append('<option value="'+value.product_bulk_id+'">'+value.product_name+'</option>'); 
 					}
 				});
@@ -1301,10 +1301,10 @@ $(document).ready(function () {
 						usedNamesLosses[this.text] = this.value;
 					}
 				});
-				console.log( $("#wardLosses").val());
+				//console.log( $("#wardLosses").val());
 				$("#finishedProductLosses").change(function() {   
 						let bulkIdLosses = $(this).children(":selected").val();
-						console.log(bulkIdLosses);
+						//console.log(bulkIdLosses);
 						var selectedProductArrayLosses = new Array();
 						$("#listProductsLosses").find('ul').remove();
 					   
@@ -1317,14 +1317,14 @@ $(document).ready(function () {
 
                             if(value.issued_office_id != null){
                             if(value.product_bulk_id == bulkIdLosses && value.is_available == 0 && value.is_condemned == 0 && value.issued_ward_id == $('#ward').val() && value.is_lossed == 0){
-                                console.log(value)
+                                //console.log(value)
                                 selectedProductArrayLosses.push(value);
                         
                             }
                             }
                             if(value.issued_ward_id != null){
                                 if(value.product_bulk_id == bulkIdLosses && value.is_available == 0 && value.is_condemned == 0 && value.issued_office_id == $('#office').val() && value.is_lossed == 0){
-                                    console.log(value)
+                                    //console.log(value)
                                     selectedProductArrayLosses.push(value);
                             
                                 }
@@ -1336,7 +1336,7 @@ $(document).ready(function () {
 						$('#availableProductsLosses').val(selectedProductArrayLosses.length);
 						$("#listProductsLosses").find('li').remove();
 
-							console.log(selectedProductArrayLosses);
+							//console.log(selectedProductArrayLosses);
 							$.each(selectedProductArrayLosses, function(key, value) {
 								let office_wardLosses ="";
 								if(value.office_name != null){
@@ -1361,8 +1361,8 @@ $(document).ready(function () {
 				});
 			});
 		$("#officeLosses").change(function(){
-				console.log('office change');
-				console.log($("#officeLosses").val());
+				//console.log('office change');
+				//console.log($("#officeLosses").val());
 				$("#material_usedLosses").removeAttr("readonly");
 				
 				$("#material_usedLosses").find('option').remove(); 
@@ -1370,7 +1370,7 @@ $(document).ready(function () {
 				$("#material_usedLosses").append('<option value="" selected disabled hidden> Choose Material Used</option>'); 
 				$.each({!! json_encode($productsList, JSON_HEX_TAG) !!}, function(key, value) {
 					if($("#officeLosses").val() == value.issued_office_id){
-						//console.log(value);
+						////console.log(value);
 						
 						$("#material_usedLosses").append('<option value="'+value.raw_material_id+'">'+value.material_used+'</option>'); 
 					}    

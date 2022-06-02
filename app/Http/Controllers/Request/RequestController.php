@@ -46,8 +46,8 @@ class RequestController extends Controller
         
         
 
-        $wardList = DB::Select("SELECT * FROM jhay.linen_ward ORDER BY ward_name ASC");
-        $officeList = DB::Select("SELECT * FROM jhay.linen_office ORDER BY office_name ASC");
+        $wardList = DB::Select("SELECT * FROM nora.paul.linen_ward ORDER BY ward_name ASC");
+        $officeList = DB::Select("SELECT * FROM nora.paul.linen_office ORDER BY office_name ASC");
 
         $wardName = null;
         $officeName= null;
@@ -109,8 +109,8 @@ class RequestController extends Controller
 
     public function processRequest(Request $request){
        
-        $wardList = DB::Select("SELECT * FROM jhay.linen_ward ORDER BY ward_name ASC");
-        $officeList = DB::Select("SELECT * FROM jhay.linen_office ORDER BY office_name ASC");
+        $wardList = DB::Select("SELECT * FROM nora.paul.linen_ward ORDER BY ward_name ASC");
+        $officeList = DB::Select("SELECT * FROM nora.paul.linen_office ORDER BY office_name ASC");
 
         $wardName = null;
         $officeName= null;
@@ -168,8 +168,8 @@ class RequestController extends Controller
     }
 
     public function pickUpProductRequest(Request $request){
-        $wardList = DB::Select("SELECT * FROM jhay.linen_ward ORDER BY ward_name ASC");
-        $officeList = DB::Select("SELECT * FROM jhay.linen_office ORDER BY office_name ASC");
+        $wardList = DB::Select("SELECT * FROM nora.paul.linen_ward ORDER BY ward_name ASC");
+        $officeList = DB::Select("SELECT * FROM nora.paul.linen_office ORDER BY office_name ASC");
 
         $wardName = null;
         $officeName= null;
@@ -275,8 +275,8 @@ class RequestController extends Controller
         }
 
 
-        $wardList = DB::Select("SELECT * FROM jhay.linen_ward ORDER BY ward_name ASC");
-        $officeList = DB::Select("SELECT * FROM jhay.linen_office ORDER BY office_name ASC");
+        $wardList = DB::Select("SELECT * FROM nora.paul.linen_ward ORDER BY ward_name ASC");
+        $officeList = DB::Select("SELECT * FROM nora.paul.linen_office ORDER BY office_name ASC");
 
         $wardName = null;
         $officeName= null;
@@ -313,8 +313,8 @@ class RequestController extends Controller
 
     public function issueFinalRequest(Request $request){
 
-        $wardList = DB::Select("SELECT * FROM jhay.linen_ward ORDER BY ward_name ASC");
-        $officeList = DB::Select("SELECT * FROM jhay.linen_office ORDER BY office_name ASC");
+        $wardList = DB::Select("SELECT * FROM nora.paul.linen_ward ORDER BY ward_name ASC");
+        $officeList = DB::Select("SELECT * FROM nora.paul.linen_office ORDER BY office_name ASC");
 
         
         $wardName = null;

@@ -173,7 +173,7 @@ $(document).ready(function () {
  
   
   $.each({!! json_encode($requestList, JSON_HEX_TAG) !!}, function(key, value) {    
-    console.log(value)       
+    ////////console.log(value)       
     if(value.status == 1){
       pendingCount ++;
     }

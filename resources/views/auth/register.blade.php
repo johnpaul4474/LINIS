@@ -143,7 +143,7 @@
    <script>
   
     $(document).ready(function () {
-        console.log( "ready!" );
+        //////////////////console.log( "ready!" );
         $("#wardRadio, #officeRadio").change(function(){
             
         $("#ward, #office").val("").attr("readonly",true);

@@ -382,7 +382,7 @@ $("#material_used").change(function() {
     var lossedCount = 0;
     $.each({!! json_encode($productsList, JSON_HEX_TAG) !!}, function(key, value) {
         if(value.product_bulk_id == bulkId ){
-            console.log(value);
+            //console.log(value);
           $('#productsTotalQuantity').val(value.product_quantity);
           $('#productsAvailable').val(value.product_available_quantity);
          
@@ -392,7 +392,7 @@ $("#material_used").change(function() {
       });  
       $('#productsCondemned').val(condemnedCount);
       $('#productsLosses').val(lossedCount);
-      console.log(bulkId);    
+      //console.log(bulkId);    
 
     var table = $('#productsTable').DataTable();
 
@@ -403,12 +403,12 @@ $("#material_used").change(function() {
     // $("#btn-retrieve").click(function (e) {
         
 
-    //     console.log($('#materialUsedId').val());
-    //     console.log($('#finishedProductId').val());
+    //     //console.log($('#materialUsedId').val());
+    //     //console.log($('#finishedProductId').val());
     //     // $.each({!! json_encode($productsList, JSON_HEX_TAG) !!}, function(key, value) { 
             
     //     //     if(value.raw_material_id == $('#materialUsedId').val() &&  value.product_bulk_id == $('#finishedProductId').val()){
-    //     //         console.log(value);
+    //     //         //console.log(value);
                                                                               
               
 
@@ -420,7 +420,7 @@ $("#material_used").change(function() {
 
     let pendingCount = 0
     $.each({!! json_encode($requestList, JSON_HEX_TAG) !!}, function(key, value) {    
-    console.log(value)       
+    //console.log(value)       
     if(value.status != 4){
       pendingCount ++;
     }

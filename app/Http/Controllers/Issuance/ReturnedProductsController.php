@@ -56,9 +56,9 @@ class ReturnedProductsController extends Controller
         on products.storage_room_id = storages.id
         inner join nora.paul.linen_raw_materials as raw_material
         on products.raw_material_id = raw_material.id  
-		left join hospital.jhay.linen_ward as ward
+		left join nora.paul.linen_ward as ward
 		on products.issued_ward_id = ward.id
-		left join hospital.jhay.linen_office as office
+		left join nora.paul.linen_office as office
 		on products.issued_office_id = office.id
 		where products.deleted_at is null  order by products.id asc,products.is_available desc");
         
