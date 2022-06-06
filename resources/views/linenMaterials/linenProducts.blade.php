@@ -181,7 +181,7 @@
                             <div class="input-group-prepend">                      
                             <label for="materialUsedQuantity" class="input-group-text">{{ __('# of Material used') }}</label>
                             </div>                    
-                                <input id="materialUsedQuantity" type="number" class="form-control @error('materialUsedQuantity') is-invalid @enderror" name="materialUsedQuantity" value="{{ old('materialUsedQuantity') }}" required autocomplete="materialUsedQuantity" autofocus>
+                                <input id="materialUsedQuantity" type="number" step=".01" class="form-control @error('materialUsedQuantity') is-invalid @enderror" name="materialUsedQuantity" value="{{ old('materialUsedQuantity') }}" required autocomplete="materialUsedQuantity" autofocus>
                                 @error('materialUsedQuantity')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>

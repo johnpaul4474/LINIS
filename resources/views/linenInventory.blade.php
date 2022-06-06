@@ -234,7 +234,7 @@
                                 @if(Auth::user()->role_id  == 1 )
                                 <th>DATE RETURNED</th>
                                 <th>DATE CONDEMNED</th>
-                                <th>DATE LOSSED</th> 
+                                <th>DATE LOST</th> 
                                 @endif
                                 
                                 </tr>

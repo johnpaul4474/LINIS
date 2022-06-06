@@ -170,6 +170,8 @@ class LinenInventoryController extends Controller
 
            
        ]);
+
+   
        return redirect()->route('material')->with('success', 'Raw material added successfully');
     }
 

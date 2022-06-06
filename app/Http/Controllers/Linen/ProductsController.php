@@ -70,8 +70,8 @@ class ProductsController extends Controller
 
         /// TO DO get logic behind creating products
         DB::table('nora.paul.linen_raw_materials')
-        ->where('id', (int)$request->material_used)
-        ->decrement('quantity', (int)$request->materialUsedQuantity);
+        ->where('id', floatval($request->material_used))
+        ->decrement('quantity', floatval($request->materialUsedQuantity));
 
         DB::table('nora.paul.linen_activity_logs')->insert([
             'employee_id' => Auth::user()->employee_id,
@@ -120,7 +120,8 @@ class ProductsController extends Controller
        
        DB::table('nora.paul.linen_products')
        ->insert($productsList);
-       return redirect()->route('issuance')->with('success', 'Product added successfully');
+      
+       return redirect()->route('products')->with('success', 'Product added successfully');
     }
 
     public function destroy(Request $request)
