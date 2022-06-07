@@ -158,7 +158,30 @@
 </div>
 <br>
 <div class="row">
-
+    <div class="page-footer">
+        <div class="container">
+            <div class="row">
+              <div class="col">
+                    Submitted by:
+                    <br>
+                    <br>
+                    ____________________________
+                    <br>
+                    Signature over printed name:
+              </div>
+              <div class="col">
+                  Received by:
+                  
+                    <br>
+                    <br>
+                    ____________________________
+                    <br>
+                    Signature over printed name:
+                </div>
+              
+            </div>
+          </div>
+    </div>
                 
     <div class="container ">
         <div class="row justify-content-center">
@@ -212,6 +235,7 @@
           
         </div>
         <div class="row justify-content-center">
+            
             <div class="col-11 border border-dark "><br>
                
 
@@ -277,6 +301,7 @@
                             </tr>
                             @endforeach
                           </tbody>
+                          
                        
                 </table> 
             </div>
@@ -350,7 +375,42 @@ $(document).ready(function () {
 
 </script>    
 <style>
+    .page-header, .page-header-space {
+  height: 100px;
+}
+
+.page-footer, .page-footer-space {
+  height: 100px;
+
+}
+
+.page-footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  
+  
+}
+
+.page-header {
+  position: fixed;
+  top: 0mm;
+  width: 100%;
+  border-bottom: 1px solid black; /* for demo */
+ 
+
+.page {
+  page-break-after: always;
+}
+
+
             @media print {
+                thead {display: table-header-group;} 
+                tfoot {display: table-footer-group;}
+                
+                button {display: none;}
+                
+                body {margin: 0;}
             @page {
                 size: portrait !important;
                 margin-left: 0.5in;
@@ -400,6 +460,34 @@ $(document).ready(function () {
     zoom: 0.9; 
     zoom: 90%; 
 }     */
-    
+ 
+.page-footer, .page-footer-space {
+  height: 50px;
+
+}
+
+.page-footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  border-top: 1px solid black; /* for demo */
+  background: yellow; /* for demo */
+}
+
+.page-header {
+  position: fixed;
+  top: 0mm;
+  width: 100%;
+  border-bottom: 1px solid black; /* for demo */
+  background: yellow; /* for demo */
+}
+
+.page {
+  page-break-after: always;
+}
+
+@page {
+  margin: 20mm
+}
 </style> 
 @endpush

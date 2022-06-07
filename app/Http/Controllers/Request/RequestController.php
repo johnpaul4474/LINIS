@@ -337,6 +337,14 @@ class RequestController extends Controller
                 }
             }
         }
+        DB::table('nora.paul.linen_requests')
+        ->where('id', $request->id)
+        ->update([
+            'status' => 4,
+            'processed_by' => Auth::user()->name,
+            'processed_by_emp_id' => Auth::user()->employee_id,
+            'processed_at' => \Carbon\Carbon::now()
+        ]);
 
         $requestorDetails =Requests::select()->where('id',$request->id)->first();
         event(new LinisNotification('processRequest',
@@ -348,14 +356,7 @@ class RequestController extends Controller
         $requestorDetails
         ));
         
-        DB::table('nora.paul.linen_requests')
-        ->where('id', $request->id)
-        ->update([
-            'status' => 4,
-            'processed_by' => Auth::user()->name,
-            'processed_by_emp_id' => Auth::user()->employee_id,
-            'processed_at' => \Carbon\Carbon::now()
-        ]);
+
 
         return redirect()->route('services')->with('success', 'Request succesfully  issued');
     }

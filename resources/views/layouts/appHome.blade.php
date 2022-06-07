@@ -108,6 +108,11 @@
                                           'Product quantity: ' + JSON.stringify(data.productQuantity).replace(/\"/g, "") + '<br>' +
                                           'IS READY FOR PICK-UP' + '<br>' +
                                           'LINEN (' + data.username.name +')';
+                }else if(data.requestorDetails.status == 4){
+                   messageNotification = 'Product name: ' + JSON.stringify(data.productName).replace(/\"/g, "") + '<br>' +
+                                          'Product quantity: ' + JSON.stringify(data.productQuantity).replace(/\"/g, "") + '<br>' +
+                                          'IS NOW ISSUED' + '<br>' +
+                                          'LINEN (' + data.username.name +')';
                 }else{
                   messageNotification="default";
                 }
@@ -139,6 +144,11 @@
                    messageNotification = 'Product name: ' + JSON.stringify(data.productName).replace(/\"/g, "") + '<br>' +
                                           'Product quantity: ' + JSON.stringify(data.productQuantity).replace(/\"/g, "") + '<br>' +
                                           'IS READY FOR PICK-UP' + '<br>' +
+                                          'LINEN (' + data.username.name +')';
+                }else if(data.requestorDetails.status == 4){
+                   messageNotification = 'Product name: ' + JSON.stringify(data.productName).replace(/\"/g, "") + '<br>' +
+                                          'Product quantity: ' + JSON.stringify(data.productQuantity).replace(/\"/g, "") + '<br>' +
+                                          'IS NOW ISSUED' + '<br>' +
                                           'LINEN (' + data.username.name +')';
                 }else{
                   messageNotification="default";

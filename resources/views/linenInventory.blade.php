@@ -251,11 +251,56 @@
                                 
                                 <td id="issued_quantity">{{$products->products_issued_quantity}}</td>  
                                 @if($products->product_condemned_quantity > 0)
-                                    <td style="background-color:#ff0000">CONDEMNED</td>
+                                   
+                                    @if($products->issued_office_id != null)
+                                    @foreach(\App\Http\Controllers\Department\DepartmentController::officeList() as $office)                                                                
+                                        @if($office->id == $products->issued_office_id) 
+                                            <td style="background-color:#ff0000">CONDEMNED - {{$office->office_name}}</td>
+                                        @endif
+                                    @endforeach
+                                    @elseif($products->issued_ward_id != null)
+                                        @foreach(\App\Http\Controllers\Department\DepartmentController::wardList() as $ward)                                                                
+                                        @if($ward->id == $products->issued_ward_id )
+                                            <td style="background-color:#ff0000">CONDEMNED - {{$ward->ward_name}}</td>
+                                        @endif
+                                        @endforeach
+                                    @else  
+                                        <td style="background-color:#00FF00">NOT YET ISSUED</td>  
+                                    @endif 
                                 @elseif($products->returned_date != null)
-                                    <td style="background-color:#00FF00">RE-ISSUE</td>
+                                   
+                                    @if($products->issued_office_id != null)
+                                    @foreach(\App\Http\Controllers\Department\DepartmentController::officeList() as $office)                                                                
+                                        @if($office->id == $products->issued_office_id) 
+                                            <td style="background-color:#00FF00">RETURNED - {{$office->office_name}}</td>
+                                        @endif
+                                    @endforeach
+                                    @elseif($products->issued_ward_id != null)
+                                        @foreach(\App\Http\Controllers\Department\DepartmentController::wardList() as $ward)                                                                
+                                        @if($ward->id == $products->issued_ward_id )
+                                            <td style="background-color:#00FF00">RETURNED - {{$ward->ward_name}}</td>
+                                        @endif
+                                        @endforeach
+                                    @else  
+                                        <td style="background-color:#00FF00">NOT YET ISSUED</td>  
+                                    @endif 
                                 @elseif($products->product_losses_quantity > 0)
-                                    <td style="background-color:#FF0000">LOSSED</td>        
+                                    
+                                    @if($products->issued_office_id != null)
+                                    @foreach(\App\Http\Controllers\Department\DepartmentController::officeList() as $office)                                                                
+                                        @if($office->id == $products->issued_office_id) 
+                                            <td style="background-color:#FF0000">LOSSED - {{$office->office_name}}</td>
+                                        @endif
+                                    @endforeach
+                                    @elseif($products->issued_ward_id != null)
+                                        @foreach(\App\Http\Controllers\Department\DepartmentController::wardList() as $ward)                                                                
+                                        @if($ward->id == $products->issued_ward_id )
+                                            <td style="background-color:#FF0000">LOSSED - {{$ward->ward_name}}</td>
+                                        @endif
+                                        @endforeach
+                                    @else  
+                                        <td style="background-color:#00FF00">NOT YET ISSUED</td>  
+                                    @endif        
                                 @else
                                     @if($products->issued_office_id != null)
                                         @foreach(\App\Http\Controllers\Department\DepartmentController::officeList() as $office)                                                                

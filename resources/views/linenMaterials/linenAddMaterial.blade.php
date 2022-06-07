@@ -414,7 +414,7 @@
                                             <div class="input-group-prepend">                      
                                             <label for="quantity" class="input-group-text">{{ __('Quantity') }}</label>
                                             </div>                    
-                                                <input id="quantity" type="number" class="form-control @error('quantity') is-invalid @enderror" name="quantity" value="{{ old('quantity') }}" required autocomplete="quantity" autofocus>
+                                                <input id="quantity" type="number" step="0.01" class="form-control @error('quantity') is-invalid @enderror" name="quantity" value="{{ old('quantity') }}" required autocomplete="quantity" autofocus>
                                                 @error('quantity')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>

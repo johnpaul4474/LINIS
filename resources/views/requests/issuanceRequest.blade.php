@@ -765,12 +765,13 @@ $("#finishedProduct").change(function() {
         let product_quantity_request = "";
         let ward_id = "";
         let office_id= "";
+
         $.each({!! json_encode($requestList, JSON_HEX_TAG) !!}, function(key, value) {
             product_name_request = value.product_name_request;
             product_quantity_request = value.product_quantity_request;
             ward_id = value.ward_id;
             office_id = value.office_id;
-
+            
         });
           $.ajax({
                     headers: {
@@ -781,7 +782,7 @@ $("#finishedProduct").change(function() {
                     data:{       
                         'id' : '{{ Request::get("id") }}',   
                         'product_name_request' : product_name_request,   
-                        'product_name_quantity' : product_quantity_request,
+                        'product_quantity_request' : product_quantity_request,
                         'ward_id': ward_id,
                         'office_id' : office_id,  
                         'status' : 4,
