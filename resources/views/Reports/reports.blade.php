@@ -185,14 +185,14 @@
                 
     <div class="container ">
         <div class="row justify-content-center">
-          <div class="col-2 border border-dark border-bottom-0"><br>
+          <div class="col-2  border border-dark" style="border-right: none !important;"><br>
 
             <img src="../img/bghmc.png" class="mx-auto d-block" width="120" height="120" alt="">
             <br>
           </div>
-          <div class="col-9 border border-dark border-left-0 border-bottom-0">
-            <div class="row">
-                <div class="col-12 border border-light border-left-0 border-top-0 border-right-0" >
+          <div class="col-9 border border-dark" >
+            <div class="row border border-dark" style="border-right: none !important;border-left: none !important;border-top: none !important;">
+                <div class="col-12" >
                     <div class="text-center"><small>Republic of the Philippines</small></div>
                     <div class="text-center"><small>Department of Health</small></div>
                     <div class="text-center text-uppercase font-weight-bold">baguio general hospital and medical
@@ -201,31 +201,31 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-8 border border-dark border-left-0 border-bottom-0 border-top-0">                                    
+                <div class="col-8">                                    
                     <div class="text-center mt-3">
                         <span class="font-weight-bold">LINEN ROOM UNIT</span>
                         <h5 class="font-weight-bold">INVENTORY OF LINENS</h5>
                     </div>
                 </div>
-                <div class="col-2 " > 
-                    <div class="row border border-dark border-left-0 border-bottom-0 border-top-0">
+                <div class="col-2"> 
+                    <div class="row border border-dark" style="border-bottom: none !important;border-top: none !important;">
                          Form No.:
                     </div>
-                    <div class="row border border-left-0 ">
+                    <div class="row border border-dark">
                          Rev.No:
                     </div>
-                    <div class="row border border-left-0 border-bottom-0 border-top-0">
+                    <div class="row border border-dark" style="border-bottom: none !important;border-top: none !important;">
                          Effectivity Date:
                     </div>
                 </div>
-                <div class="col-2 "> 
-                    <div class="row justify-content-center border border-dark  border-left-0 border-bottom-0 border-top-0 border-right-0">
+                <div class="col-2"> 
+                    <div class="row justify-content-center ">
                         HS - GSS - 009
                     </div>
-                    <div class="row justify-content-center border border-dark  border-left-0 border-right-0">
+                    <div class="row justify-content-center border border-dark" style="border-left: none !important;border-right: none !important;">
                         2
                     </div>
-                    <div class="row justify-content-center border border-dark  border-left-0 border-bottom-0 border-top-0 border-right-0">
+                    <div class="row justify-content-center ">
                         August 16, 2021
                     </div>
                 </div>
