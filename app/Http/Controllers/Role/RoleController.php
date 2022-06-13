@@ -35,7 +35,8 @@ class RoleController extends Controller
         DB::table('nora.paul.linen_users')
         ->where('id', $request->userId)
         ->update([
-            'role_id' => 1,            
+            'role_id' => 1,
+            'role_name' => 'super_admin' ,           
             'updated_at' => \Carbon\Carbon::now()
         ]);
 
