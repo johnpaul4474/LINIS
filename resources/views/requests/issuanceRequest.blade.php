@@ -382,32 +382,8 @@
                     
                    
                     <table class="table table-sm table-bordered " id="itemsTable">
+                        <p style="text-align:left;">Ward/Office:<span id="wardoffice"></span><p>
                             <thead>
-                                <tr>
-                                    <td width='100%'>
-                                        @foreach($requestList as $req)
-                                            @if($req->ward_id != null)
-                                                @foreach(\App\Http\Controllers\Department\DepartmentController::wardList() as $ward)                                                                
-                                                @if($ward->id == $req->ward_id )
-                                                            <td>{{$ward->ward_name}}</td>
-                                                @endif
-                                                @endforeach
-                                            @else  
-                                                <td>N/A</td>  
-                                            @endif   
-            
-                                            @if($req->office_id != null)
-                                                @foreach(\App\Http\Controllers\Department\DepartmentController::officeList() as $office)                                                                
-                                                    @if($office->id == $req->office_id) 
-                                                        <td>{{$office->office_name}}</td>
-                                                    @endif
-                                                @endforeach
-                                            @else  
-                                            <td>N/A</td>  
-                                            @endif  
-                                        @endforeach
-                                    </td>    
-                                </tr>    
                                 <tr class="text-center">
                                     <th width='10%'>QUANTITY</th>
                                     <th width='10%'>UNIT</th>
@@ -505,6 +481,21 @@ $(document).ready(function () {
                });
         
         //console.log(issuedItemsList);
+        if(issuedItemsList[0].office != null){
+            $.each({!! json_encode($officeList, JSON_HEX_TAG) !!}, function(key, value) {
+            if(value.id == issuedItemsList[0].office){
+                $('#wardoffice').text(value.office_name);
+            }
+        });
+        }
+
+        if(issuedItemsList[0].ward != null){
+            $.each({!! json_encode($wardList, JSON_HEX_TAG) !!}, function(key, value) {
+            if(value.id == issuedItemsList[0].ward){
+                $('#wardoffice').text(value.ward_name);
+            }
+        });
+        }
         $('#itemsIssuedListObject').val(JSON.stringify(issuedItemsList));
         productIdsArray = $('#productIds').val().split(',');
         //console.log(productIdsArray);

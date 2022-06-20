@@ -69,7 +69,12 @@ class IssuanceController extends Controller
             }
         }
          
-        return view('issuance.issuance', compact('productsList','requestList'));
+        $wardList = DB::Select("SELECT * FROM nora.paul.linen_ward ORDER BY ward_name ASC");
+
+
+        $officeList = DB::Select("SELECT * FROM nora.paul.linen_office ORDER BY office_name ASC");
+    
+        return view('issuance.issuance', compact('productsList','requestList','wardList','officeList'));
     }
 
     public function issueProduct(Request $request){
@@ -174,10 +179,13 @@ class IssuanceController extends Controller
         inner join nora.paul.linen_raw_materials as raw_material
         on products.raw_material_id = raw_material.id  where products.deleted_at is null  order by products.is_available desc");
     
+    $wardList = DB::Select("SELECT * FROM nora.paul.linen_ward ORDER BY ward_name ASC");
 
+
+    $officeList = DB::Select("SELECT * FROM nora.paul.linen_office ORDER BY office_name ASC");
 
         //return redirect()->route('issuance')->with('success', 'Issued product successfully');
-        return view('issuance.issuance', compact('productsList'));
+        return view('issuance.issuance', compact('productsList','wardList','officeList'));
     }
 
     public function destroy(Request $request)

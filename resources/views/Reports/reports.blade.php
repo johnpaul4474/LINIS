@@ -11,13 +11,13 @@
                           {{$office->office_name}}
                       @endif
                    @endforeach
-              @elseif(Auth::user()->ward_id != null)
+            @elseif(Auth::user()->ward_id != null)
                   @foreach(\App\Http\Controllers\Department\DepartmentController::wardList() as $ward)                                                                
                   @if($ward->id ==  Auth::user()->ward_id )
                           {{$ward->ward_name}}
                   @endif
                   @endforeach
-              
+             
             @endif
     </div>
     <div class="card-body">
@@ -267,6 +267,8 @@
                                 @else
                                     <span id="unit_ward">          
                                     </span>
+                                   
+                                    
                                 @endif
                             </small></th>
                               <th  colspan="4"><small><b>DATE: {{\Carbon\Carbon::now()->format('F d,Y h:i A')}}</b></small></th>
@@ -365,9 +367,16 @@ $(document).ready(function () {
         $("#office").change(function(){
             var office = $(this).children("option:selected").text().trim();
             $('#unit_ward').text(office);
-        });
+    });
+
+
+
+
+    $.each({!! json_encode($officeward, JSON_HEX_TAG) !!}, function(key, value) {
+        $('#unit_ward').text(value);
+    });
        
-       
+       console.log( {!! json_encode($officeward, JSON_HEX_TAG) !!});
 })    
 
 

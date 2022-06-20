@@ -87,17 +87,20 @@ class ProductsController extends Controller
 
         $quantityProduct = (int)$request->quantity + $productCount - 1; 
         $productsList = [];
+        $create_date = \Carbon\Carbon::now()->format('H:i:s');
+        $created_at = \Carbon\Carbon::now();
 
         $product_bulk_id = $request->rawMaterialId.$request->stockRoom.$request->storageRoom.$request->quantity.$request->created_at;
         for ($productCount ; $productCount <= $quantityProduct; $productCount++){
-                $productsList[]=(
+            DB::table('nora.paul.linen_products')
+            ->insert(
                     [   'raw_material_id' => $request->rawMaterialId,	
                         'raw_material_stock_number' => $request->stock_number,	
                         'stock_room_id' => $request->stockRoom,	
                         'storage_room_id' => $request->storageRoom,	
                         'product_stock_id' => $request->stock_number.'-'.$productCount,
                         'product_name' => $request->product_name,	
-                        'create_date' => $request->created_at." ".\Carbon\Carbon::now()->format('H:i:s'),	
+                        'create_date' => $request->created_at." ".$create_date,	
                         'product_unit' => $request->unit,
                         'product_quantity' =>$request->quantity,
                         'product_available_quantity' =>$request->quantity,
@@ -111,15 +114,14 @@ class ProductsController extends Controller
                         'is_condemned' => false, 
                         'is_lossed'     =>false,
                         'is_returned' => false,                        
-                        'created_at' => \Carbon\Carbon::now(),
+                        'created_at' => $created_at,
                         'product_bulk_id'=>$product_bulk_id
                 ]);
         }    
 
 
        
-       DB::table('nora.paul.linen_products')
-       ->insert($productsList);
+     
       
        return redirect()->route('products')->with('success', 'Product added successfully');
     }

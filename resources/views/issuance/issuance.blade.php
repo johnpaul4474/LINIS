@@ -259,7 +259,9 @@
                 
                
                 <table class="table table-sm table-bordered " id="itemsTable">
-                        <thead>
+                Ward/Office:<span id="wardoffice"></span>
+                       
+                        <thead>                            
                             <tr class="text-center">
                                 <th width='10%'>QUANTITY</th>
                                 <th width='10%'>UNIT</th>
@@ -355,6 +357,24 @@ $(document).ready(function () {
                });
         
         //console.log(issuedItemsList);
+       
+        
+        if(issuedItemsList[0].office != null){
+            $.each({!! json_encode($officeList, JSON_HEX_TAG) !!}, function(key, value) {
+            if(value.id == issuedItemsList[0].office){
+                $('#wardoffice').text(value.office_name);
+            }
+        });
+        }
+
+        if(issuedItemsList[0].ward != null){
+            $.each({!! json_encode($wardList, JSON_HEX_TAG) !!}, function(key, value) {
+            if(value.id == issuedItemsList[0].ward){
+                $('#wardoffice').text(value.ward_name);
+            }
+        });
+        }
+       
         $('#itemsIssuedListObject').val(JSON.stringify(issuedItemsList));
         productIdsArray = $('#productIds').val().split(',');
         //console.log(productIdsArray);

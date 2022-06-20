@@ -305,9 +305,12 @@ class RequestController extends Controller
             "created_at" =>  \Carbon\Carbon::now(), 
         ]);
 
-        
+        $wardList = DB::Select("SELECT * FROM nora.paul.linen_ward ORDER BY ward_name ASC");
+
+
+        $officeList = DB::Select("SELECT * FROM nora.paul.linen_office ORDER BY office_name ASC");
          
-        return view('requests.issuanceRequest', compact('productsList','requestList'));
+        return view('requests.issuanceRequest', compact('productsList','requestList','wardList','officeList'));
         
     }
 
