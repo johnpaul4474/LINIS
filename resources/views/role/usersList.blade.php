@@ -15,7 +15,7 @@
                                     <th>Ward</th>
                                     <th>Office</th>
                                     <th>Role</th>
-                                    <th>Assign</th>
+                                    {{-- <th>Assign</th> --}}
                                     
                             </thead> 
                             <tbody>
@@ -49,7 +49,7 @@
                                     @else
                                         <td>User</td>
                                     @endif
-                                    <td>                                          
+                                    {{-- <td>                                          
                                         <form action = "/roleManagement/assignAdmin" method = "post">
                                             @csrf
                                             <input id="userId" type="hidden" class="form-control " name="userId" value="{{$user->id}}" >  
@@ -57,7 +57,7 @@
                                             <i class='fa fa-user'></i>
                                         </button>
                                         </form>
-                                    </td>
+                                    </td> --}}
                                 </tr>   
                                 @endforeach
                             </tbody>       
