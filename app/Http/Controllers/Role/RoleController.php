@@ -42,4 +42,12 @@ class RoleController extends Controller
 
         return redirect()->route('roleManagement')->with('success', 'User role successfully changed');
     }
+
+    public function listusers (){
+
+        $usersList = UsersList::select()->where('role_id','3')->orderBy('name','asc')->get();  
+        
+       
+        return view('role.usersList',compact('usersList'));
+    }
 }

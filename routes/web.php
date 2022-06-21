@@ -79,6 +79,7 @@ Route::post('/generateInventoryReport', [App\Http\Controllers\Reports\ReportsCon
 
 //role
 Route::any('/roleManagement', [App\Http\Controllers\Role\RoleController::class, 'index'])->name('roleManagement');
+Route::any('/listusers', [App\Http\Controllers\Role\RoleController::class, 'listusers'])->name('roleManagement');
 Route::any('/roleManagement/assignAdmin', [App\Http\Controllers\Role\RoleController::class, 'assignAdmin'])->name('/roleManagement/assignAdmin');
 
 Route::get('test', function () {
