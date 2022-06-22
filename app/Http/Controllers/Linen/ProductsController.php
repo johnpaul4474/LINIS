@@ -91,11 +91,13 @@ class ProductsController extends Controller
         $created_at = \Carbon\Carbon::now();
 
         $product_bulk_id = $request->rawMaterialId.$request->stockRoom.$request->storageRoom.$request->quantity.$request->created_at;
+        
         for ($productCount ; $productCount <= $quantityProduct; $productCount++){
             DB::table('nora.paul.linen_products')
             ->insert(
                     [   'raw_material_id' => $request->rawMaterialId,	
-                        'raw_material_stock_number' => $request->stock_number,	
+                        'raw_material_stock_number' => $request->stock_number,
+                        'material_used_quantity' => floatval($request->materialUsedQuantity),	
                         'stock_room_id' => $request->stockRoom,	
                         'storage_room_id' => $request->storageRoom,	
                         'product_stock_id' => $request->stock_number.'-'.$productCount,
@@ -141,11 +143,19 @@ class ProductsController extends Controller
         ]);
 
         //$rawMaterials = LinenRawMaterials::select()->orderBy('created_at','asc')->get();
+        $rawMaterialId = Products::distinct()
+                        ->whereIn('id', $productsListId)->get();
+        //dd($productsListId,$rawMaterialId[0]->raw_material_stock_number,$rawMaterialId[0]->material_used_quantity);
+
+        DB::table('nora.paul.linen_raw_materials')
+        ->where('id', $rawMaterialId[0]->raw_material_stock_number)
+        ->increment('quantity', floatval($rawMaterialId[0]->material_used_quantity));
+
 
         Products::whereIn('id', $productsListId)->delete();
         // $product =Products::select()->where('id', $request->id)->get();
         // dd($product[0]->product_name);
-        return redirect()->route('products')->with('error', 'Row material deleted successfully');
+        return redirect()->route('products')->with('error', 'Raw material deleted successfully');
     }
 
     public function update(Request $request){

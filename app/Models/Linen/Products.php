@@ -20,7 +20,8 @@ class Products extends Model
 
     protected $fillable = [
         'id',
-        'raw_material_id',	
+        'raw_material_id',
+        'material_used_quantity',	
         'raw_material_stock_number',	
         'stock_room_id',	
         'storage_room_id',
