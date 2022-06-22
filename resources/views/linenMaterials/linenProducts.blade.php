@@ -254,7 +254,7 @@
                             {{-- <th>AVAILABLE</th>
                             <th>CONDEMNED</th>                  --}}
                             <th>DATE CREATED</th>
-                            {{-- <th>EDIT</th> --}}
+                            <th>EDIT</th>
                             <th>DELETE</th>
                           </tr>
                         </thead>
@@ -287,7 +287,7 @@
                                 <td id="condemned">NO</td>
                             @endif --}}
                             <td id="created_date">{{$products->create_date}}</td>
-                            {{-- <td>                                          
+                            <td>                                          
                               
                               <button type="submit" class="editProductsButton btn btn-primary btn-sm"  >
                                   <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -310,7 +310,7 @@
                                   </svg>
                               </button>
                               </a>
-                            </td> --}}
+                            </td>
                             <td>
                                 <form action = "/products/delete" method = "post">
                                   @csrf
