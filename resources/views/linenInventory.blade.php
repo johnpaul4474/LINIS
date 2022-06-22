@@ -404,19 +404,48 @@ $("#material_used").change(function() {
         $('#materialUsedId').val(id);
         $("#finishedProduct").find('option').remove();
         $("#finishedProduct").append('<option value="" selected disabled hidden> Choose Product</option>'); 
+       // var optionsProducts = [];
         $.each({!! json_encode($productsList, JSON_HEX_TAG) !!}, function(key, value) {
+            //console.log(value);
             var optionExists = $("#finishedProduct option[value="+value.product_bulk_id+"]").length > 0;
-                    
+           // console.log(optionExists);
                   if(value.raw_material_id == id){
                    
                       if(optionExists == false){
-                              $("#finishedProduct").append('<option value="'+value.product_bulk_id+'">'+value.product_name+'</option>'); 
+                             $("#finishedProduct").append('<option value="'+value.product_bulk_id+'">'+value.product_name+'</option>'); 
                       }
+                      //optionsProducts.push({'product_bulk_id': value.product_bulk_id, 'product_name':value.product_name})
                   }
                 });
     
-     
                 
+    //  console.log(optionsProducts);
+    //  function dedupe(arr) {
+    //     return arr.reduce(function(p, c) {
+
+    //         // create an identifying id from the object values
+    //         var id = [c.product_bulk_id, c.product_name].join('|');
+
+    //         // if the id is not found in the temp array
+    //         // add the object to the output array
+    //         // and add the key to the temp array
+    //         if (p.temp.indexOf(id) === -1) {
+    //         p.out.push(c);
+    //         p.temp.push(id);
+    //         }
+    //         return p;
+
+    //         // return the deduped array
+    //     }, {
+    //         temp: [],
+    //         out: []
+    //     }).out;
+    //     }
+
+       
+    //     $.each(dedupe(optionsProducts), function(key, value) {
+    //         $("#finishedProduct").append('<option value="'+value.product_bulk_id+'">'+value.product_name+'</option>'); 
+    //     });        
     });
 
     $("#finishedProduct").change(function() {   

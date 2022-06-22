@@ -39,7 +39,7 @@ class ProductsController extends Controller
         $rawMaterials = LinenRawMaterials::select()->orderBy('created_at','asc')->get();
 
         //////// TO-DO clean database for new records start from 0
-        $latestId = DB::table('nora.paul.linen_products')->orderBy('id','desc')->first();
+        $latestId = DB::table('nora.paul.linen_products')->whereNull('deleted_at')->orderBy('id','desc')->first();
         $newRecordId =0;
         if($latestId != null){
             $newRecordId = (int)$latestId->id +1;
@@ -89,8 +89,8 @@ class ProductsController extends Controller
         $productsList = [];
         $create_date = \Carbon\Carbon::now()->format('H:i:s');
         $created_at = \Carbon\Carbon::now();
-
-        $product_bulk_id = $request->rawMaterialId.$request->stockRoom.$request->storageRoom.$request->quantity.$request->created_at;
+        //dd(\Carbon\Carbon::now()->format('His'),\Carbon\Carbon::now()->timestamp);
+        $product_bulk_id = $request->rawMaterialId.$request->stockRoom.$request->storageRoom.$request->quantity.$request->created_at.\Carbon\Carbon::now()->timestamp;
         
         for ($productCount ; $productCount <= $quantityProduct; $productCount++){
             DB::table('nora.paul.linen_products')
