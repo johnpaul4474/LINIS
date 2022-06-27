@@ -26,7 +26,7 @@ class ProductsController extends Controller
         $storageList = Storage::select()->orderBy('storage_name','asc')->get();
         // $rawMaterials = DB::select("select * , (raw_material.quantity * raw_material.unit_cost) as total_price from [nora].[paul].[linen_raw_materials] as raw_material");
         $rawMaterials = LinenRawMaterials::select()->orderBy('created_at','desc')->get();
-        $productsList = DB::select('EXEC nora.paul.linen_getBulkProducts');
+        $productsList = DB::select('EXEC nora.paul.linen_getBulkProductsv2');
 
         
         
