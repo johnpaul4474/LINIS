@@ -404,7 +404,7 @@ $("#material_used").change(function() {
         $('#materialUsedId').val(id);
         $("#finishedProduct").find('option').remove();
         $("#finishedProduct").append('<option value="" selected disabled hidden> Choose Product</option>'); 
-       // var optionsProducts = [];
+        var optionsProducts = [];
         $.each({!! json_encode($productsList, JSON_HEX_TAG) !!}, function(key, value) {
             //console.log(value);
             var optionExists = $("#finishedProduct option[value="+value.product_bulk_id+"]").length > 0;

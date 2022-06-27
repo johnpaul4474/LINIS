@@ -56,6 +56,7 @@
                                     <input id="availableProducts" type="number" class="form-control @error('availableProducts') is-invalid @enderror" name="availableProducts" value="" required readonly="readonly" autocomplete="availableProducts" autofocus>
                                     <input id="availableProductsOriginal" type="number" class="form-control @error('availableProductsOriginal') is-invalid @enderror" name="availableProductsOriginal" value="" required readonly="readonly" autocomplete="availableProductsOriginal" hidden  autofocus>
                                     <input id="productIds" type="text" class="form-control @error('productIds') is-invalid @enderror" name="productIds" value="" required readonly="readonly" autocomplete="productIds"  autofocus hidden>
+                                    <input id="productIdsRemove" type="text" class="form-control @error('productIdsRemove') is-invalid @enderror" name="productIds" value="" required readonly="readonly" autocomplete="productIds"  autofocus hidden>
                                     @error('availableProducts')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -171,7 +172,7 @@
         
                                     </div> 
                                     <div class="card-footer text-center">
-                                        <button type="button" id="issueItems" class="btn btn-primary " disabled >Add</button>
+                                        <button type="button" id="issueItems" class="btn btn-primary " disabled >Issue</button>
                                         {{-- <button type="button" id="removeItemsBtn" class="btn btn-primary " >Remove</button> --}}
                                         <button type="button" id="printItems" class="btn btn-primary " >Print</button>
                                         {{-- <button type="submit" class="btn btn-primary " >Submit</button>  --}}
@@ -323,6 +324,7 @@
 <script>
 
 $(document).ready(function () {
+    var productIdsRemove=[];
     var issuedItemsList = [];
     var selectedItemCount = 0;
     var availableCount = 0;
@@ -411,12 +413,20 @@ $(document).ready(function () {
                     success:function(response){
                         $('#quantity').val(0);
                         selectedItemCount = 0;
-                        $("#wardRadio, #officeRadio").prop('checked', false);
+                        $("#issueItems").removeAttr("disabled");
+                        $("#productIdsRemove").val($('#productIds').val());
+                        //$("#wardRadio, #officeRadio").prop('checked', false);
                         //console.log('radio ward office reset');
-                            
-                        $("#ward, #office").val("").attr("readonly",true);
+                        // var productIdsRemove = $('#productIds').val().split(',')   
+                        // console.log(productIdsRemove)
+                        // productIdsRemove.forEach(function(item,index){
+                        //     console.log(item,index);
+                        //     $("#finishedProduct").find('option').remove();
+                        //     $("#listProducts").find(`[id="${item}"]`).remove()
+                        // });
+
                              
-                            toastr.success("Items issued successfully!", 'Success');                 
+                            //toastr.success("Items issued successfully!", 'Success');                 
                         
                     
                     },
@@ -581,6 +591,7 @@ $("#material_used").change(function() {
                     
                 if(value.raw_material_id == id){
                     if(optionExists == false){
+                        
                             $("#finishedProduct").append('<option value="'+value.product_bulk_id+'">'+value.product_name+'</option>'); 
                     }
                 }
@@ -594,10 +605,17 @@ $("#finishedProduct").change(function() {
     var selectedProductArray = new Array();
     $("#listProducts").find('div').remove();
     
-    //console.log(bulkId);
+    console.log($("#productIdsRemove").val());
+      let productIdsRemoveRaw = $('#productIdsRemove').val().split(',');  
+      productIdsRemove = $.merge( productIdsRemove, productIdsRemoveRaw ) 
+      console.log(productIdsRemove);      
+      $('#productIdsRemove').val('');         
     $.each({!! json_encode($productsList, JSON_HEX_TAG) !!}, function(key, value) {
         if(value.product_bulk_id == bulkId && value.is_available == 1){
-            selectedProductArray.push(value);
+           
+            if(jQuery.inArray(value.id, productIdsRemove) == -1){               
+             selectedProductArray.push(value);
+            }
     
         }
     
@@ -762,31 +780,37 @@ body {
 
 @media print {
              
-   
+    element.class {
+     font-family: "Courier New";
+     font-size: 10pt;
+    }
+
     @page {
-                size: landscape !important;
+                size: portrait !important;
                 margin-left: 0.25in;
                 margin-right: 0.5in;
                 margin-top: 0;
                 margin-bottom: 0;
+                border: 1px solid red !important;
                
             }
 
-            table, th, td {
-                        border: 1px solid black !important;
-                        }
-       
-     
-    }
+         table tr td {
+            font-size: 8pt;
+            font-family:'Times New Roman',Times,serif;
+        }
         
         body {
             background-color: #fff;
             /* color: #636b6f; */
-            font-family: 'Roboto', sans-serif;
-            font-weight: 200;
+            font-family: 'Calibri', sans-serif;
+            font-weight: 100;
+            font-size: 12pt;
             height: 100vh;
             margin: 0;
         }
+
+        
 
         .border {
             border: 1px solid black !important;
@@ -811,28 +835,28 @@ body {
             border: 1px solid black !important;
             }
 
-            td,
-th {
-  border: 1px solid #999;
-  padding: 1.5rem;
-}
+           
+        td,th {
+        border: 1px solid #999;
+        padding: 1.5rem;
+        }
 
-.row tbody tr.highlight td {
-  background-color: #ccc;
-}
+        .row tbody tr.highlight td {
+        background-color: #ccc;
+        }
 
 
 
-.button:hover {
-  border-top-color: #28597a;
-  background: #28597a;
-  color: #ccc;
-}
+        .button:hover {
+        border-top-color: #28597a;
+        background: #28597a;
+        color: #ccc;
+        }
 
-.button:active {
-  border-top-color: #1b435e;
-  background: #1b435e;
-} 
+        .button:active {
+        border-top-color: #1b435e;
+        background: #1b435e;
+        } 
 
      
 </style> 
