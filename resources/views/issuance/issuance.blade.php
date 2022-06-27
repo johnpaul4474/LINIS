@@ -605,10 +605,10 @@ $("#finishedProduct").change(function() {
     var selectedProductArray = new Array();
     $("#listProducts").find('div').remove();
     
-    console.log($("#productIdsRemove").val());
+    //console.log($("#productIdsRemove").val());
       let productIdsRemoveRaw = $('#productIdsRemove').val().split(',');  
       productIdsRemove = $.merge( productIdsRemove, productIdsRemoveRaw ) 
-      console.log(productIdsRemove);      
+      //console.log(productIdsRemove);      
       $('#productIdsRemove').val('');         
     $.each({!! json_encode($productsList, JSON_HEX_TAG) !!}, function(key, value) {
         if(value.product_bulk_id == bulkId && value.is_available == 1){

@@ -56,6 +56,7 @@
                                     <input id="availableProducts" type="number" class="form-control @error('availableProducts') is-invalid @enderror" name="availableProducts" value="{{ old('availableProducts') }}" required readonly="readonly" autocomplete="availableProducts" autofocus>
                                     <input id="availableProductsOriginal" type="number" class="form-control @error('availableProductsOriginal') is-invalid @enderror" name="availableProductsOriginal" value="" required readonly="readonly" autocomplete="availableProductsOriginal" hidden autofocus>
                                     <input id="productIds" type="text" class="form-control @error('productIds') is-invalid @enderror" name="productIds" value="" required readonly="readonly" autocomplete="productIds"  autofocus hidden>
+                                    <input id="productIdsRemove" type="text" class="form-control @error('productIdsRemove') is-invalid @enderror" name="productIds" value="" required readonly="readonly" autocomplete="productIds"  autofocus hidden>
                                     @error('availableProducts')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -171,7 +172,7 @@
         
                                     </div> 
                                     <div class="card-footer text-center">
-                                        <button type="button" id="issueItems" class="btn btn-primary " disabled >Add</button>
+                                        <button type="button" id="issueItems" class="btn btn-primary " disabled >Issue</button>
                                         {{-- <button type="button" id="removeItemsBtn" class="btn btn-primary " >Remove</button> --}}
                                         <button type="button" id="printItems" class="btn btn-primary " >Print</button>
                                         {{-- <button type="submit" class="btn btn-primary " >Submit</button>  --}}
@@ -446,6 +447,7 @@
 <script>
 
 $(document).ready(function () {
+    var productIdsRemove=[];
     var issuedItemsList = [];
     var selectedItemCount =0;
     var selectedItemCount = 0;
@@ -533,11 +535,13 @@ $(document).ready(function () {
                         $('#quantity').val(0);
                         selectedItemCount = 0;
                         $("#wardRadio, #officeRadio").prop('checked', false);
+                        $("#issueItems").removeAttr("disabled");
+                        $("#productIdsRemove").val($('#productIds').val());
                         //console.log('radio ward office reset');
                             
-                        $("#ward, #office").val("").attr("readonly",true);
+                       // $("#ward, #office").val("").attr("readonly",true);
                              
-                            toastr.success("Items issued successfully!", 'Success');                 
+                            //toastr.success("Items issued successfully!", 'Success');                 
                         
                     
                     },
@@ -564,7 +568,7 @@ $(document).ready(function () {
           rows.remove();
           //console.log(rows.attr('id'));
           let requestId = $('#requestId').val()
-          ////console.log(requestId);
+          console.log(requestId);
           bulkId = $('#trId').val();
           availableQuantityOld = parseInt($('#availableProducts').val());     
           $.ajax({
@@ -584,11 +588,13 @@ $(document).ready(function () {
                             let bulkId = $(finishedProduct).children(":selected").val();
                             var selectedProductArray = new Array();
                             $("#listProducts").find('div').remove();
-                            
-                            ////console.log(bulkId);
+                                    
+                                                    ////console.log(bulkId);
                             $.each(response, function(key, value) {
                                 if(value.product_bulk_id == bulkId && value.is_available == 1){
-                                    selectedProductArray.push(value);
+                                    if(jQuery.inArray(value.id, productIdsRemove) == -1){               
+                                        selectedProductArray.push(value);
+                                        }
                             
                                 }
                             
@@ -681,10 +687,17 @@ $("#finishedProduct").change(function() {
     var selectedProductArray = new Array();
     $("#listProducts").find('div').remove();
     
-    //console.log(bulkId);
+    
+    console.log($("#productIdsRemove").val());
+      let productIdsRemoveRaw = $('#productIdsRemove').val().split(',');  
+      productIdsRemove = $.merge( productIdsRemove, productIdsRemoveRaw ) 
+      console.log(productIdsRemove);      
+      $('#productIdsRemove').val('');  
     $.each({!! json_encode($productsList, JSON_HEX_TAG) !!}, function(key, value) {
         if(value.product_bulk_id == bulkId && value.is_available == 1){
-            selectedProductArray.push(value);
+            if(jQuery.inArray(value.id, productIdsRemove) == -1){               
+             selectedProductArray.push(value);
+            }
     
         }
     
@@ -847,6 +860,7 @@ $("#finishedProduct").change(function() {
       $('.printMe').click(function () {
                 window.print();
                 // pop_searchPatient();
+                alert('print');
             });
 
         $('#finishedRequest').text(finishedCount);
@@ -928,30 +942,28 @@ body {
              
    
     @page {
-                size: landscape !important;
+                size: portrait !important;
                 margin-left: 0.25in;
                 margin-right: 0.5in;
                 margin-top: 0;
                 margin-bottom: 0;
                
-            }
-
-            table, th, td {
-                        border: 1px solid black !important;
-                        }
-       
-     
+            }     
     }
         
         body {
             background-color: #fff;
             /* color: #636b6f; */
-            font-family: 'Roboto', sans-serif;
-            font-weight: 200;
+            font-family: 'Calibri', sans-serif;
+            font-weight: 100;
+            font-size: 12pt;
             height: 100vh;
             margin: 0;
         }
-
+        table tr td {
+            font-size: 8pt;
+            font-family:'Times New Roman',Times,serif;
+        }
         .border {
             border: 1px solid black !important;
         }
