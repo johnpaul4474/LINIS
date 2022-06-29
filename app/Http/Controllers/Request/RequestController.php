@@ -228,6 +228,7 @@ class RequestController extends Controller
     }
 
     public function issueProductRequest(Request $request){
+        //dd($request);
         $requestId = $request->id;
 
         $productsList  = DB::select("SELECT	products.id ,
@@ -430,5 +431,16 @@ class RequestController extends Controller
        
 
         return Response::json($productsList);
+    }
+
+    public function editRemarks(Request $request){
+       
+        DB::table('nora.paul.linen_requests')
+        ->where('id', $request->id)
+        ->update([            
+            'comments' => $request->remarksSave
+        ]);
+
+        return redirect()->route('services')->with('success', 'Remarks added successfully');
     }
 }

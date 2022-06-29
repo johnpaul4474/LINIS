@@ -103,7 +103,7 @@
                                 <td>{{$req->processed_by}}</td>
                                 <td>{{$req->processed_at}}</td>
                                 @if(Auth::user()->role_id  == 1)
-                                <td><textarea id="remarks" type="text" class="form-control @error('remarks') is-invalid @enderror" name="remarks" >{{$req->comments}}</textarea></td>
+                                <td><textarea id="remarks_{{$req->id}}" onkeyup="remarks({{$req->id}})" type="text" class="form-control @error('remarks') is-invalid @enderror" name="remarks" >{{$req->comments}}</textarea></td>
                                 @else
                                 <td>{{$req->comments}}</td>
                                 @endif
@@ -116,8 +116,7 @@
                                         <input id="id" type="hidden" class="form-control @error('id') is-invalid @enderror" name="id" value="{{$req->id}}">
                                         <input id="product_name_request" type="hidden" class="form-control @error('id') is-invalid @enderror" name="product_name_request" value="{{$req->product_name_request}}">
                                         <input id="product_quantity_request" type="hidden" class="form-control @error('id') is-invalid @enderror" name="product_quantity_request" value="{{$req->product_quantity_request}}">
-                                        <input id="remarksSave" type="hidden" class="form-control @error('remarksSave') is-invalid @enderror" name="remarksSave" value="">
-                                        
+                                        <input id="remarksSave_{{$req->id}}" type="hidden" class="form-control @error('remarksSave_{{$req->id}}_{{$req->id}}') is-invalid @enderror" name="remarksSave" value="">
                                           <button type="submit" class="editProductsButton btn btn-primary btn-sm" >PROCESS</button>
                                         </td>
                                     </form>
@@ -129,7 +128,7 @@
                                       <input id="product_name_request" type="hidden" class="form-control @error('id') is-invalid @enderror" name="product_name_request" value="{{$req->product_name_request}}">
                                       <input id="product_quantity_request" type="hidden" class="form-control @error('id') is-invalid @enderror" name="product_quantity_request" value="{{$req->product_quantity_request}}">
                                       
-                                        <input id="remarksSave" type="hidden" class="form-control @error('remarksSave') is-invalid @enderror" name="remarksSave" value="">  
+                                        <input id="remarksSave_{{$req->id}}" type="hidden" class="form-control @error('remarksSave_{{$req->id}}') is-invalid @enderror" name="remarksSave" value="">  
                                         <button type="submit" class="editProductsButton btn btn-info btn-sm" >READY</button>
                                       </td>
                                   </form>
@@ -138,7 +137,7 @@
                                     @csrf
                                        <td>
                                       <input id="id" type="hidden" class="form-control @error('id') is-invalid @enderror" name="id" value="{{$req->id}}">                                      
-                                      <input id="remarksSave" type="hidden" class="form-control @error('remarksSave') is-invalid @enderror" name="remarksSave" value="">
+                                      <input id="remarksSave_{{$req->id}}" type="hidden" class="form-control @error('remarksSave_{{$req->id}}') is-invalid @enderror" name="remarksSave" value=""> 
                                         <button type="submit" class="editProductsButton btn btn-warning btn-sm" >ISSUE</button>
                                       </td>
                                   </form>
@@ -177,6 +176,7 @@
 
 <script>
 $(document).ready(function () {
+  
   let pendingCount = 0;
   let processingCount = 0;
   let finishedCount = 0;
@@ -199,7 +199,7 @@ $(document).ready(function () {
  $('#processingRequest').text(processingCount);
  $('#finishedRequest').text(finishedCount);
 
-  $('#productsRequest').DataTable({
+    $('#productsRequest').DataTable({
             "lengthMenu": [[5, 25, 50, -1], [5, 25, 50, "All"]],
             "search": true,     
             "ordering": false,
@@ -223,12 +223,17 @@ $(document).ready(function () {
             }    
     }); 
 
-    $('#remarks').on('input',function(e){      
-      $('#remarksSave').val($(this).val());
-    });
+    
+
 
 
 })
+
+function remarks(id){
+     console.log(id);
+        //$('#remarksSave_{{$req->id}}_'id).val($('#remarks_'id).val();
+    $('#remarksSave_'+id).val($('#remarks_'+id).val());
+    }
      
 </script>    
 <style>
