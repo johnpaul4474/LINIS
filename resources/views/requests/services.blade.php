@@ -51,6 +51,7 @@
                                 <th>Processed By</th>
                                 <th>Processed Date</th>
                                 {{-- @if(Auth::user()->role_id  == 1 || Auth::user()->role_id== 2) --}}
+                                <th>Remarks</th>
                                 @if(Auth::user()->role_id  == 1)
                                 <th>Action</th>
                                 @endif
@@ -87,7 +88,7 @@
 
                                 <td>{{$req->created_at}}</td>
                                
-
+                               
                                 @if($req->status == 1)
                                  <td style="background-color:#FF5252">PENDING</td>
                                 @elseif($req->status == 2)
@@ -101,34 +102,43 @@
                                 @endif
                                 <td>{{$req->processed_by}}</td>
                                 <td>{{$req->processed_at}}</td>
-
+                                @if(Auth::user()->role_id  == 1)
+                                <td><textarea id="remarks" type="text" class="form-control @error('remarks') is-invalid @enderror" name="remarks" >{{$req->comments}}</textarea></td>
+                                @else
+                                <td>{{$req->comments}}</td>
+                                @endif
                                 {{-- @if(Auth::user()->role_id  == 1 || Auth::user()->role_id== 2) --}}
                                 @if(Auth::user()->role_id  == 1)
                                   @if($req->status == 1)
                                     <form action = "/processRequest" method = "post">
                                       @csrf
+                                      <td>
                                         <input id="id" type="hidden" class="form-control @error('id') is-invalid @enderror" name="id" value="{{$req->id}}">
                                         <input id="product_name_request" type="hidden" class="form-control @error('id') is-invalid @enderror" name="product_name_request" value="{{$req->product_name_request}}">
                                         <input id="product_quantity_request" type="hidden" class="form-control @error('id') is-invalid @enderror" name="product_quantity_request" value="{{$req->product_quantity_request}}">
-                                        <td>
+                                        <input id="remarksSave" type="hidden" class="form-control @error('remarksSave') is-invalid @enderror" name="remarksSave" value="">
+                                        
                                           <button type="submit" class="editProductsButton btn btn-primary btn-sm" >PROCESS</button>
                                         </td>
                                     </form>
                                   @elseif($req->status == 2)
                                   <form action = "/pickUpProductRequest" method = "post">
                                     @csrf
+                                      <td>
                                       <input id="id" type="hidden" class="form-control @error('id') is-invalid @enderror" name="id" value="{{$req->id}}">
                                       <input id="product_name_request" type="hidden" class="form-control @error('id') is-invalid @enderror" name="product_name_request" value="{{$req->product_name_request}}">
                                       <input id="product_quantity_request" type="hidden" class="form-control @error('id') is-invalid @enderror" name="product_quantity_request" value="{{$req->product_quantity_request}}">
-                                      <td>
+                                      
+                                        <input id="remarksSave" type="hidden" class="form-control @error('remarksSave') is-invalid @enderror" name="remarksSave" value="">  
                                         <button type="submit" class="editProductsButton btn btn-info btn-sm" >READY</button>
                                       </td>
                                   </form>
                                   @elseif($req->status == 3)
                                   <form action = "/issueProductRequest" method = "get">
                                     @csrf
+                                       <td>
                                       <input id="id" type="hidden" class="form-control @error('id') is-invalid @enderror" name="id" value="{{$req->id}}">                                      
-                                      <td>
+                                      <input id="remarksSave" type="hidden" class="form-control @error('remarksSave') is-invalid @enderror" name="remarksSave" value="">
                                         <button type="submit" class="editProductsButton btn btn-warning btn-sm" >ISSUE</button>
                                       </td>
                                   </form>
@@ -213,6 +223,9 @@ $(document).ready(function () {
             }    
     }); 
 
+    $('#remarks').on('input',function(e){      
+      $('#remarksSave').val($(this).val());
+    });
 
 
 })

@@ -145,7 +145,8 @@ class RequestController extends Controller
             'status' => 2,
             'processed_by' => Auth::user()->name,
             'processed_by_emp_id' => Auth::user()->employee_id,
-            'processed_at' => \Carbon\Carbon::now()
+            'processed_at' => \Carbon\Carbon::now(),
+            'comments' => $request->remarksSave
         ]);
 
             //status request
@@ -204,7 +205,8 @@ class RequestController extends Controller
             'status' => 3,
             'processed_by' => Auth::user()->name,
             'processed_by_emp_id' => Auth::user()->employee_id,
-            'processed_at' => \Carbon\Carbon::now()
+            'processed_at' => \Carbon\Carbon::now(),
+            'comments' => $request->remarksSave
         ]);
 
             //status request
@@ -310,6 +312,11 @@ class RequestController extends Controller
 
         $officeList = DB::Select("SELECT * FROM nora.paul.linen_office ORDER BY office_name ASC");
          
+        DB::table('nora.paul.linen_requests')
+        ->where('id', $request->id)
+        ->update([            
+            'comments' => $request->remarksSave
+        ]);
         return view('requests.issuanceRequest', compact('productsList','requestList','wardList','officeList'));
         
     }
