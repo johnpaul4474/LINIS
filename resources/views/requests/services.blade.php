@@ -230,8 +230,7 @@ $(document).ready(function () {
 })
 
 function remarks(id){
-     console.log(id);
-        //$('#remarksSave_{{$req->id}}_'id).val($('#remarks_'id).val();
+     console.log(id);        
     $('#remarksSave_'+id).val($('#remarks_'+id).val());
     }
      
