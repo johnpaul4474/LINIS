@@ -158,11 +158,13 @@
 </div>
 <br>
 <div class="row">
-    <div class="page-footer">
+    <div class="page-footer h5">
         <div class="container">
             <div class="row">
               <div class="col">
                     Submitted by:
+                    <br>
+                    <br>
                     <br>
                     <br>
                     ____________________________
@@ -172,6 +174,8 @@
               <div class="col">
                   Received by:
                   
+                    <br>
+                    <br>
                     <br>
                     <br>
                     ____________________________
@@ -395,7 +399,7 @@ $(document).ready(function () {
 
 .page-footer {
   position: fixed;
-  bottom: 0;
+  bottom: 50px;
   width: 100%;
   
   

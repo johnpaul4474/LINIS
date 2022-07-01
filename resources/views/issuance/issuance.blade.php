@@ -283,20 +283,20 @@
                           <tfoot class="text-center">
                               <tr>
                                
-                                    <td colspan="3" ><strong>
-                                        RECEIVED BY:</strong> <br>
+                                    <td class="h5" colspan="3" ><strong>
+                                        RECEIVED BY:</strong> <br><br>
                                         __________________________<br>
-                                        Signature Over Printed Name<br>
+                                        Signature Over Printed Name<br><br>
                                         __________________________<br>
-                                        Position<br>
+                                        Position<br><br>
                                         Date:
                                     </td>
                                     
-                                  <td colspan ="4" ><strong>RECEIVED FROM:</strong><br>
+                                  <td class="h5" colspan ="4" ><strong>RECEIVED FROM:</strong><br><br>
                                     __________________________<br>
-                                    Signature Over Printed Name<br>
+                                    Signature Over Printed Name<br><br>
                                     __________________________<br>
-                                    Position<br>
+                                    Position<br><br>
                                     Date:
                                   </td>
                                 </div>  
