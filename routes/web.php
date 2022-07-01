@@ -70,7 +70,7 @@ Route::post('/newRequest', [App\Http\Controllers\Request\RequestController::clas
 Route::post('/processRequest', [App\Http\Controllers\Request\RequestController::class, 'processRequest'])->name('processRequest');
 Route::post('/pickUpProductRequest', [App\Http\Controllers\Request\RequestController::class, 'pickUpProductRequest'])->name('pickUpProductRequest');
 Route::get('/issueProductRequest', [App\Http\Controllers\Request\RequestController::class, 'issueProductRequest'])->name('issueProductRequest');
-Route::get('/retrieveItemsList', [App\Http\Controllers\Request\RequestController::class, 'retrieveItemsList'])->name('issueProductRequest');
+Route::get('/retrieveItemsList', [App\Http\Controllers\Request\RequestController::class, 'retrieveItemsList'])->name('retrieveItemsList');
 Route::post('/issueFinalRequest', [App\Http\Controllers\Request\RequestController::class, 'issueFinalRequest'])->name('issueFinalRequest');
 
 //reports
@@ -79,7 +79,7 @@ Route::post('/generateInventoryReport', [App\Http\Controllers\Reports\ReportsCon
 
 //role
 Route::any('/roleManagement', [App\Http\Controllers\Role\RoleController::class, 'index'])->name('roleManagement');
-Route::any('/listusers', [App\Http\Controllers\Role\RoleController::class, 'listusers'])->name('roleManagement');
+Route::any('/listusers', [App\Http\Controllers\Role\RoleController::class, 'listusers'])->name('listusers');
 Route::any('/roleManagement/assignAdmin', [App\Http\Controllers\Role\RoleController::class, 'assignAdmin'])->name('/roleManagement/assignAdmin');
 
 Route::get('test', function () {
