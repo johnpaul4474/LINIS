@@ -204,7 +204,7 @@
     <br>
 <div class="row" id = "issuanceForm" hidden>    
     <div class="container ">
-        <div class="col-md-9 mx-auto">  
+        <div class="col-md-12 mx-auto">  
         <div class="row justify-content-center">
           <div class="col-2 border border-dark border-bottom-0"><br>
 
@@ -786,7 +786,7 @@ body {
     }
 
     @page {
-                size: portrait !important;
+                size: landscape !important;
                 margin-left: 0.25in;
                 margin-right: 0.5in;
                 margin-top: 0;
@@ -796,7 +796,6 @@ body {
             }
 
          table tr td {
-            font-size: 8pt;
             font-family:'Times New Roman',Times,serif;
         }
         
