@@ -330,6 +330,11 @@ $(document).ready(function () {
     var availableCount = 0;
     $("#issueItems").click(function(event) {
 
+        if($('#productIds').val().length == 0) {
+            console.log("No selected items")
+            return;
+        }
+
         event.preventDefault();
 
         if($('#availableProducts').val() <= 0 || $("#ward").val() == null || $("#office").val() == null){
@@ -413,7 +418,6 @@ $(document).ready(function () {
                     success:function(response){
                         $('#quantity').val(0);
                         selectedItemCount = 0;
-                        $("#issueItems").removeAttr("disabled");
                         $("#productIdsRemove").val($('#productIds').val());
                         //$("#wardRadio, #officeRadio").prop('checked', false);
                         //console.log('radio ward office reset');
@@ -656,6 +660,21 @@ $("#finishedProduct").change(function() {
        
     
     });
+
+    $("#ward, #office").change(function () {
+        enableDisableIssueButton();
+    });
+
+    function enableDisableIssueButton() {
+        var selected_ward = document.getElementById("ward");
+        var selected_office = document.getElementById("office");
+
+        if(selected_ward.selectedIndex > 0 || selected_office.selectedIndex > 0) {
+            $("#issueItems").attr("disabled", false);
+        } else {
+            $("#issueItems").attr("disabled", true);
+        }
+    }
     
     $("#wardRadio, #officeRadio").change(function(){
         //console.log('radio ward office');
@@ -678,7 +697,7 @@ $("#finishedProduct").change(function() {
                 $("#ward").prop('disabled', true);
             }
 
-            $("#issueItems").removeAttr('disabled',false);
+            enableDisableIssueButton();
         });   
 
     $("#quantity").change(function(i){
