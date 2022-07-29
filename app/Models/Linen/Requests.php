@@ -29,8 +29,8 @@ class Requests extends Model
         'status',
         'processed_by',
         'processed_by_emp_id',
-        'processed_at'
-
+        'processed_at',
+        'comments'
     ];
 
     protected $dates = ['deleted_at'];
