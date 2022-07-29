@@ -14,6 +14,8 @@ use App\Events\LinisNotification;
 use Illuminate\Support\Arr;
 use App\Models\Linen\Requests;
 use Carbon\Carbon;
+use App\Models\Office;
+use App\Models\Ward;
 
 class ReportsController extends Controller {
     public function index() {
@@ -35,18 +37,12 @@ class ReportsController extends Controller {
         if($request->office != null) {      
             $linenInventory = DB::select('EXEC nora.paul.linen_getProductsListByOffice  @office='.$request->office);
             $linenInventoryReport = DB::select('EXEC nora.paul.linen_generateReportOffice  @office='.$request->office.', @currentMonth="'.$currentMonth.'", @nextMonth="'.$nextMonth.'", @lastMonth="'.$lastMonth.'"');
-            $officeward = DB::table('nora.paul.linen_office')
-                            ->select('office_name')
-                            ->where('id',$request->office)
-                            ->first();
+            $officeward = Office::where('id',$request->office)->pluck('office_name')[0];
         }
         if($request->ward != null) {
             $linenInventory = DB::select('EXEC nora.paul.linen_getProductsListByWard @ward ='.$request->ward);
             $linenInventoryReport = DB::select('EXEC nora.paul.linen_generateReportWard @ward ='.$request->ward.', @currentMonth="'.$currentMonth.'", @nextMonth="'.$nextMonth.'", @lastMonth="'.$lastMonth.'"');
-            $officeward = DB::table('nora.paul.linen_ward')
-                            ->select('ward_name')
-                            ->where('id',$request->ward)
-                            ->first();       
+            $officeward = Ward::where('id',$request->ward)->pluck('ward_name')[0];    
 
         }
         

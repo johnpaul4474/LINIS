@@ -17,6 +17,8 @@ use Illuminate\Support\Arr;
 use App\Models\Linen\Requests;
 use Redirect,Response;
 use Carbon\Carbon;
+use App\Models\Office;
+use App\Models\Ward;
 
 class RequestController extends Controller
 {
@@ -37,8 +39,8 @@ class RequestController extends Controller
             "created_at"        => Carbon::now(), 
         ]);
 
-        $wardList = DB::Select("SELECT * FROM nora.paul.linen_ward ORDER BY ward_name ASC");
-        $officeList = DB::Select("SELECT * FROM nora.paul.linen_office ORDER BY office_name ASC");
+        $wardList = Ward::orderBy('ward_name')->get();
+        $officeList = Office::orderBy('office_name')->get();
 
         $wardName = null;
         $officeName= null;
@@ -99,8 +101,8 @@ class RequestController extends Controller
     }
 
     public function processRequest(Request $request) {
-        $wardList = DB::Select("SELECT * FROM nora.paul.linen_ward ORDER BY ward_name ASC");
-        $officeList = DB::Select("SELECT * FROM nora.paul.linen_office ORDER BY office_name ASC");
+        $wardList = Ward::orderBy('ward_name')->get();
+        $officeList = Office::orderBy('office_name')->get();
 
         $wardName = null;
         $officeName= null;
@@ -159,8 +161,8 @@ class RequestController extends Controller
     }
 
     public function pickUpProductRequest(Request $request) {
-        $wardList = DB::Select("SELECT * FROM nora.paul.linen_ward ORDER BY ward_name ASC");
-        $officeList = DB::Select("SELECT * FROM nora.paul.linen_office ORDER BY office_name ASC");
+        $wardList = Ward::orderBy('ward_name')->get();
+        $officeList = Office::orderBy('office_name')->get();
 
         $wardName = null;
         $officeName= null;
@@ -269,9 +271,8 @@ class RequestController extends Controller
             }
         }
 
-
-        $wardList = DB::Select("SELECT * FROM nora.paul.linen_ward ORDER BY ward_name ASC");
-        $officeList = DB::Select("SELECT * FROM nora.paul.linen_office ORDER BY office_name ASC");
+        $wardList = Ward::orderBy('ward_name')->get();
+        $officeList = Office::orderBy('office_name')->get();
 
         $wardName = null;
         $officeName= null;
@@ -300,10 +301,8 @@ class RequestController extends Controller
             "created_at" => Carbon::now(), 
         ]);
 
-        $wardList = DB::Select("SELECT * FROM nora.paul.linen_ward ORDER BY ward_name ASC");
-
-
-        $officeList = DB::Select("SELECT * FROM nora.paul.linen_office ORDER BY office_name ASC");
+        $wardList = Ward::orderBy('ward_name')->get();
+        $officeList = Office::orderBy('office_name')->get();
          
         DB::table('nora.paul.linen_requests')
         ->where('id', $request->id)
@@ -315,9 +314,8 @@ class RequestController extends Controller
     }
 
     public function issueFinalRequest(Request $request) {
-
-        $wardList = DB::Select("SELECT * FROM nora.paul.linen_ward ORDER BY ward_name ASC");
-        $officeList = DB::Select("SELECT * FROM nora.paul.linen_office ORDER BY office_name ASC");
+        $wardList = Ward::orderBy('ward_name')->get();
+        $officeList = Office::orderBy('office_name')->get();
 
         
         $wardName = null;

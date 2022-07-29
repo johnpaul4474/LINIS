@@ -11,7 +11,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Linen\Requests;
 use Carbon\Carbon;
-
+use App\Models\Office;
+use App\Models\Ward;
 
 class IssuanceController extends Controller {
     public function index(Request $request) {
@@ -65,8 +66,8 @@ class IssuanceController extends Controller {
             }
         }
          
-        $wardList = \DB::Select("SELECT * FROM nora.paul.linen_ward ORDER BY ward_name ASC");
-        $officeList = \DB::Select("SELECT * FROM nora.paul.linen_office ORDER BY office_name ASC");
+        $wardList = Ward::orderBy('ward_name')->get();
+        $officeList = Office::orderBy('office_name')->get();
     
         return view('issuance.issuance', compact('productsList','requestList','wardList','officeList'));
     }
@@ -141,8 +142,8 @@ class IssuanceController extends Controller {
             on products.raw_material_id = raw_material.id  where products.deleted_at is null  order by products.is_available desc
         ");
     
-        $wardList = \DB::Select("SELECT * FROM nora.paul.linen_ward ORDER BY ward_name ASC");
-        $officeList = \DB::Select("SELECT * FROM nora.paul.linen_office ORDER BY office_name ASC");
+        $wardList = Ward::orderBy('ward_name')->get();
+        $officeList = Office::orderBy('office_name')->get();
 
         return view('issuance.issuance', compact('productsList','wardList','officeList'));
     }
