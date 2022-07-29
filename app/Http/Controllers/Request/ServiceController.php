@@ -32,4 +32,12 @@ class ServiceController extends Controller
 
         return view('requests.services',compact('requestList'));
     }
+
+    public function updateComment(Request $request, $id) {
+        $request1 = Requests::find($id);
+        $request1->comments = $request->remarks;
+        $request1->save();
+
+        return redirect("/services");
+    }
 }
