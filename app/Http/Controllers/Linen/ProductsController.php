@@ -15,10 +15,6 @@ use Carbon\Carbon;
 
 class ProductsController extends Controller
 {
-    public function __construct() {
-        $this->middleware('auth');
-    }
-
     public function index(Request $request) {
         $stockRoomsList = StockRoom::select()->orderBy('stock_room','asc')->get();
         $storageList = Storage::select()->orderBy('storage_name','asc')->get();

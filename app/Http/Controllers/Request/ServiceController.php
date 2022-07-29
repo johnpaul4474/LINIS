@@ -9,11 +9,6 @@ use Illuminate\Support\Facades\Auth;
 
 class ServiceController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-    
     public function index() {
         //to do filter by user get only for ward or office
         

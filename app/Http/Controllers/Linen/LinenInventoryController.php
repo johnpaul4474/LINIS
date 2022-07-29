@@ -17,10 +17,6 @@ use Carbon\Carbon;
 
 class LinenInventoryController extends Controller
 {
-    public function __construct() {
-        $this->middleware('auth');
-    }
-    
     public function index() {
         $stockRooms = StockRoom::select()->orderBy('stock_room', 'asc')->get();
         $storageList = Storage::select()->orderBy('storage_name', 'asc')->get();

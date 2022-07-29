@@ -20,10 +20,6 @@ use Carbon\Carbon;
 
 class RequestController extends Controller
 {
-    public function __construct() {
-        $this->middleware('auth');
-    }
-
     public function index() {
         if(Auth::user()->office_id != null) {      
             $productsList = DB::select('EXEC nora.paul.linen_getProductsListByWardOffice @ward =null'.', @office='.Auth::user()->office_id);

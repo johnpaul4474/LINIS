@@ -14,10 +14,6 @@ use Carbon\Carbon;
 
 
 class IssuanceController extends Controller {
-    public function __construct() {
-        $this->middleware('auth');
-    }
-
     public function index(Request $request) {
         $productsList  = \DB::select("
             SELECT products.id ,
