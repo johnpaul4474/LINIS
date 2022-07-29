@@ -32,13 +32,11 @@ class RoleController extends Controller
             "created_at" => Carbon::now(), 
         ]);
 
-        DB::table('nora.paul.linen_users')
-        ->where('id', $request->userId)
-        ->update([
-            'role_id' => 1,
-            'role_name' => 'super_admin' ,           
-            'updated_at' => Carbon::now()
-        ]);
+        UsersList::where('id', $request->userId)
+            ->update([
+                'role_id' => 1,
+                'role_name' => 'super_admin'
+            ]);
 
         return redirect()->route('roleManagement')->with('success', 'User role successfully changed');
     }
