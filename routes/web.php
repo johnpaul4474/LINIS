@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Linen\LinenInventoryController;
 use App\Http\Controllers\Stockroom\StockRoomController;
 use App\Http\Controllers\Stockroom\StorageController;
@@ -23,8 +24,12 @@ use App\Http\Controllers\Role\RoleController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', function (Request $request) {
+    if($request->user()) {
+        return redirect()->route('home');
+    } else {
+        return view('welcome');
+    }
 });
 
 Auth::routes();
