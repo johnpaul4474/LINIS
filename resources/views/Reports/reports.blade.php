@@ -4,32 +4,20 @@
 <div class= "container">
 <div class="card d-print-none" >
     <div class="card-header">
-      GENERATE INVENTORY REPORT FOR 
-            @if(Auth::user()->office_id != null)
-                  @foreach(\App\Http\Controllers\Department\DepartmentController::officeList() as $office)                                                                
-                      @if($office->id == Auth::user()->office_id) 
-                          {{$office->office_name}}
-                      @endif
-                   @endforeach
-            @elseif(Auth::user()->ward_id != null)
-                  @foreach(\App\Http\Controllers\Department\DepartmentController::wardList() as $ward)                                                                
-                  @if($ward->id ==  Auth::user()->ward_id )
-                          {{$ward->ward_name}}
-                  @endif
-                  @endforeach
-             
-            @endif
+      GENERATE INVENTORY REPORT
     </div>
     <div class="card-body">
         <form action = "/generateInventoryReport" method = "post">
             @csrf
             <div class="row">
+                {{-- @if(Auth::user()->role_id  == 1 || Auth::user()->role_id== 2) --}}
+                @if(Auth::user()->role_id  == 1)
                 <div class="col-4">
                     <div class="input-group input-group-sm mb-3">                            
                         <div class="input-group-prepend">
-                            <label for="month" class="input-group-text">{{ __('Choose month') }}</label>
+                            <label for="month" class="input-group-text">Month</label>
                         </div>
-                            <input id="month" type="month" class="form-control @error('month') is-invalid @enderror" name="month" value="{{ old('month') }}" required autocomplete="month" autofocus>
+                            <input id="month" type="month" class="form-control @error('month') is-invalid @enderror" name="month" value="{{ old('month') }}" required autocomplete="month">
 
                             @error('month')
                                 <span class="invalid-feedback" role="alert">
@@ -38,9 +26,7 @@
                             @enderror                    
                     </div>
                 </div> 
-                
-                {{-- @if(Auth::user()->role_id  == 1 || Auth::user()->role_id== 2) --}}
-                @if(Auth::user()->role_id  == 1)
+
                 <div class="col-4">
                     <div class="input-group input-group-sm mb-3">
                         <div class="input-group-prepend">                      
@@ -92,6 +78,21 @@
                     </div>
                 </div>
                 @else
+                    <div class="col-4">
+                        <div class="input-group input-group-sm mb-3">                            
+                            <div class="input-group-prepend">
+                                <label for="month" class="input-group-text">Month</label>
+                            </div>
+                                <input readonly id="month" type="month" class="form-control @error('month') is-invalid @enderror" name="month" value="{{ old('month') }}" required autocomplete="month">
+
+                                @error('month')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror                    
+                        </div>
+                    </div> 
+                    
                     @if(Auth::user()->office_id != null)
                         @foreach(\App\Http\Controllers\Department\DepartmentController::officeList() as $office)                                                                
                             @if($office->id == Auth::user()->office_id) 
