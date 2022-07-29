@@ -10,7 +10,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-use App\Models\Linen\Requests;
+use App\Models\Requests;
 use App\Models\Linen\UsersList;
 use Carbon\Carbon;
 

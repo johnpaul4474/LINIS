@@ -12,7 +12,7 @@ use App\Models\Linen\StockRoom;
 use App\Models\Linen\Storage;
 use App\Models\Products;
 use Illuminate\Validation\Rule;
-use App\Models\Linen\Requests;
+use App\Models\Requests;
 use DB;
 use Carbon\Carbon;
 

@@ -14,7 +14,7 @@ use Illuminate\Validation\Rule;
 use DB;
 use App\Events\LinisNotification;
 use Illuminate\Support\Arr;
-use App\Models\Linen\Requests;
+use App\Models\Requests;
 use Redirect,Response;
 use Carbon\Carbon;
 use App\Models\Office;

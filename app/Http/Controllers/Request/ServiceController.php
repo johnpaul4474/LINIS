@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Request;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Linen\Requests;
+use App\Models\Requests;
 use Illuminate\Support\Facades\Auth;
 
 class ServiceController extends Controller
