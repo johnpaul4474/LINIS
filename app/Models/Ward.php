@@ -2,14 +2,23 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
+
 class Ward extends Model {
     protected $table = 'nora.paul.linen_ward';
     public $timestamps = false;
     protected static $orderByColumn = 'ward_name';
 
+    protected static function boot() {
+        parent::boot();
+        static::addGlobalScope('order', function (Builder $builder) {
+            $builder->orderBy('ward_name');
+        });
+    }
+
     protected $fillable = [
         'id',
-        'office_name',	
+        'ward_name',	
         'alt_id'
     ];
 }

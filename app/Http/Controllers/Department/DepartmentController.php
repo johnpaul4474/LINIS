@@ -8,10 +8,10 @@ use App\Models\Ward;
 
 class DepartmentController extends Controller {
 	public static function wardList() { 
-		return Ward::orderBy('ward_name')->get();
+		return Ward::all();
 	}
 
 	public static function officeList() { 
-		return Office::orderBy('office_name')->get();
+		return Office::all();
 	}
 }

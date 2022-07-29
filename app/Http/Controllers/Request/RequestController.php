@@ -39,8 +39,8 @@ class RequestController extends Controller
             "created_at"        => Carbon::now(), 
         ]);
 
-        $wardList = Ward::orderBy('ward_name')->get();
-        $officeList = Office::orderBy('office_name')->get();
+        $wardList = Ward::all();
+        $officeList = Office::all();
 
         $wardName = null;
         $officeName= null;
@@ -101,8 +101,8 @@ class RequestController extends Controller
     }
 
     public function processRequest(Request $request) {
-        $wardList = Ward::orderBy('ward_name')->get();
-        $officeList = Office::orderBy('office_name')->get();
+        $wardList = Ward::all();
+        $officeList = Office::all();
 
         $wardName = null;
         $officeName= null;
@@ -161,8 +161,8 @@ class RequestController extends Controller
     }
 
     public function pickUpProductRequest(Request $request) {
-        $wardList = Ward::orderBy('ward_name')->get();
-        $officeList = Office::orderBy('office_name')->get();
+        $wardList = Ward::all();
+        $officeList = Office::all();
 
         $wardName = null;
         $officeName= null;
@@ -271,8 +271,8 @@ class RequestController extends Controller
             }
         }
 
-        $wardList = Ward::orderBy('ward_name')->get();
-        $officeList = Office::orderBy('office_name')->get();
+        $wardList = Ward::all();
+        $officeList = Office::all();
 
         $wardName = null;
         $officeName= null;
@@ -301,8 +301,8 @@ class RequestController extends Controller
             "created_at" => Carbon::now(), 
         ]);
 
-        $wardList = Ward::orderBy('ward_name')->get();
-        $officeList = Office::orderBy('office_name')->get();
+        $wardList = Ward::all();
+        $officeList = Office::all();
          
         DB::table('nora.paul.linen_requests')
         ->where('id', $request->id)
@@ -314,8 +314,8 @@ class RequestController extends Controller
     }
 
     public function issueFinalRequest(Request $request) {
-        $wardList = Ward::orderBy('ward_name')->get();
-        $officeList = Office::orderBy('office_name')->get();
+        $wardList = Ward::all();
+        $officeList = Office::all();
 
         
         $wardName = null;

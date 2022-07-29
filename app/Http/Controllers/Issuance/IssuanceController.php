@@ -30,8 +30,8 @@ class IssuanceController extends Controller {
             }
         }
          
-        $wardList = Ward::orderBy('ward_name')->get();
-        $officeList = Office::orderBy('office_name')->get();
+        $wardList = Ward::all();
+        $officeList = Office::all();
     
         return view('issuance.issuance', compact('productsList','requestList','wardList','officeList'));
     }
@@ -106,8 +106,8 @@ class IssuanceController extends Controller {
             on products.raw_material_id = raw_material.id  where products.deleted_at is null  order by products.is_available desc
         ");
     
-        $wardList = Ward::orderBy('ward_name')->get();
-        $officeList = Office::orderBy('office_name')->get();
+        $wardList = Ward::all();
+        $officeList = Office::all();
 
         return view('issuance.issuance', compact('productsList','wardList','officeList'));
     }
