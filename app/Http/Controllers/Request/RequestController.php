@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Request;
 
-use App\Models\Linen\LinenRawMaterials;
+use App\Models\LinenRawMaterials;
 use App\Models\ActivityLogs;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;

@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Linen\StockRoom;
 use App\Models\Linen\Storage;
 use App\Models\Linen\Products;
-use App\Models\Linen\LinenRawMaterials;
+use App\Models\LinenRawMaterials;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use DB;
