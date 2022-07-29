@@ -45,6 +45,7 @@ Route::post('/products/update', [App\Http\Controllers\linen\ProductsController::
 
 //services 
 Route::any('/services', [App\Http\Controllers\Request\ServiceController::class, 'index'])->name('services');
+Route::POST('/services/comments/{id}', [App\Http\Controllers\Request\ServiceController::class, 'updateComment'])->name('services/update');
 
 
 
