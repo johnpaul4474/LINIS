@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Builder;
 class Ward extends Model {
     protected $table = 'nora.paul.linen_ward';
     public $timestamps = false;
-    protected static $orderByColumn = 'ward_name';
 
     protected static function boot() {
         parent::boot();

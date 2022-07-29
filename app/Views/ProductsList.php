@@ -1,23 +1,18 @@
 <?php
 
-namespace App\Models;
+namespace App\Views;
 
 use Illuminate\Database\Eloquent\Builder;
 
-class Office extends Model {
-    protected $table = 'nora.paul.linen_office';
+class ProductsList extends View {
+    protected $table = 'nora.paul.linen_products_list';
     public $timestamps = false;
 
     protected static function boot() {
         parent::boot();
+        
         static::addGlobalScope('order', function (Builder $builder) {
-            $builder->orderBy('office_name');
+            $builder->orderBy("is_available", "desc");
         });
     }
-
-    protected $fillable = [
-        'id',
-        'office_name',	
-        'alt_id'
-    ];
 }
