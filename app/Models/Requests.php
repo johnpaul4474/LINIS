@@ -2,14 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Requests extends Model
-{
+class Requests extends Model {
     use SoftDeletes;
-    use HasFactory;
 
     protected $table = 'nora.paul.linen_requests';
 
