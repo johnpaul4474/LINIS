@@ -345,10 +345,7 @@ class RequestController extends Controller
             'issued_office_id' => null,	
             'issued_ward_id' => null,	
             'issued_date' =>null,
-            "updated_at" => Carbon::now(),  
             "returned_date" => Carbon::now()
-           
-        
         ]);
         
         $productsList  = ProductsList::all();

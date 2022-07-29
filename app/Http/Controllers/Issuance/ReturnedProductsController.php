@@ -41,7 +41,6 @@ class ReturnedProductsController extends Controller
                 'is_available'              => true,	
                 'is_returned'               => true,	 
                 'is_issued'                 => false,         
-                "updated_at"                => Carbon::now(),  
                 "returned_date"             => Carbon::now(),
                 'product_returned_quantity' => count($productIds) 
             ]);
@@ -80,7 +79,6 @@ class ReturnedProductsController extends Controller
                 'is_returned'                   => false,	
                 'is_issued'                     => false,
                 "returned_date"                 => null, 
-                "updated_at"                    => Carbon::now(),
                 'condemned_date'                => Carbon::now(),
                 'product_condemned_quantity'    => count($productIds) 
             ]);
@@ -105,7 +103,6 @@ class ReturnedProductsController extends Controller
                 'is_condemned'              => false,  
                 'is_lossed'                 => true,
                 'is_issued'                 => false,
-                "updated_at"                => Carbon::now(),
                 'lossed_date'               => Carbon::now(),
                 'product_losses_quantity'   => count($productIds) 
             ]);

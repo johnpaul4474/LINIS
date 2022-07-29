@@ -12,7 +12,6 @@ class Products extends Model
     use HasFactory;
 
     protected $table = 'nora.paul.linen_products';
-    public $timestamps = true;
 
     protected $casts = [
         'product_unit_cost' => 'float'
