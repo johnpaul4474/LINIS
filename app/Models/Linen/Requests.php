@@ -12,12 +12,8 @@ class Requests extends Model
     use HasFactory;
 
     protected $table = 'nora.paul.linen_requests';
-    public $timestamps = true;
-
-
 
     protected $fillable = [
-        'id',
         'product_name_request',
         'product_quantity_request',
         'name',

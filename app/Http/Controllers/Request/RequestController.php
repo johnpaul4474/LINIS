@@ -133,8 +133,7 @@ class RequestController extends Controller
             "created_at" => Carbon::now(), 
         ]);
 
-        DB::table('nora.paul.linen_requests')
-            ->where('id', $request->id)
+        Requests::where('id', $request->id)
             ->update([
                 'status' => 2,
                 'processed_by' => Auth::user()->name,
@@ -195,8 +194,7 @@ class RequestController extends Controller
             "created_at" => Carbon::now(), 
         ]);
 
-        DB::table('nora.paul.linen_requests')
-            ->where('id', $request->id)
+        Requests::where('id', $request->id)
             ->update([
                 'status' => 3,
                 'processed_by' => Auth::user()->name,
@@ -273,11 +271,11 @@ class RequestController extends Controller
         $wardList = Ward::all();
         $officeList = Office::all();
          
-        DB::table('nora.paul.linen_requests')
-        ->where('id', $request->id)
-        ->update([            
-            'comments' => $request->remarksSave
-        ]);
+        Requests::where('id', $request->id)
+            ->update([            
+                'comments' => $request->remarksSave
+            ]);
+
         return view('requests.issuanceRequest', compact('productsList','requestList','wardList','officeList'));
         
     }
@@ -307,14 +305,13 @@ class RequestController extends Controller
                 }
             }
         }
-        DB::table('nora.paul.linen_requests')
-        ->where('id', $request->id)
-        ->update([
-            'status' => 4,
-            'processed_by' => Auth::user()->name,
-            'processed_by_emp_id' => Auth::user()->employee_id,
-            'processed_at' => Carbon::now()
-        ]);
+        Requests::where('id', $request->id)
+            ->update([
+                'status' => 4,
+                'processed_by' => Auth::user()->name,
+                'processed_by_emp_id' => Auth::user()->employee_id,
+                'processed_at' => Carbon::now()
+            ]);
 
         $requestorDetails =Requests::select()->where('id',$request->id)->first();
         event(new LinisNotification('processRequest',
@@ -357,11 +354,10 @@ class RequestController extends Controller
 
     public function editRemarks(Request $request) {
        
-        DB::table('nora.paul.linen_requests')
-        ->where('id', $request->id)
-        ->update([            
-            'comments' => $request->remarksSave
-        ]);
+        Requests::where('id', $request->id)
+            ->update([            
+                'comments' => $request->remarksSave
+            ]);
 
         return redirect()->route('services')->with('success', 'Remarks added successfully');
     }
