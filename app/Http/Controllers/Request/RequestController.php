@@ -9,7 +9,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Models\StockRoom;
-use App\Models\Linen\Storage;
+use App\Models\Storage;
 use Illuminate\Validation\Rule;
 use DB;
 use App\Events\LinisNotification;

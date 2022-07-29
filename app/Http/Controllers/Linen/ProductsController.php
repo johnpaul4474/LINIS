@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Linen;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\StockRoom;
-use App\Models\Linen\Storage;
+use App\Models\Storage;
 use App\Models\Products;
 use App\Models\LinenRawMaterials;
 use Illuminate\Support\Facades\Auth;

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\StockRoom;
 
 use App\Models\StockRoom;
-use App\Models\Linen\Storage;
+use App\Models\Storage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
