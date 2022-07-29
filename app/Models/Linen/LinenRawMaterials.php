@@ -5,35 +5,45 @@ namespace App\Models\Linen;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Builder;
 
 class LinenRawMaterials extends Model
 {
     use SoftDeletes;
     use HasFactory;
 
+    protected static function boot() {
+        parent::boot();
+        
+        static::addGlobalScope('order', function (Builder $builder) {
+            $builder->orderBy("stock_number", "desc");
+        });
+    }
+
     protected $table = 'nora.paul.linen_raw_materials';
-    public $timestamps = true;
 
     protected $casts = [
         'unit_cost' => 'float'
     ];
 
     protected $fillable = [
-        'id',
         'stock_number',	
         'quantity',	
         'unit',	
+        'type',
         'description',	
         'unit_cost',
-        'is_archived',
-        'is_available',
         'stock_room',
         'storage_room',	
-        'type',	
-        'created_at',	
-        'updated_at',
+        'is_archived',
+        'is_available',
         'received_at'
     ];
 
     protected $dates = ['deleted_at'];
+    protected $appends = ['total_price'];
+
+    public function getTotalPriceAttribute() {
+        return $this->attributes['quantity'] * $this->attributes['unit_cost'];
+    }
 }

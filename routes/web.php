@@ -34,7 +34,6 @@ Route::get('/', function (Request $request) {
 
 Auth::routes();
 
-//materials
 Route::middleware('auth')->group(function () {
     Route::get('/home', [LinenInventoryController::class, 'index'])->name('home');
 

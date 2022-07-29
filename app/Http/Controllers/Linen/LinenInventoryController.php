@@ -21,8 +21,8 @@ class LinenInventoryController extends Controller
     public function index() {
         $stockRooms = StockRoom::select()->orderBy('stock_room', 'asc')->get();
         $storageList = Storage::select()->orderBy('storage_name', 'asc')->get();
-        $rawMaterials = DB::select("select * , (raw_material.quantity * raw_material.unit_cost) as total_price from [nora].[paul].[linen_raw_materials] as raw_material");
-        $materialCount = DB::table('nora.paul.linen_raw_materials')->count() ;
+        $rawMaterials = LinenRawMaterials::all();
+        $materialCount = LinenRawMaterials::count() ;
 
         if(Auth::user()->role_id == 1 || Auth::user()->role_id == 2 ) {
             $requestList = Requests::select()->orderBy('created_at', 'desc' )->get();
@@ -69,7 +69,7 @@ class LinenInventoryController extends Controller
         $rawMaterials = LinenRawMaterials::select()->orderBy('created_at','desc')->get();
         $stockRooms = StockRoom::select()->orderBy('stock_room','asc')->get();
         $storageList = Storage::select()->orderBy('storage_name','asc')->get();
-        $lastRecord = DB::table('nora.paul.linen_raw_materials')->latest()->first();
+        $lastRecord = LinenRawMaterials::latest()->first();
        
         if($lastRecord == null) {
             $lastRecord = 1;
@@ -84,7 +84,7 @@ class LinenInventoryController extends Controller
         $rawMaterials = LinenRawMaterials::select()->orderBy('created_at','asc')->get();
 
         //////// TO-DO clean database for new records start from 0
-        $latestId = DB::table('nora.paul.linen_raw_materials')->orderBy('id','desc')->first();
+        $latestId = LinenRawMaterials::orderBy('id','desc')->first();
         $newRecordId = 0;
 
         if($latestId != null) {
@@ -111,13 +111,7 @@ class LinenInventoryController extends Controller
             $isAvailable = false;
         }
 
-        $stocknumbersList = DB::select("select stock_number from [nora].[paul].[linen_raw_materials]");
-
-        $stockNumberValidationList = []; 
-
-        foreach ($stocknumbersList as $data) {
-            array_push($stockNumberValidationList,$data->stock_number);
-        }
+        $stockNumberValidationList = LinenRawMaterials::all()->pluck("stock_number");
 
         Validator::make($request->all(), [
             'stock_number' => [
@@ -126,20 +120,18 @@ class LinenInventoryController extends Controller
             ] 
         ])->validate();
 
-        DB::table('nora.paul.linen_raw_materials')
-            ->insert([
-                'stock_number'  => $request->stock_number,	
-                'quantity'      => $request->quantity,	
-                'unit'          => $request->unit,	
-                'description'   => $request->description,	
-                'unit_cost'     => $request->unit_cost,	
-                'type'          => $request->type,	
-                'created_at'    => Carbon::now(),
-                'stock_room'    => $request->stockRoom,	
-                'storage_room'  => $request->storageRoom,        
-                'is_archived'   => $isArchived,
-                'is_available'  => $isAvailable,
-                'received_at'   => $request->received_at
+        $raw = LinenRawMaterials::create([
+            'stock_number'  => $request->stock_number,	
+            'quantity'      => $request->quantity,	
+            'unit'          => $request->unit,	
+            'description'   => $request->description,	
+            'unit_cost'     => $request->unit_cost,	
+            'type'          => $request->type,
+            'stock_room'    => $request->stockRoom,	
+            'storage_room'  => $request->storageRoom,        
+            'is_archived'   => $isArchived,
+            'is_available'  => $isAvailable,
+            'received_at'   => $request->received_at
         ]);
     
         return redirect()->route('material')->with('success', 'Raw material added successfully');
@@ -154,7 +146,7 @@ class LinenInventoryController extends Controller
             "created_at"        => Carbon::now(), 
         ]);
 
-        $latestId = DB::table('nora.paul.linen_raw_materials')->orderBy('id','desc')->first();
+        $latestId = LinenRawMaterials::orderBy('id','desc')->first();
         $newRecordId = 0;
 
         if($latestId != null) {
@@ -175,8 +167,7 @@ class LinenInventoryController extends Controller
             $isAvailableEdit = false;
         }
 
-        DB::table('nora.paul.linen_raw_materials')
-            ->where('id', (int)$request->idRawMaterial)
+        LinenRawMaterials::where('id', (int)$request->idRawMaterial)
             ->update([
                 'stock_number' => $request->stock_number,	
                 'quantity' => $request->quantity,	

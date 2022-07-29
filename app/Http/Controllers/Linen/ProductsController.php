@@ -18,14 +18,14 @@ class ProductsController extends Controller
     public function index(Request $request) {
         $stockRoomsList = StockRoom::select()->orderBy('stock_room','asc')->get();
         $storageList = Storage::select()->orderBy('storage_name','asc')->get();
-        $rawMaterials = LinenRawMaterials::select()->orderBy('created_at','desc')->get();
+        $rawMaterials = LinenRawMaterials::orderBy('created_at','desc')->get();
         $productsList = DB::select('EXEC nora.paul.linen_getBulkProductsv2');
         
         return view('linenMaterials.linenProducts', compact('rawMaterials','stockRoomsList','storageList','productsList'));
     }
 
     public function addProduct(Request $request) {
-        $rawMaterials = LinenRawMaterials::select()->orderBy('created_at','asc')->get();
+        $rawMaterials = LinenRawMaterials::orderBy('created_at','asc')->get();
 
         //////// TO-DO clean database for new records start from 0
         $latestId = Products::orderBy('id','desc')->first();
@@ -49,8 +49,7 @@ class ProductsController extends Controller
         ]);
 
         /// TO DO get logic behind creating products
-        DB::table('nora.paul.linen_raw_materials')
-            ->where('id', floatval($request->material_used))
+        LinenRawMaterials::where('id', floatval($request->material_used))
             ->decrement('quantity', floatval($request->materialUsedQuantity));
 
         DB::table('nora.paul.linen_activity_logs')->insert([
@@ -108,8 +107,7 @@ class ProductsController extends Controller
 
         $rawMaterialId = Products::distinct()->whereIn('id', $productsListId)->get();
 
-        DB::table('nora.paul.linen_raw_materials')
-            ->where('id', $rawMaterialId[0]->raw_material_stock_number)
+        LinenRawMaterials::where('id', $rawMaterialId[0]->raw_material_stock_number)
             ->increment('quantity', floatval($rawMaterialId[0]->material_used_quantity));
 
         Products::whereIn('id', $productsListId)->delete();
