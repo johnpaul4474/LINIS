@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Carbon\Carbon;
+use App\Models\ActivityLogs;
 
 use DB;
 
@@ -61,12 +62,7 @@ class StockRoomController extends Controller
             $newRecordId = 1;
         }
 
-        DB::table('nora.paul.linen_activity_logs')->insert([
-            'employee_id' => Auth::user()->employee_id,
-            'activity_details' => 'Added Stock Room ID: '.$newRecordId.' stock room: '.$request->stock_room,
-            "created_at" => Carbon::now(), 
-            
-        ]);
+        ActivityLogs::create(['activity_details' => 'Added Stock Room ID: '.$newRecordId.' stock room: '.$request->stock_room]);
 
         DB::table('nora.paul.linen_stock_rooms')
         ->insert([
@@ -94,12 +90,7 @@ class StockRoomController extends Controller
             'edit_stock_room' => ['required', 'string', 'max:255',Rule::notIn(array_map("strtoupper",$stockRoomValidationList))], 
         ])->validate();
 
-        
-        DB::table('nora.paul.linen_activity_logs')->insert([
-            'employee_id' => Auth::user()->employee_id,
-            'activity_details' => 'Updated Stock Room ID: '.$request->idStockRoom.' stock_room: '.$request->edit_stock_room,
-            'updated_at' => Carbon::now(), 
-        ]);
+        ActivityLogs::create(['activity_details' => 'Updated Stock Room ID: '.$request->idStockRoom.' stock_room: '.$request->edit_stock_room]);
 
         DB::table('nora.paul.linen_stock_rooms')
         ->where('id', (int)$request->idStockRoom)
@@ -122,11 +113,7 @@ class StockRoomController extends Controller
     public function destroy(Request $request)
     {
        //also deletes the entry for nora.paul_linen_storage which contains the stock_room_id
-        DB::table('nora.paul.linen_activity_logs')->insert([
-            'employee_id' => Auth::user()->employee_id,
-            'activity_details' => 'Deleted  Stock room id: '.$request->id,
-            "created_at" => Carbon::now(),             
-        ]);
+        ActivityLogs::create(['activity_details' => 'Deleted  Stock room id: '.$request->id]);
 
         $stockRooms = StockRoom::select()->orderBy('created_at','desc')->get();
         $storageList = Storage::select()->orderBy('created_at','asc')->get();

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
+use App\Models\ActivityLogs;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -121,12 +122,7 @@ class RegisterController extends Controller
             $office = null;
         }
 
-        DB::table('nora.paul.linen_activity_logs')->insert([
-            'employee_id' => $employeeId,
-            'activity_details' => 'Added new user: '.$employeeId,
-            "created_at" => Carbon::now()
-           
-        ]);
+        ActivityLogs::create(['activity_details' => 'Added new user: '.$employeeId]);
 
         return User::create([
             'username' => $data['username'],   

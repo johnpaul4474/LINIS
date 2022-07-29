@@ -99,11 +99,7 @@ class LinenInventoryController extends Controller
             $isArchived = false;    
         }
 
-        DB::table('nora.paul.linen_activity_logs')->insert([
-            'employee_id'       => Auth::user()->employee_id,
-            'activity_details'  => 'Added Raw Material ID: '.$newRecordId.' stock number: '.$request->stock_number. " type: ".$request->type,
-            "created_at"        => Carbon::now()
-        ]);
+        ActivityLogs::create(['activity_details' => 'Added Raw Material ID: '.$newRecordId.' stock number: '.$request->stock_number. " type: ".$request->type]);
 
         if($request->isAvailable == true) {
             $isAvailable = true;
@@ -140,11 +136,7 @@ class LinenInventoryController extends Controller
     public function update(Request $request) {
         $rawMaterials = LinenRawMaterials::select()->orderBy('created_at','asc')->get();
 
-        DB::table('nora.paul.linen_activity_logs')->insert([
-            'employee_id'       => Auth::user()->employee_id,
-            'activity_details'  => 'Updated Raw MaterialID: '.$request->idRawMaterial.' stock number: '.$request->stock_number,
-            "created_at"        => Carbon::now(), 
-        ]);
+        ActivityLogs::create(['activity_details' => 'Updated Raw MaterialID: '.$request->idRawMaterial.' stock number: '.$request->stock_number]);
 
         $latestId = LinenRawMaterials::orderBy('id','desc')->first();
         $newRecordId = 0;
@@ -185,11 +177,7 @@ class LinenInventoryController extends Controller
     }
 
     public function destroy(Request $request) {
-        DB::table('nora.paul.linen_activity_logs')->insert([
-            'employee_id' => Auth::user()->employee_id,
-            'activity_details' => 'Deleted  Raw Material id: '.$request->id,
-            "created_at" => Carbon::now()
-        ]);
+        ActivityLogs::create(['activity_details' => 'Deleted  Raw Material id: '.$request->id]);
 
         LinenRawMaterials::where('id', (int)$request->id)->delete();
 

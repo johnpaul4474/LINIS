@@ -35,11 +35,7 @@ class RequestController extends Controller
     }
 
     public function newRequest(Request $request) {
-        DB::table('nora.paul.linen_activity_logs')->insert([
-            'employee_id'       => Auth::user()->employee_id,
-            'activity_details'  => 'Request product: '.$request->product_name.' Quantity: '.$request->product_quantity.' Ward: '.Auth::user()->ward_id.' Office: '.Auth::user()->office_id,
-            "created_at"        => Carbon::now(), 
-        ]);
+        ActivityLogs::create(['activity_details' => 'Request product: '.$request->product_name.' Quantity: '.$request->product_quantity.' Ward: '.Auth::user()->ward_id.' Office: '.Auth::user()->office_id]);
 
         $wardList = Ward::all();
         $officeList = Office::all();
@@ -127,11 +123,7 @@ class RequestController extends Controller
             }
         }
         
-        DB::table('nora.paul.linen_activity_logs')->insert([
-            'employee_id' => Auth::user()->employee_id,
-            'activity_details' => 'Process Request id: '.$request->id.' Processed by: '.Auth::user()->employee_id,
-            "created_at" => Carbon::now(), 
-        ]);
+        ActivityLogs::create(['activity_details' => 'Process Request id: '.$request->id.' Processed by: '.Auth::user()->employee_id]);
 
         Requests::where('id', $request->id)
             ->update([
@@ -188,11 +180,7 @@ class RequestController extends Controller
             }
         }
         
-        DB::table('nora.paul.linen_activity_logs')->insert([
-            'employee_id' => Auth::user()->employee_id,
-            'activity_details' => 'Request for pick up ! Process Request id: '.$request->id.' Processed by: '.Auth::user()->employee_id,
-            "created_at" => Carbon::now(), 
-        ]);
+        ActivityLogs::create(['activity_details' => 'Request for pick up ! Process Request id: '.$request->id.' Processed by: '.Auth::user()->employee_id]);
 
         Requests::where('id', $request->id)
             ->update([
@@ -262,11 +250,7 @@ class RequestController extends Controller
             }
         }
         
-        DB::table('nora.paul.linen_activity_logs')->insert([
-            'employee_id' => Auth::user()->employee_id,
-            'activity_details' => 'Request finished ! Process Request id: '.$request->id.' Processed by: '.Auth::user()->employee_id,
-            "created_at" => Carbon::now(), 
-        ]);
+        ActivityLogs::create(['activity_details' => 'Request finished ! Process Request id: '.$request->id.' Processed by: '.Auth::user()->employee_id]);
 
         $wardList = Ward::all();
         $officeList = Office::all();

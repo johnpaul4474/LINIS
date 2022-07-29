@@ -14,6 +14,7 @@ use Carbon\Carbon;
 use App\Models\Office;
 use App\Models\Ward;
 use App\Views\ProductsList;
+use App\Models\ActivityLogs;
 
 class IssuanceController extends Controller {
     public function index(Request $request) {
@@ -44,11 +45,7 @@ class IssuanceController extends Controller {
 
         $productIds = explode(',', $request->productIds);
 
-        \DB::table('nora.paul.linen_activity_logs')->insert([
-            'employee_id'       => Auth::user()->employee_id,
-            'activity_details'  => 'Product issued: '.$request->productIds.' Ward: '.$request->ward.' Office: '.$request->office,
-            "created_at"        => Carbon::now(), 
-        ]);
+        ActivityLogs::create(['activity_details' => 'Product issued: '.$request->productIds.' Ward: '.$request->ward.' Office: '.$request->office]);
         
         Products::where('product_bulk_id', $request->finishedProduct)->decrement('product_available_quantity',(int)$request->quantity);
         
@@ -76,11 +73,7 @@ class IssuanceController extends Controller {
     }
 
     public function destroy(Request $request) {
-        \DB::table('nora.paul.linen_activity_logs')->insert([
-            'employee_id'       => Auth::user()->employee_id,
-            'activity_details'  => 'Deleted Condemned Product stock number: '.$request->id,
-            "created_at"        => Carbon::now()
-        ]);
+        ActivityLogs::create(['activity_details' => 'Deleted Condemned Product stock number: '.$request->id]);
        
         Products::where('product_bulk_id', $request->product_bulk_id)->decrement('product_available_quantity');
         Products::where('id', (int)$request->id)->delete();
@@ -95,11 +88,7 @@ class IssuanceController extends Controller {
 
         $productIds = explode(',', $request->productIds);
 
-        \DB::table('nora.paul.linen_activity_logs')->insert([
-            'employee_id'       => Auth::user()->employee_id,
-            'activity_details'  => 'Product issued: '.$request->productIds.' Ward: '.$request->ward.' Office: '.$request->office,
-            "created_at"        => Carbon::now(), 
-        ]);
+        ActivityLogs::create(['activity_details' => 'Product issued: '.$request->productIds.' Ward: '.$request->ward.' Office: '.$request->office]);
         
         Products::where('product_bulk_id', $request->finishedProduct)->decrement('product_available_quantity', (int) $request->quantity);
         

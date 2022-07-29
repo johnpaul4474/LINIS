@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\Requests;
 use App\Models\UsersList;
 use Carbon\Carbon;
+use App\Models\ActivityLogs;
 
 class RoleController extends Controller
 {
@@ -25,12 +26,7 @@ class RoleController extends Controller
     }
 
     public function assignAdmin (Request $request) {
-        
-        DB::table('nora.paul.linen_activity_logs')->insert([
-            'employee_id' => Auth::user()->employee_id,
-            'activity_details' => 'Assigned admmin user id: '.$request->id,
-            "created_at" => Carbon::now(), 
-        ]);
+        ActivityLogs::create(['activity_details' => 'Assigned admmin user id: '.$request->id]);
 
         UsersList::where('id', $request->userId)
             ->update([

@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
+use App\Models\ActivityLogs;
 
 class ReturnedProductsController extends Controller
 {
@@ -28,11 +29,7 @@ class ReturnedProductsController extends Controller
 
         $productIds = explode(',', $request->productIds);
 
-        DB::table('nora.paul.linen_activity_logs')->insert([
-            'employee_id'       => Auth::user()->employee_id,
-            'activity_details'  => 'Product Returned: '.$request->productIds.' Ward: '.$request->ward.' Office: '.$request->office,
-            "created_at"        => Carbon::now()
-        ]);
+        ActivityLogs::create(['activity_details' => 'Product Returned: '.$request->productIds.' Ward: '.$request->ward.' Office: '.$request->office]);
         
         Products::where('product_bulk_id', $request->finishedProduct)->increment('product_available_quantity',count($productIds));
 
@@ -49,11 +46,7 @@ class ReturnedProductsController extends Controller
     }
 
     public function destroy(Request $request) {
-        DB::table('nora.paul.linen_activity_logs')->insert([
-            'employee_id'       => Auth::user()->employee_id,
-            'activity_details'  => 'Deleted Condemned Product stock number: ' . $request->id,
-            "created_at"        => Carbon::now()
-        ]);
+        ActivityLogs::create(['activity_details' => 'Deleted Condemned Product stock number: ' . $request->id]);
        
         Products::where('product_bulk_id', $request->product_bulk_id)->decrement('product_available_quantity');
         Products::where('id', (int)$request->id)->delete();
@@ -64,11 +57,7 @@ class ReturnedProductsController extends Controller
     public function condemned(Request $request) {
         $productIds = explode(',', $request->productIdsCondemn);
         
-        DB::table('nora.paul.linen_activity_logs')->insert([
-            'employee_id'       => Auth::user()->employee_id,
-            'activity_details'  => 'Product condemned: '.$request->productIdsCondemn.' Ward: '.$request->wardCondemn. ' Office: '.$request->officeCondemn,
-            "created_at"        => Carbon::now(), 
-        ]);
+        ActivityLogs::create(['activity_details' => 'Product condemned: '.$request->productIdsCondemn.' Ward: '.$request->wardCondemn. ' Office: '.$request->officeCondemn]);
 
         Products::where('product_bulk_id', $request->finishedProduct)->increment('product_available_quantity',count($productIds));
 
@@ -89,11 +78,7 @@ class ReturnedProductsController extends Controller
     public function losses(Request $request) {
         $productIds = explode(',', $request->productIdsLosses);
         
-        DB::table('nora.paul.linen_activity_logs')->insert([
-            'employee_id'       => Auth::user()->employee_id,
-            'activity_details'  => 'Product lossed: '.$request->productIdsLosses.' Ward: '.$request->wardLosses. ' Office: '.$request->officeLosses,
-            "created_at"        => Carbon::now()
-        ]);
+        ActivityLogs::create(['activity_details' => 'Product lossed: '.$request->productIdsLosses.' Ward: '.$request->wardLosses. ' Office: '.$request->officeLosses]);
 
         Products::whereIn('id', $productIds)
             ->update([

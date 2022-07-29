@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use DB;
 use Carbon\Carbon;
+use App\Models\ActivityLogs;
 
 class ProductsController extends Controller
 {
@@ -42,21 +43,13 @@ class ProductsController extends Controller
             'availability' => 'required|numeric|gt:0', 
         ])->validate();
 
-        DB::table('nora.paul.linen_activity_logs')->insert([
-            'employee_id' => Auth::user()->employee_id,
-            'activity_details' => 'Added New Product Material ID: '.$newRecordId.'  raw material stock number: '.$request->stock_number. " raw material id: ".$request->rawMaterialId,
-            "created_at" => Carbon::now(),             
-        ]);
+        ActivityLogs::create(['activity_details' => 'Added New Product Material ID: '.$newRecordId.'  raw material stock number: '.$request->stock_number. " raw material id: ".$request->rawMaterialId]);
 
         /// TO DO get logic behind creating products
         LinenRawMaterials::where('id', floatval($request->material_used))
             ->decrement('quantity', floatval($request->materialUsedQuantity));
 
-        DB::table('nora.paul.linen_activity_logs')->insert([
-            'employee_id' => Auth::user()->employee_id,
-            'activity_details' => 'Quantity deducted:  raw material stock number: '.$request->stock_number. " raw material id: ".$request->material_used,
-            "created_at" => Carbon::now(),             
-        ]);
+        ActivityLogs::create(['activity_details' => 'Quantity deducted:  raw material stock number: '.$request->stock_number. " raw material id: ".$request->material_used]);
 
         $productCount = Products::where('raw_material_stock_number', $request->stock_number)->count() + 1;
         $quantityProduct = (int)$request->quantity + $productCount - 1; 
@@ -99,11 +92,7 @@ class ProductsController extends Controller
         $stringIds = $request->id;
         $productsListId = explode(',', $stringIds);
       
-        DB::table('nora.paul.linen_activity_logs')->insert([
-            'employee_id'       => Auth::user()->employee_id,
-            'activity_details'  => 'Deleted  Products id: '.$stringIds,
-            "created_at"        => Carbon::now()
-        ]);
+        ActivityLogs::create(['activity_details' => 'Deleted  Products id: '.$stringIds]);
 
         $rawMaterialId = Products::distinct()->whereIn('id', $productsListId)->get();
 
@@ -116,11 +105,7 @@ class ProductsController extends Controller
     }
 
     public function update(Request $request) {
-        DB::table('nora.paul.linen_activity_logs')->insert([
-            'employee_id'       => Auth::user()->employee_id,
-            'activity_details'  => 'Updated Product id: '.$request->productsId. " raw material id: ".$request->material_used,
-            "updated_at"        => Carbon::now(),             
-        ]);
+        ActivityLogs::create(['activity_details' => 'Updated Product id: '.$request->productsId. " raw material id: ".$request->material_used]);
 
         Products::where('id', (int) $request->productsId)
             ->update([
