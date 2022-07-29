@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Carbon\Carbon;
 
 use DB;
 
@@ -59,23 +60,23 @@ class StockRoomController extends Controller
         //////// TO-DO clean database for new records start from 0
         $latestId = DB::table('nora.paul.linen_stock_rooms')->orderBy('id','desc')->first();
         $newRecordId =0;
-        if($latestId != null){
+        if($latestId != null) {
             $newRecordId = (int)$latestId->id +1;
-        }else{
+        } else {
             $newRecordId = 1;
         }
 
         DB::table('nora.paul.linen_activity_logs')->insert([
             'employee_id' => Auth::user()->employee_id,
             'activity_details' => 'Added Stock Room ID: '.$newRecordId.' stock room: '.$request->stock_room,
-            "created_at" =>  \Carbon\Carbon::now(), 
+            "created_at" => Carbon::now(), 
             
         ]);
 
         DB::table('nora.paul.linen_stock_rooms')
         ->insert([
          'stock_room' => strtoupper($request->stock_room),	  
-         'created_at' => \Carbon\Carbon::now(),	
+         'created_at' => Carbon::now(),	
          
 
             
@@ -102,14 +103,14 @@ class StockRoomController extends Controller
         DB::table('nora.paul.linen_activity_logs')->insert([
             'employee_id' => Auth::user()->employee_id,
             'activity_details' => 'Updated Stock Room ID: '.$request->idStockRoom.' stock_room: '.$request->edit_stock_room,
-            'updated_at' => \Carbon\Carbon::now(), 
+            'updated_at' => Carbon::now(), 
         ]);
 
         DB::table('nora.paul.linen_stock_rooms')
         ->where('id', (int)$request->idStockRoom)
         ->update([
             'stock_room' => $request->edit_stock_room,
-            'updated_at' => \Carbon\Carbon::now(),	
+            'updated_at' => Carbon::now(),	
                      
         ]);
        
@@ -129,7 +130,7 @@ class StockRoomController extends Controller
         DB::table('nora.paul.linen_activity_logs')->insert([
             'employee_id' => Auth::user()->employee_id,
             'activity_details' => 'Deleted  Stock room id: '.$request->id,
-            "created_at" =>  \Carbon\Carbon::now(),             
+            "created_at" => Carbon::now(),             
         ]);
 
         $stockRooms = StockRoom::select()->orderBy('created_at','desc')->get();

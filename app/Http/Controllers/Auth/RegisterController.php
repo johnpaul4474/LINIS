@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use DB;
 use Illuminate\Support\Arr;
+use Carbon\Carbon;
+
 class RegisterController extends Controller
 {
     /*
@@ -61,7 +63,7 @@ class RegisterController extends Controller
                 $homisPassword = "";
                 $employeeId = "";
 
-                if (count ($verifyHomisAccountIfExist) == 1){                    
+                if (count ($verifyHomisAccountIfExist) == 1) {                    
                 $homisPassword = $password;                      
                 $employeeId = $verifyHomisAccountIfExist[0]->employeeid;  
                     
@@ -70,9 +72,9 @@ class RegisterController extends Controller
                 $verifyLinenAccountIfExist = DB::select("
                     select username from nora.paul.linen_users where username = '$username'                             
                     "); 
-                if(count ($verifyLinenAccountIfExist) == 1){
+                if(count ($verifyLinenAccountIfExist) == 1) {
                   $verifyUsername=$verifyLinenAccountIfExist[0]->username;
-                }else{
+                } else {
                     $verifyUsername ="";
                 }
                
@@ -107,22 +109,22 @@ class RegisterController extends Controller
         $userDetails = DB::select("Select top 1 * from hpersonal where employeeid = '$employeeId'");
         $userFullname = $userDetails[0]->lastname.", ".$userDetails[0]->firstname." ".$userDetails[0]->middlename;
 
-        if (Arr::exists($data, 'ward')){            
+        if (Arr::exists($data, 'ward')) {            
            $ward = $data['ward'];
-        }else{
+        } else {
             $ward = null;
         }
 
-        if (Arr::exists($data, 'office')){
-           $office =  $data['office'];
-        }else{
+        if (Arr::exists($data, 'office')) {
+           $office = $data['office'];
+        } else {
             $office = null;
         }
 
         DB::table('nora.paul.linen_activity_logs')->insert([
             'employee_id' => $employeeId,
             'activity_details' => 'Added new user: '.$employeeId,
-            "created_at" =>  \Carbon\Carbon::now()
+            "created_at" => Carbon::now()
            
         ]);
 

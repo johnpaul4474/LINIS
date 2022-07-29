@@ -12,11 +12,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Linen\Requests;
 use App\Models\Linen\UsersList;
-
+use Carbon\Carbon;
 
 class RoleController extends Controller
 {
-    public function index (){
+    public function index () {
 
         $usersList = UsersList::select()->where('office_id','6')->orderBy('role_id','asc')->get();  
         
@@ -24,12 +24,12 @@ class RoleController extends Controller
         return view('role.roleManagement',compact('usersList'));
     }
 
-    public function assignAdmin (Request $request){
+    public function assignAdmin (Request $request) {
         
         DB::table('nora.paul.linen_activity_logs')->insert([
             'employee_id' => Auth::user()->employee_id,
             'activity_details' => 'Assigned admmin user id: '.$request->id,
-            "created_at" =>  \Carbon\Carbon::now(), 
+            "created_at" => Carbon::now(), 
         ]);
 
         DB::table('nora.paul.linen_users')
@@ -37,13 +37,13 @@ class RoleController extends Controller
         ->update([
             'role_id' => 1,
             'role_name' => 'super_admin' ,           
-            'updated_at' => \Carbon\Carbon::now()
+            'updated_at' => Carbon::now()
         ]);
 
         return redirect()->route('roleManagement')->with('success', 'User role successfully changed');
     }
 
-    public function listusers (){
+    public function listusers () {
 
         $usersList = UsersList::select()->where('role_id','3')->orderBy('name','asc')->get();  
         

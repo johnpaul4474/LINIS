@@ -144,17 +144,17 @@
   
     $(document).ready(function () {
         //////////////////console.log( "ready!" );
-        $("#wardRadio, #officeRadio").change(function(){
+        $("#wardRadio, #officeRadio").change(function() {
             
         $("#ward, #office").val("").attr("readonly",true);
-        if($("#wardRadio").is(":checked")){
+        if($("#wardRadio").is(":checked")) {
             $("#ward").removeAttr("readonly");
             $("#wardRadio").attr("required",true);
             $("#ward").attr("required",true);
             $("#ward").prop('disabled', false);
             $("#ward").focus();
         }
-        else if($("#officeRadio").is(":checked")){
+        else if($("#officeRadio").is(":checked")) {
             $("#office").removeAttr("readonly");
             $("#officeRadio").attr("required",true);
             $("#office").attr("required",true);

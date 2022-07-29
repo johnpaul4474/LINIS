@@ -337,7 +337,7 @@ $(document).ready(function () {
 
         event.preventDefault();
 
-        if($('#availableProducts').val() <= 0 || $("#ward").val() == null || $("#office").val() == null){
+        if($('#availableProducts').val() <= 0 || $("#ward").val() == null || $("#office").val() == null) {
             //console.log("disable add button");
             $(this).attr("disabled",true);
         }
@@ -366,17 +366,17 @@ $(document).ready(function () {
         //console.log(issuedItemsList);
        
         
-        if(issuedItemsList[0].office != null){
+        if(issuedItemsList[0].office != null) {
             $.each({!! json_encode($officeList, JSON_HEX_TAG) !!}, function(key, value) {
-            if(value.id == issuedItemsList[0].office){
+            if(value.id == issuedItemsList[0].office) {
                 $('#wardoffice').text(value.office_name);
             }
         });
         }
 
-        if(issuedItemsList[0].ward != null){
+        if(issuedItemsList[0].ward != null) {
             $.each({!! json_encode($wardList, JSON_HEX_TAG) !!}, function(key, value) {
-            if(value.id == issuedItemsList[0].ward){
+            if(value.id == issuedItemsList[0].ward) {
                 $('#wardoffice').text(value.ward_name);
             }
         });
@@ -415,7 +415,7 @@ $(document).ready(function () {
                         ward : $("#ward").val(),
                         office : $("#office").val(),
                         },
-                    success:function(response){
+                    success:function(response) {
                         $('#quantity').val(0);
                         selectedItemCount = 0;
                         $("#productIdsRemove").val($('#productIds').val());
@@ -423,7 +423,7 @@ $(document).ready(function () {
                         //console.log('radio ward office reset');
                         // var productIdsRemove = $('#productIds').val().split(',')   
                         // console.log(productIdsRemove)
-                        // productIdsRemove.forEach(function(item,index){
+                        // productIdsRemove.forEach(function(item,index) {
                         //     console.log(item,index);
                         //     $("#finishedProduct").find('option').remove();
                         //     $("#listProducts").find(`[id="${item}"]`).remove()
@@ -489,7 +489,7 @@ $(document).ready(function () {
     //                     productIds : rows.attr('id'),  
     //                     bulkId : bulkId                      
     //                     },
-    //                 success:function(response){
+    //                 success:function(response) {
     //                     console.log(response);  
                         
     //                     // $.each(response, function(key, value) {
@@ -517,7 +517,7 @@ $(document).ready(function () {
                             
     //                         //console.log(bulkId);
     //                         $.each(response, function(key, value) {
-    //                             if(value.product_bulk_id == bulkId && value.is_available == 1){
+    //                             if(value.product_bulk_id == bulkId && value.is_available == 1) {
     //                                 selectedProductArray.push(value);
                             
     //                             }
@@ -568,7 +568,7 @@ $(document).ready(function () {
     $("#printItems").click(function() {
         window.print();
         console.log("print issuance");
-        // window.onafterprint = function(){
+        // window.onafterprint = function() {
         // //console.log("Printing completed...");
         // }
     });
@@ -593,8 +593,8 @@ $("#material_used").change(function() {
         $.each({!! json_encode($productsList, JSON_HEX_TAG) !!}, function(key, value) {
             var optionExists = $("#finishedProduct option[value="+value.product_bulk_id+"]").length > 0;
                     
-                if(value.raw_material_id == id){
-                    if(optionExists == false){
+                if(value.raw_material_id == id) {
+                    if(optionExists == false) {
                         
                             $("#finishedProduct").append('<option value="'+value.product_bulk_id+'">'+value.product_name+'</option>'); 
                     }
@@ -615,9 +615,9 @@ $("#finishedProduct").change(function() {
       //console.log(productIdsRemove);      
       $('#productIdsRemove').val('');         
     $.each({!! json_encode($productsList, JSON_HEX_TAG) !!}, function(key, value) {
-        if(value.product_bulk_id == bulkId && value.is_available == 1){
+        if(value.product_bulk_id == bulkId && value.is_available == 1) {
            
-            if(jQuery.inArray(value.id, productIdsRemove) == -1){               
+            if(jQuery.inArray(value.id, productIdsRemove) == -1) {               
              selectedProductArray.push(value);
             }
     
@@ -676,11 +676,11 @@ $("#finishedProduct").change(function() {
         }
     }
     
-    $("#wardRadio, #officeRadio").change(function(){
+    $("#wardRadio, #officeRadio").change(function() {
         //console.log('radio ward office');
             
             $("#ward, #office").val("").attr("readonly",true);
-            if($("#wardRadio").is(":checked")){
+            if($("#wardRadio").is(":checked")) {
                 $("#ward").removeAttr("readonly");
                 $("#wardRadio").attr("required",true);
                 $("#ward").attr("required",true);
@@ -688,7 +688,7 @@ $("#finishedProduct").change(function() {
                 $("#ward").focus();
                 $("#office").prop('disabled', true);
             }
-            else if($("#officeRadio").is(":checked")){
+            else if($("#officeRadio").is(":checked")) {
                 $("#office").removeAttr("readonly");
                 $("#officeRadio").attr("required",true);
                 $("#office").attr("required",true);
@@ -700,7 +700,7 @@ $("#finishedProduct").change(function() {
             enableDisableIssueButton();
         });   
 
-    $("#quantity").change(function(i){
+    $("#quantity").change(function(i) {
         $( '#listProducts input[type="checkbox"]' ).prop( "checked", false );
         oldValueProducts = $('#availableProductsOriginal').val();
 
@@ -747,16 +747,16 @@ $("#finishedProduct").change(function() {
 
 
           
-   $('#listProducts').on('click' ,'.form-check-input',function(){
+   $('#listProducts').on('click' ,'.form-check-input',function() {
        
        
-           if($(this).prop("checked") == true){
+           if($(this).prop("checked") == true) {
                //console.log("Checkbox is checked.",$(this).attr('id'));
                availableCount --;
                selectedItemCount ++;
                
            }
-           else if($(this).prop("checked") == false){
+           else if($(this).prop("checked") == false) {
                //console.log("Checkbox is unchecked.",$(this).attr('id'));
                availableCount ++;
                selectedItemCount --;
@@ -775,7 +775,7 @@ $("#finishedProduct").change(function() {
 $(document).change(function () {
     let productIds =[]
     $('input:checkbox').each(function (i) {
-        if($(this).prop("checked") == true){                    
+        if($(this).prop("checked") == true) {                    
             productIds.push($(this).attr('id'));
         }                
     });

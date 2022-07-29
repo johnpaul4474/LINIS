@@ -191,13 +191,13 @@ $(document).ready(function () {
   
   $.each({!! json_encode($requestList, JSON_HEX_TAG) !!}, function(key, value) {    
     ////////console.log(value)       
-    if(value.status == 1){
+    if(value.status == 1) {
       pendingCount ++;
     }
-    if(value.status == 2){
+    if(value.status == 2) {
       processingCount ++;
     }
-    if(value.status == 3){
+    if(value.status == 3) {
       finishedCount ++;
     }
  });
@@ -231,7 +231,7 @@ $(document).ready(function () {
     });
 })
 
-function remarksOnKeyUp(id){
+function remarksOnKeyUp(id) {
     console.log(id);        
     $('#remarksSave_'+id).val($('#remarks_'+id).val());
   }

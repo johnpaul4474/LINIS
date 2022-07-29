@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Carbon\Carbon;
 
 class StorageController extends Controller
 {
@@ -43,9 +44,9 @@ class StorageController extends Controller
         $latestId = DB::table('nora.paul.linen_storage')->orderBy('id','desc')->first();
 
         $newRecordId =0;
-        if($latestId != null){
+        if($latestId != null) {
             $newRecordId = (int)$latestId->id +1;
-        }else{
+        } else {
             $newRecordId = 1;
         }
 
@@ -64,7 +65,7 @@ class StorageController extends Controller
         DB::table('nora.paul.linen_activity_logs')->insert([
             'employee_id' => Auth::user()->employee_id,
             'activity_details' => 'Added Storage ID: '.$newRecordId.' STORAGE NAME: '.strtoupper($request->storage),
-            "created_at" =>  \Carbon\Carbon::now(), 
+            "created_at" => Carbon::now(), 
             
         ]);
 
@@ -72,7 +73,7 @@ class StorageController extends Controller
         ->insert([
          'stock_room_id' => $request->stockRoom,
          'storage_name' => strtoupper($request->storage),		  
-         'created_at' => \Carbon\Carbon::now(),	   
+         'created_at' => Carbon::now(),	   
             
         ]);
 
@@ -107,16 +108,16 @@ class StorageController extends Controller
         $latestId = DB::table('nora.paul.linen_storage')->orderBy('id','desc')->first();
 
         $newRecordId =0;
-        if($latestId != null){
+        if($latestId != null) {
             $newRecordId = (int)$latestId->id +1;
-        }else{
+        } else {
             $newRecordId = 1;
         }
 
         DB::table('nora.paul.linen_activity_logs')->insert([
             'employee_id' => Auth::user()->employee_id,
             'activity_details' => 'Updated Storage Storage ID: '.$request->idStorage.' STORAGE NAME: '.strtoupper($request->edit_storage).' STOCK ROOM: '.$request->editStockRoomStorage,
-            "updated_at" =>  \Carbon\Carbon::now(), 
+            "updated_at" => Carbon::now(), 
             
         ]);
 
@@ -125,7 +126,7 @@ class StorageController extends Controller
         ->update([
          'stock_room_id' => $request->editStockRoomStorage,
          'storage_name' => strtoupper($request->edit_storage),		  
-         'updated_at' => \Carbon\Carbon::now(),	   
+         'updated_at' => Carbon::now(),	   
             
         ]);
 
@@ -138,7 +139,7 @@ class StorageController extends Controller
         DB::table('nora.paul.linen_activity_logs')->insert([
             'employee_id' => Auth::user()->employee_id,
             'activity_details' => 'Deleted  storage id: '.$request->id,
-            "created_at" =>  \Carbon\Carbon::now(),             
+            "created_at" => Carbon::now(),             
         ]);
 
         $stockRooms = StockRoom::select()->orderBy('created_at','desc')->get();
