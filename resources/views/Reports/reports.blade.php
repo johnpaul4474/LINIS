@@ -23,7 +23,6 @@
     <div class="card-body">
         <form action = "/generateInventoryReport" method = "post">
             @csrf
-            <h5 class="card-title">Select Date</h5>
             <div class="row">
                 <div class="col-4">
                     <div class="input-group input-group-sm mb-3">                            
@@ -330,7 +329,17 @@
 @push('scripts')
 
 <script>
-$(document).ready(function () {    
+$(document).ready(function () {
+    // Set date
+    const dt = new Date()
+    if(dt.getDate() <= 5) {
+        // Set date to last month
+        $("#month").val(dt.getFullYear().toString() + "-" + dt.getMonth().toString().padStart(2, "0"))
+    } else {
+        // Set date to current month
+        $("#month").val(dt.getFullYear().toString() + "-" + (dt.getMonth()+1).toString().padStart(2, "0"))
+    }
+    
     $(function () {
             $('.printMe').click(function () {
                 window.print();
