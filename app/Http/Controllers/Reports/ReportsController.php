@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-use App\Models\Linen\StockRoom;
+use App\Models\StockRoom;
 use App\Models\Linen\Storage;
 use Illuminate\Validation\Rule;
 use DB;

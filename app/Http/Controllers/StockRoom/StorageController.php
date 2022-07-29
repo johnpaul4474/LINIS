@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\StockRoom;
 
-use App\Models\Linen\StockRoom;
+use App\Models\StockRoom;
 use App\Models\Linen\Storage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;

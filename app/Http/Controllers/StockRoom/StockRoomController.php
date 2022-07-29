@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\StockRoom;
 
-use App\Models\Linen\StockRoom;
+use App\Models\StockRoom;
 use App\Models\Linen\Storage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -116,7 +116,7 @@ class StockRoomController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Linen\StockRoom  $stockRoom
+     * @param  \App\Models\StockRoom  $stockRoom
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request)

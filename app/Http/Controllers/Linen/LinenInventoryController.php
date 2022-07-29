@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-use App\Models\Linen\StockRoom;
+use App\Models\StockRoom;
 use App\Models\Linen\Storage;
 use App\Models\Products;
 use Illuminate\Validation\Rule;
