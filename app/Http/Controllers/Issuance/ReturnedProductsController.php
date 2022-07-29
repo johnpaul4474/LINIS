@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Issuance;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Linen\Products;
+use App\Views\ProductsList;
 use DB;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
@@ -15,51 +16,7 @@ use Carbon\Carbon;
 class ReturnedProductsController extends Controller
 {
     public function index() {
-        $productsList  = DB::select("
-            SELECT	products.id ,
-                products.raw_material_id,		
-                products.raw_material_stock_number,
-                raw_material.unit, 
-                raw_material.description as material_used,
-                products.product_bulk_id,
-                products.product_stock_id,
-                products.product_name,
-                stocks.stock_room,
-                storages.storage_name,
-                products.product_unit,
-                products.product_quantity,
-                products.product_available_quantity,
-                products.product_condemned_quantity,
-                products.product_losses_quantity,
-                products.product_unit_cost,
-                raw_material.quantity as raw_material_quantity,
-                products.stock_room_id,
-                products.storage_room_id,
-                products.is_available,
-                products.is_condemned,
-                products.is_lossed,
-                products.issued_office_id,
-                office.office_name,
-                products.issued_ward_id,
-                ward.ward_name,
-                products.create_date,
-                products.updated_at,
-                (products.product_quantity *
-                    products.product_unit_cost) as total_cost
-                FROM nora.paul.linen_products as products 
-                inner join nora.paul.linen_stock_rooms as stocks
-                on products.stock_room_id = stocks.id
-                inner join nora.paul.linen_storage as storages
-                on products.storage_room_id = storages.id
-                inner join nora.paul.linen_raw_materials as raw_material
-                on products.raw_material_id = raw_material.id  
-                left join nora.paul.linen_ward as ward
-                on products.issued_ward_id = ward.id
-                left join nora.paul.linen_office as office
-                on products.issued_office_id = office.id
-                where products.deleted_at is null
-                order by products.id asc,products.is_available desc
-            ");
+        $productsList  = ProductsList::all();
         
         return view('issuance.returned', compact('productsList'));
     }
@@ -79,9 +36,7 @@ class ReturnedProductsController extends Controller
         
         Products::where('product_bulk_id', $request->finishedProduct)->increment('product_available_quantity',count($productIds));
 
-
-        DB::table('nora.paul.linen_products')
-            ->whereIn('id', $productIds)
+        Products::whereIn('id', $productIds)
             ->update([
                 'is_available'              => true,	
                 'is_returned'               => true,	 
@@ -118,8 +73,7 @@ class ReturnedProductsController extends Controller
 
         Products::where('product_bulk_id', $request->finishedProduct)->increment('product_available_quantity',count($productIds));
 
-        DB::table('nora.paul.linen_products')
-            ->whereIn('id', $productIds)
+        Products::whereIn('id', $productIds)
             ->update([
                 'is_available'                  => false, 
                 'is_condemned'                  => true,  
@@ -143,8 +97,7 @@ class ReturnedProductsController extends Controller
             "created_at"        => Carbon::now()
         ]);
 
-        DB::table('nora.paul.linen_products')
-            ->whereIn('id', $productIds)
+        Products::whereIn('id', $productIds)
             ->update([
                 'is_available'              => false, 
                 "returned_date"             => null,

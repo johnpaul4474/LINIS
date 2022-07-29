@@ -37,8 +37,11 @@ class CreateProductsListView extends Migration
                     products.is_lossed,
                     products.is_returned,
                     products.issued_office_id,
+                    office.office_name,
                     products.issued_ward_id,
+                    ward.ward_name,
                     products.create_date,
+                    products.updated_at,
                     (products.product_quantity *
                         products.product_unit_cost) as total_cost
                 FROM paul.linen_products as products 
@@ -47,7 +50,11 @@ class CreateProductsListView extends Migration
                 inner join paul.linen_storage as storages
                 on products.storage_room_id = storages.id
                 inner join paul.linen_raw_materials as raw_material
-                on products.raw_material_id = raw_material.id
+                on products.raw_material_id = raw_material.id  
+                left join paul.linen_ward as ward
+                on products.issued_ward_id = ward.id
+                left join paul.linen_office as office
+                on products.issued_office_id = office.id
                 where products.deleted_at is null
             ");
     }
@@ -59,6 +66,6 @@ class CreateProductsListView extends Migration
      */
     public function down()
     {
-        \DB::statement("DROP VIEW paul_linen_products_list");
+        \DB::statement("DROP VIEW paul.linen_products_list");
     }
 }

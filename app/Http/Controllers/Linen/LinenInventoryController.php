@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Linen\StockRoom;
 use App\Models\Linen\Storage;
+use App\Models\Linen\Products;
 use Illuminate\Validation\Rule;
 use App\Models\Linen\Requests;
 use DB;
@@ -37,12 +38,14 @@ class LinenInventoryController extends Controller
 
         if(Auth::user()->role_id == 1 || Auth::user()->role_id == 2) {
              $productsList = DB::select('EXEC nora.paul.linen_getBulkProducts');
-             $productCount = DB::table('nora.paul.linen_products')->where('is_condemned',0)->where('is_lossed',0)->where('is_available',1)->count();
+             $productCount = Products::where('is_condemned',0)
+                                ->where('is_lossed',0)
+                                ->where('is_available',1)
+                                ->count();
         } else{
             if(Auth::user()->office_id != null) {      
                 $productsList = DB::select('EXEC nora.paul.linen_getProductsListByOffice @office='.Auth::user()->office_id);
-                $productCount = DB::table('nora.paul.linen_products')
-                                ->where('is_condemned',0)
+                $productCount = Products::where('is_condemned',0)
                                 ->where('is_lossed',0)
                                 ->where('is_available',0)
                                 ->where('is_returned',0)
@@ -50,8 +53,7 @@ class LinenInventoryController extends Controller
             }
             if(Auth::user()->ward_id != null) {
                 $productsList = DB::select('EXEC nora.paul.linen_getProductsListByWard @ward ='.Auth::user()->ward_id);
-                $productCount = DB::table('nora.paul.linen_products')
-                                ->where('is_condemned',0)
+                $productCount = Products::where('is_condemned',0)
                                 ->where('is_lossed',0)
                                 ->where('is_available',0)
                                 ->where('is_returned',0)

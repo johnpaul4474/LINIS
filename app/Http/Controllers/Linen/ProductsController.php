@@ -28,7 +28,7 @@ class ProductsController extends Controller
         $rawMaterials = LinenRawMaterials::select()->orderBy('created_at','asc')->get();
 
         //////// TO-DO clean database for new records start from 0
-        $latestId = DB::table('nora.paul.linen_products')->whereNull('deleted_at')->orderBy('id','desc')->first();
+        $latestId = Products::orderBy('id','desc')->first();
         $newRecordId =0;
 
         if($latestId != null) {
@@ -59,7 +59,7 @@ class ProductsController extends Controller
             "created_at" => Carbon::now(),             
         ]);
 
-        $productCount = DB::table('nora.paul.linen_products')-> where('raw_material_stock_number',$request->stock_number)->count() + 1;
+        $productCount = Products::where('raw_material_stock_number', $request->stock_number)->count() + 1;
         $quantityProduct = (int)$request->quantity + $productCount - 1; 
         $productsList = [];
         $create_date = Carbon::now()->format('H:i:s');
@@ -67,31 +67,29 @@ class ProductsController extends Controller
         $product_bulk_id = $request->rawMaterialId.$request->stockRoom.$request->storageRoom.$request->quantity.$request->created_at.Carbon::now()->timestamp;
         
         for ($productCount ; $productCount <= $quantityProduct; $productCount++) {
-            DB::table('nora.paul.linen_products')
-                ->insert([
-                    'raw_material_id'                       => $request->rawMaterialId,	
-                    'raw_material_stock_number'             => $request->stock_number,
-                    'material_used_quantity'                => floatval($request->materialUsedQuantity),	
-                    'stock_room_id'                         => $request->stockRoom,	
-                    'storage_room_id'                       => $request->storageRoom,	
-                    'product_stock_id'                      => $request->stock_number.'-'.$productCount,
-                    'product_name'                          => $request->product_name,	
-                    'create_date'                           => $request->created_at." ".$create_date,	
-                    'product_unit'                          => $request->unit,
-                    'product_quantity'                      => $request->quantity,
-                    'product_available_quantity'            => $request->quantity,
-                    'product_condemned_quantity'            => 0,	
-                    'products.product_losses_quantity'      => 0,
-                    'products.product_issued_quantity'      => 0,
-                    'products.product_returned_quantity'    => 0,
-                    'product_unit_cost'                     => $request->unit_cost, 
-                    'is_issued'                             => false,
-                    'is_available'                          => true,  
-                    'is_condemned'                          => false, 
-                    'is_lossed'                             => false,
-                    'is_returned'                           => false,                        
-                    'created_at'                            => $created_at,
-                    'product_bulk_id'                       => $product_bulk_id
+            Products::create([
+                    'raw_material_id'              => $request->rawMaterialId,	
+                    'raw_material_stock_number'    => $request->stock_number,
+                    'material_used_quantity'       => floatval($request->materialUsedQuantity),	
+                    'stock_room_id'                => $request->stockRoom,	
+                    'storage_room_id'              => $request->storageRoom,	
+                    'product_stock_id'             => $request->stock_number.'-'.$productCount,
+                    'product_name'                 => $request->product_name,	
+                    'create_date'                  => $request->created_at." ".$create_date,	
+                    'product_unit'                 => $request->unit,
+                    'product_quantity'             => $request->quantity,
+                    'product_available_quantity'   => $request->quantity,
+                    'product_condemned_quantity'   => 0,	
+                    'product_losses_quantity'      => 0,
+                    'product_issued_quantity'      => 0,
+                    'product_returned_quantity'    => 0,
+                    'product_unit_cost'            => $request->unit_cost, 
+                    'is_issued'                    => false,
+                    'is_available'                 => true,  
+                    'is_condemned'                 => false, 
+                    'is_lossed'                    => false,
+                    'is_returned'                  => false,
+                    'product_bulk_id'              => $product_bulk_id
                 ]);
         }
       
@@ -126,8 +124,7 @@ class ProductsController extends Controller
             "updated_at"        => Carbon::now(),             
         ]);
 
-        DB::table('nora.paul.linen_products')
-            ->where('id', (int)$request->productsId)
+        Products::where('id', (int) $request->productsId)
             ->update([
                 'raw_material_id'           => $request->material_used,	
                 'raw_material_stock_number' => $request->stock_number,	
@@ -137,8 +134,7 @@ class ProductsController extends Controller
                 'create_date'               => $request->created_at,	
                 'product_unit'              => $request->unit,
                 'product_quantity'          => $request->quantity,	
-                'product_unit_cost'         => $request->unit_cost,        
-                'created_at'                => Carbon::now(),
+                'product_unit_cost'         => $request->unit_cost,
                 'available_quantity'        => $request->quantity
             ]);
         

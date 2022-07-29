@@ -19,10 +19,9 @@ class Products extends Model
     ];
 
     protected $fillable = [
-        'id',
         'raw_material_id',
-        'material_used_quantity',	
-        'raw_material_stock_number',	
+        'raw_material_stock_number',
+        'material_used_quantity',
         'stock_room_id',	
         'storage_room_id',
         'product_stock_id',	
@@ -31,14 +30,23 @@ class Products extends Model
         'create_date',
         'product_unit',
         'product_quantity',
-        'product_unit_cost',	
-        'created_at',	
-        'updated_at',
-        'deleted_at',
+        'product_issued_quantity',
+        'product_available_quantity',
+        'product_condemned_quantity',
+        'product_losses_quantity',
+        'product_returned_quantity',
+        'product_unit_cost',
+        'is_issued',
         'is_available',
         'is_condemned',
+        'is_lossed',
+        'is_returned',
         'issued_office_id',
-        'issued_ward_id'
+        'issued_ward_id',
+        'issued_date',
+        'returned_date',
+        'condemned_date',
+        'lossed_date'
     ];
 
     protected $dates = ['deleted_at'];

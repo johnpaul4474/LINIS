@@ -52,8 +52,7 @@ class IssuanceController extends Controller {
         
         Products::where('product_bulk_id', $request->finishedProduct)->decrement('product_available_quantity',(int)$request->quantity);
         
-        \DB::table('nora.paul.linen_products')
-            ->whereIn('id', $productIds)
+        Products::whereIn('id', $productIds)
             ->update([
                 'is_available'              => false,
                 'is_issued'                 => true,
@@ -70,7 +69,6 @@ class IssuanceController extends Controller {
             ]);
         
         $productsList  = ProductsList::all();
-    
         $wardList = Ward::all();
         $officeList = Office::all();
 
@@ -105,8 +103,7 @@ class IssuanceController extends Controller {
         
         Products::where('product_bulk_id', $request->finishedProduct)->decrement('product_available_quantity', (int) $request->quantity);
         
-        \DB::table('nora.paul.linen_products')
-            ->whereIn('id', $productIds)
+        Products::whereIn('id', $productIds)
             ->update([
                 'is_available' => false,
                 'is_issued' => true,
