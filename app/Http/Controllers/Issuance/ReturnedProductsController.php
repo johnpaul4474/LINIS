@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Issuance;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Linen\Products;
+use App\Models\Products;
 use App\Views\ProductsList;
 use DB;
 use Illuminate\Support\Str;

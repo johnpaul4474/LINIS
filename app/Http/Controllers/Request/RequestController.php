@@ -20,7 +20,7 @@ use Carbon\Carbon;
 use App\Models\Office;
 use App\Models\Ward;
 use App\Views\ProductsList;
-use App\Models\Linen\Products;
+use App\Models\Products;
 
 class RequestController extends Controller
 {

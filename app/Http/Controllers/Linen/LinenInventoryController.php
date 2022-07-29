@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Linen\StockRoom;
 use App\Models\Linen\Storage;
-use App\Models\Linen\Products;
+use App\Models\Products;
 use Illuminate\Validation\Rule;
 use App\Models\Linen\Requests;
 use DB;
