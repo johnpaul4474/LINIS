@@ -109,15 +109,10 @@ class LinenInventoryController extends Controller
 
         $stockNumberValidationList = LinenRawMaterials::all()->pluck("stock_number");
 
-        Validator::make($request->all(), [
-            'stock_number' => [
-                'required',
-                Rule::notIn($stockNumberValidationList),
-            ] 
-        ])->validate();
+        $lastRecord = LinenRawMaterials::latest()->first();
 
         $raw = LinenRawMaterials::create([
-            'stock_number'  => $request->stock_number,	
+            'stock_number'  => $lastRecord ? $lastRecord->stock_number + 1 : 1,	
             'quantity'      => $request->quantity,	
             'unit'          => $request->unit,	
             'description'   => $request->description,	
