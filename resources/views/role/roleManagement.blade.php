@@ -50,7 +50,7 @@
                                         <td>User</td>
                                     @endif
                                     <td>                                          
-                                        <form action = "/roleManagement/assignAdmin" method = "post">
+                                        <form action = "/users/assignAdmin" method = "post">
                                             @csrf
                                             <input id="userId" type="hidden" class="form-control " name="userId" value="{{$user->id}}" >  
                                         <button type="submit" class="editProductsButton btn btn-primary btn-sm"  >

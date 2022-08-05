@@ -45,7 +45,7 @@
     @stack('scripts')
     <script src="//js.pusher.com/3.1/pusher.min.js"></script>
     <script>
-      $(document).ready(function(){
+      $(document).ready(function() {
            // Enable pusher logging - don't include this in production
     //Pusher.logToConsole = true;
 
@@ -54,7 +54,7 @@
       });
 
       var counter = 0;     
-      if({{ Auth::user()->role_id }} == 1 || {{ Auth::user()->role_id }} == 2){     
+      if({{ Auth::user()->role_id }} == 1 || {{ Auth::user()->role_id }} == 2) {     
         var channel = pusher.subscribe('linis-notification');
         channel.bind('linis-event', function(data) {  
             counter = counter + 1;
@@ -63,13 +63,13 @@
             $("#counterNotification").attr('data-count',counter );
             let messageNotification = 'Product name: ' + JSON.stringify(data.productName).replace(/\"/g, "") + '<br>' +
                                       'Product quantity: ' + JSON.stringify(data.productQuantity).replace(/\"/g, "") ; 
-            if(data.wardName !== null){
+            if(data.wardName !== null) {
               console.log(data.wardName)
               messageNotification += '<br>' + 'Ward: ' + JSON.stringify(data.wardName).replace(/\"/g, "") ; 
             }  
-            if(data.officeName !== null){
+            if(data.officeName !== null) {
               console.log(data.officeName)
-              messageNotification +=  '<br>' + 'Office: ' + JSON.stringify(data.officeName).replace(/\"/g, "") ; 
+              messageNotification += '<br>' + 'Office: ' + JSON.stringify(data.officeName).replace(/\"/g, "") ; 
             }          
 
             console.log(messageNotification);
@@ -91,29 +91,29 @@
           let requestDetails = {!! json_encode(Auth::user(), JSON_HEX_TAG) !!};
           
          
-            if(requestDetails.office_id != null){
-              if(requestDetails.office_id == data.requestorDetails.office_id){
+            if(requestDetails.office_id != null) {
+              if(requestDetails.office_id == data.requestorDetails.office_id) {
                 console.log('requestDetails.office_id', requestDetails.office_id,data.requestorDetails.office_id);
                 counter = counter + 1;
                 $('#btnNotification').removeAttr('hidden');
                 $("#counterNotification").attr('data-count',counter );
                 let messageNotification=""
-                if(data.requestorDetails.status == 2){
+                if(data.requestorDetails.status == 2) {
                    messageNotification = 'Product name: ' + JSON.stringify(data.productName).replace(/\"/g, "") + '<br>' +
                                           'Product quantity: ' + JSON.stringify(data.productQuantity).replace(/\"/g, "") + '<br>' +
                                           'IS NOW BEING PROCESSED BY' + '<br>' +
                                           'LINEN (' + data.username.name +')';
-                }else if(data.requestorDetails.status == 3){
+                } else if (data.requestorDetails.status == 3) {
                    messageNotification = 'Product name: ' + JSON.stringify(data.productName).replace(/\"/g, "") + '<br>' +
                                           'Product quantity: ' + JSON.stringify(data.productQuantity).replace(/\"/g, "") + '<br>' +
                                           'IS READY FOR PICK-UP' + '<br>' +
                                           'LINEN (' + data.username.name +')';
-                }else if(data.requestorDetails.status == 4){
+                } else if (data.requestorDetails.status == 4) {
                    messageNotification = 'Product name: ' + JSON.stringify(data.productName).replace(/\"/g, "") + '<br>' +
                                           'Product quantity: ' + JSON.stringify(data.productQuantity).replace(/\"/g, "") + '<br>' +
                                           'IS NOW ISSUED' + '<br>' +
                                           'LINEN (' + data.username.name +')';
-                }else{
+                } else {
                   messageNotification="default";
                 }
                 
@@ -128,29 +128,29 @@
               }
             }
 
-            if(requestDetails.ward_id != null){
-              if(requestDetails.ward_id == data.requestorDetails.ward_id ){
+            if(requestDetails.ward_id != null) {
+              if(requestDetails.ward_id == data.requestorDetails.ward_id ) {
                 console.log('requestDetails.ward_id',requestDetails.ward_id , data.requestorDetails.ward_id)
                 counter = counter + 1;
                 $('#btnNotification').removeAttr('hidden');
                 $("#counterNotification").attr('data-count',counter );
                 let messageNotification=""
-                if(data.requestorDetails.status == 2){
+                if(data.requestorDetails.status == 2) {
                    messageNotification = 'Product name: ' + JSON.stringify(data.productName).replace(/\"/g, "") + '<br>' +
                                           'Product quantity: ' + JSON.stringify(data.productQuantity).replace(/\"/g, "") + '<br>' +
                                           'IS NOW BEING PROCESSED BY' + '<br>' +
                                           'LINEN (' + data.username.name +')';
-                }else if(data.requestorDetails.status == 3){
+                } else if (data.requestorDetails.status == 3) {
                    messageNotification = 'Product name: ' + JSON.stringify(data.productName).replace(/\"/g, "") + '<br>' +
                                           'Product quantity: ' + JSON.stringify(data.productQuantity).replace(/\"/g, "") + '<br>' +
                                           'IS READY FOR PICK-UP' + '<br>' +
                                           'LINEN (' + data.username.name +')';
-                }else if(data.requestorDetails.status == 4){
+                } else if (data.requestorDetails.status == 4) {
                    messageNotification = 'Product name: ' + JSON.stringify(data.productName).replace(/\"/g, "") + '<br>' +
                                           'Product quantity: ' + JSON.stringify(data.productQuantity).replace(/\"/g, "") + '<br>' +
                                           'IS NOW ISSUED' + '<br>' +
                                           'LINEN (' + data.username.name +')';
-                }else{
+                } else {
                   messageNotification="default";
                 }
                 
@@ -275,6 +275,9 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="/password">
+                                       Change Password
+                                    </a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
@@ -360,8 +363,8 @@
                 Role Management
               </a>
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">                
-                <li><a class="dropdown-item" href="roleManagement">Assign Employee</a></li>
-                <li><a class="dropdown-item" href="listusers">List of users</a></li>                
+                <li><a class="dropdown-item" href="/users/roleManagement">Assign Employee</a></li>
+                <li><a class="dropdown-item" href="/users/listusers">List of users</a></li>                
                 {{-- <li><hr class="dropdown-divider"></li> --}}
                 
               </ul>

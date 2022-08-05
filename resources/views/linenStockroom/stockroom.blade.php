@@ -449,7 +449,7 @@ $(document).ready(function () {
         $('#editStockRoomModal').modal('hide')
     });
 
-    $("#stockRoomTable").on('click','.editStockRoomButton',function(){
+    $("#stockRoomTable").on('click','.editStockRoomButton',function() {
         $('#editStockRoomModal').modal('show');
 
         var currentRow=$(this).closest("tr"); 
@@ -470,7 +470,7 @@ $(document).ready(function () {
     $( "button[name='closeEditStorageModal']" ).click(function() {
         $('#editStorageModal').modal('hide')
     });
-    $("#storageTable").on('click','.editStorageButton',function(){
+    $("#storageTable").on('click','.editStorageButton',function() {
         $('#editStorageModal').modal('show');
 
         var currentRow=$(this).closest("tr");          

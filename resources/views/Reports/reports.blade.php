@@ -117,7 +117,7 @@
                         @endforeach
                     @elseif(Auth::user()->ward_id != null)
                         @foreach(\App\Http\Controllers\Department\DepartmentController::wardList() as $ward)                                                                
-                        @if($ward->id ==  Auth::user()->ward_id )
+                        @if($ward->id == Auth::user()->ward_id )
                                 
                                 <div class="col-6">
                                     <div class="input-group input-group-sm mb-3">
@@ -258,7 +258,7 @@
                                     @endforeach
                                     @elseif(Auth::user()->ward_id != null)
                                         @foreach(\App\Http\Controllers\Department\DepartmentController::wardList() as $ward)                                                                
-                                        @if($ward->id ==  Auth::user()->ward_id )
+                                        @if($ward->id == Auth::user()->ward_id )
                                             
                                                 <u>
                                                 {{$ward->ward_name}}
@@ -350,11 +350,11 @@ $(document).ready(function () {
 
         });
 
-    $("#wardRadio, #officeRadio").change(function(){
+    $("#wardRadio, #officeRadio").change(function() {
         //console.log('radio ward office');
             
             $("#ward, #office").val("").attr("readonly",true);
-            if($("#wardRadio").is(":checked")){
+            if($("#wardRadio").is(":checked")) {
                 $("#ward").removeAttr("readonly");
                 $("#wardRadio").attr("required",true);
                 $("#ward").attr("required",true);
@@ -362,7 +362,7 @@ $(document).ready(function () {
                 $("#ward").focus();
                 $("#office").prop('disabled', true);
             }
-            else if($("#officeRadio").is(":checked")){
+            else if($("#officeRadio").is(":checked")) {
                 $("#office").removeAttr("readonly");
                 $("#officeRadio").attr("required",true);
                 $("#office").attr("required",true);
@@ -374,11 +374,11 @@ $(document).ready(function () {
            
         });  
    
-        $("#ward").change(function(){
+        $("#ward").change(function() {
             var ward = $(this).children("option:selected").text().trim();
             $('#unit_ward').text(ward);
         });
-        $("#office").change(function(){
+        $("#office").change(function() {
             var office = $(this).children("option:selected").text().trim();
             $('#unit_ward').text(office);
     });
