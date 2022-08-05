@@ -13,6 +13,7 @@ use App\Http\Controllers\Request\RequestController;
 use App\Http\Controllers\Reports\ReportsController;
 use App\Http\Controllers\Role\RoleController;
 use App\Http\Controllers\PasswordController;
+use App\Http\Controllers\Department\DepartmentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -113,6 +114,13 @@ Route::middleware('auth')->group(function () {
     Route::prefix('password')->group(function () {
         Route::get('/', [PasswordController::class, 'index'])->name('password');
         Route::post('/', [PasswordController::class, 'update'])->name('password/update');
+    });
+
+    //departments
+    Route::prefix('departments')->group(function () {
+        Route::get('/', [DepartmentController::class, 'index'])->name('department');
+        Route::get('ward/{ward_id}', [DepartmentController::class, 'wardIssuedProducts'])->name('department/ward');
+        Route::get('office/{office_id}', [DepartmentController::class, 'officeIssuedProducts'])->name('department/office');
     });
 
     Route::get('test', function () {
