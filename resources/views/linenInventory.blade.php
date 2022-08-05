@@ -25,7 +25,7 @@
                            @endforeach
                       @elseif(Auth::user()->ward_id != null)
                           @foreach(\App\Http\Controllers\Department\DepartmentController::wardList() as $ward)                                                                
-                          @if($ward->id ==  Auth::user()->ward_id )
+                          @if($ward->id == Auth::user()->ward_id )
                                   {{$ward->ward_name}}
                           @endif
                           @endforeach
@@ -83,7 +83,7 @@
                                     @endforeach
                                 @elseif(Auth::user()->office_id != null)
                                     @foreach(\App\Http\Controllers\Department\DepartmentController::wardList() as $ward)                                                                
-                                    @if($ward->id ==  Auth::user()->ward_id )
+                                    @if($ward->id == Auth::user()->ward_id )
                                             {{$ward->ward_name}}
                                     @endif
                                     @endforeach
@@ -409,9 +409,9 @@ $("#material_used").change(function() {
             //console.log(value);
             var optionExists = $("#finishedProduct option[value="+value.product_bulk_id+"]").length > 0;
            // console.log(optionExists);
-                  if(value.raw_material_id == id){
+                  if(value.raw_material_id == id) {
                    
-                      if(optionExists == false){
+                      if(optionExists == false) {
                              $("#finishedProduct").append('<option value="'+value.product_bulk_id+'">'+value.product_name+'</option>'); 
                       }
                       //optionsProducts.push({'product_bulk_id': value.product_bulk_id, 'product_name':value.product_name})
@@ -455,7 +455,7 @@ $("#material_used").change(function() {
     var condemnedCount = 0;
     var lossedCount = 0;
     $.each({!! json_encode($productsList, JSON_HEX_TAG) !!}, function(key, value) {
-        if(value.product_bulk_id == bulkId ){
+        if(value.product_bulk_id == bulkId ) {
             //console.log(value);
           $('#productsTotalQuantity').val(value.product_quantity);
           $('#productsAvailable').val(value.product_available_quantity);
@@ -481,7 +481,7 @@ $("#material_used").change(function() {
     //     //console.log($('#finishedProductId').val());
     //     // $.each({!! json_encode($productsList, JSON_HEX_TAG) !!}, function(key, value) { 
             
-    //     //     if(value.raw_material_id == $('#materialUsedId').val() &&  value.product_bulk_id == $('#finishedProductId').val()){
+    //     //     if(value.raw_material_id == $('#materialUsedId').val() &&  value.product_bulk_id == $('#finishedProductId').val()) {
     //     //         //console.log(value);
                                                                               
               
@@ -495,7 +495,7 @@ $("#material_used").change(function() {
     let pendingCount = 0
     $.each({!! json_encode($requestList, JSON_HEX_TAG) !!}, function(key, value) {    
     //console.log(value)       
-    if(value.status != 4){
+    if(value.status != 4) {
       pendingCount ++;
     }
    

@@ -2,24 +2,19 @@
 
 namespace App\Http\Controllers\StockRoom;
 
-use App\Models\Linen\StockRoom;
-use App\Models\Linen\Storage;
+use App\Models\StockRoom;
+use App\Models\Storage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Carbon\Carbon;
+use App\Models\ActivityLogs;
 
 class StorageController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
-   
-
     public function index()
     {
 
@@ -43,36 +38,19 @@ class StorageController extends Controller
         $latestId = DB::table('nora.paul.linen_storage')->orderBy('id','desc')->first();
 
         $newRecordId =0;
-        if($latestId != null){
+        if($latestId != null) {
             $newRecordId = (int)$latestId->id +1;
-        }else{
+        } else {
             $newRecordId = 1;
         }
 
-        //TO DO validation of stock room with its storage value
-        // $storageValidationList = []; 
-        // foreach ($storageList as $data) {
-        //     array_push($storageValidationList,$data->storage_name);
-        // }
-
-        
-        // Validator::make($request->all(), [
-        //     'storage' => ['required', 'string', 'max:255',Rule::notIn(array_map("strtoupper",$storageValidationList))], 
-        // ])->validate();
-
-
-        DB::table('nora.paul.linen_activity_logs')->insert([
-            'employee_id' => Auth::user()->employee_id,
-            'activity_details' => 'Added Storage ID: '.$newRecordId.' STORAGE NAME: '.strtoupper($request->storage),
-            "created_at" =>  \Carbon\Carbon::now(), 
-            
-        ]);
+        ActivityLogs::create(['activity_details' => 'Added Storage ID: '.$newRecordId.' STORAGE NAME: '.strtoupper($request->storage)]);
 
         DB::table('nora.paul.linen_storage')
         ->insert([
          'stock_room_id' => $request->stockRoom,
          'storage_name' => strtoupper($request->storage),		  
-         'created_at' => \Carbon\Carbon::now(),	   
+         'created_at' => Carbon::now(),	   
             
         ]);
 
@@ -107,25 +85,20 @@ class StorageController extends Controller
         $latestId = DB::table('nora.paul.linen_storage')->orderBy('id','desc')->first();
 
         $newRecordId =0;
-        if($latestId != null){
+        if($latestId != null) {
             $newRecordId = (int)$latestId->id +1;
-        }else{
+        } else {
             $newRecordId = 1;
         }
 
-        DB::table('nora.paul.linen_activity_logs')->insert([
-            'employee_id' => Auth::user()->employee_id,
-            'activity_details' => 'Updated Storage Storage ID: '.$request->idStorage.' STORAGE NAME: '.strtoupper($request->edit_storage).' STOCK ROOM: '.$request->editStockRoomStorage,
-            "updated_at" =>  \Carbon\Carbon::now(), 
-            
-        ]);
+        ActivityLogs::create(['activity_details' => 'Updated Storage Storage ID: '.$request->idStorage.' STORAGE NAME: '.strtoupper($request->edit_storage).' STOCK ROOM: '.$request->editStockRoomStorage]);
 
         DB::table('nora.paul.linen_storage')
         ->where('id', (int)$request->idStorage)
         ->update([
          'stock_room_id' => $request->editStockRoomStorage,
          'storage_name' => strtoupper($request->edit_storage),		  
-         'updated_at' => \Carbon\Carbon::now(),	   
+         'updated_at' => Carbon::now(),	   
             
         ]);
 
@@ -134,12 +107,7 @@ class StorageController extends Controller
 
     public function destroy(Request $request)
     {
-       
-        DB::table('nora.paul.linen_activity_logs')->insert([
-            'employee_id' => Auth::user()->employee_id,
-            'activity_details' => 'Deleted  storage id: '.$request->id,
-            "created_at" =>  \Carbon\Carbon::now(),             
-        ]);
+        ActivityLogs::create(['activity_details' => 'Deleted  storage id: '.$request->id]);
 
         $stockRooms = StockRoom::select()->orderBy('created_at','desc')->get();
         $storageList = Storage::select()->orderBy('created_at','asc')->get();

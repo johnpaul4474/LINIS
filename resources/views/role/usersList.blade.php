@@ -12,10 +12,11 @@
                             <thead>
                                     <th>id</th>
                                     <th>Employee Name</th>
+                                    <th>Username</th>
                                     <th>Ward</th>
                                     <th>Office</th>
                                     <th>Role</th>
-                                    {{-- <th>Assign</th> --}}
+                                    <th>Actions</th>
                                     
                             </thead> 
                             <tbody>
@@ -23,6 +24,7 @@
                                 <tr>
                                     <td>{{$user->id}} </td>
                                     <td>{{$user->name}} </td> 
+                                    <td>{{$user->username}} </td> 
                                     @if($user->ward_id != null)
                                         @foreach(\App\Http\Controllers\Department\DepartmentController::wardList() as $ward)                                                                
                                         @if($ward->id == $user->ward_id )
@@ -49,15 +51,15 @@
                                     @else
                                         <td>User</td>
                                     @endif
-                                    {{-- <td>                                          
-                                        <form action = "/roleManagement/assignAdmin" method = "post">
+                                    <td>                                          
+                                        <form action = "/users/reset/{{$user->id}}" method = "POST">
                                             @csrf
                                             <input id="userId" type="hidden" class="form-control " name="userId" value="{{$user->id}}" >  
-                                        <button type="submit" class="editProductsButton btn btn-primary btn-sm"  >
-                                            <i class='fa fa-user'></i>
-                                        </button>
+                                            <button type="submit" class="btn btn-danger btn-sm"  >
+                                                Reset Password
+                                            </button>
                                         </form>
-                                    </td> --}}
+                                    </td>
                                 </tr>   
                                 @endforeach
                             </tbody>       

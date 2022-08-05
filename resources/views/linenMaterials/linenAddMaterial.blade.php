@@ -1,214 +1,15 @@
 @extends('layouts.appHome')
 
 @section('content')
-<div class="container">
-    <div class="row">
-        
-        <div class="col">
-            <form class = 'card p-3 bg-light' action = "/material/add" method = "post">
-                @csrf
-                <fieldset>
-                <legend>ADD RAW MATERIALS</legend>
-                <div class="row">
-                    <div class="col">
-                        <div class="input-group input-group-sm mb-3">
-                            <div class="input-group-prepend">                      
-                            <label for="stock_number" class="input-group-text">{{ __('Stock Number') }}</label>
-                            </div>                    
-                            <input id="stock_number" type="text" class="form-control @error('stock_number') is-invalid @enderror" name="stock_number" value="{{ old('stock_number') }}" required autocomplete="stock_number" readonly='readonly'autofocus>
-                            @error('stock_number')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror                    
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="input-group input-group-sm mb-3">                            
-                            <div class="input-group-prepend">
-                                <label for="type" class="input-group-text">{{ __('Type') }}</label>
-                            </div>
-                                <select class="form-control @error('type') is-invalid @enderror" id="type" name="type" required autocomplete="type" value="{{ old('type') }}" required autocomplete="stock_number" autofocus >
-                                    <option value="" selected disabled hidden> Choose Type</option>                                                                                   
-                                    <option value="RAW">RAW</option>
-                                    <option value="READY-MADE">READY-MADE</option>
-                                    
-                                 
-                                </select>
-                                @error('type')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror                    
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="input-group input-group-sm mb-3">                            
-                            <div class="input-group-prepend">
-                                <label for="received_at" class="input-group-text">{{ __('Received Date') }}</label>
-                            </div>
-                                <input id="received_at" type="date" class="form-control @error('received_at') is-invalid @enderror" name="received_at" value="{{ old('received_at') }}" required autocomplete="received_at" autofocus>
-
-                                @error('received_at')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror                    
-                        </div>
-                    </div>
-                    <div class="w-100"></div>
-                    <div class="col">
-                        <div class="input-group input-group-sm mb-3">                            
-                            <div class="input-group-prepend">
-                                <label for="unit" class="input-group-text">{{ __('Unit') }}</label>
-                            </div>
-                                <select class="form-control @error('unit') is-invalid @enderror" id="unit" name="unit" required autocomplete="unit" autofocus >
-                                    <option value="" selected disabled hidden> Choose Unit</option>                                                                                   
-                                    <option value="PIECE">PIECE</option>
-                                    <option value="SPOOL">SPOOL</option>
-                                    <option value="YARD">YARD</option>
-                                    <option value="ROLL">ROLL</option>
-                                    <option value="SACK/BAG">SACK/BAG</option>
-                                 
-                                </select>
-                                @error('unit')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror                    
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="input-group input-group-sm mb-3">
-                            <div class="input-group-prepend">                      
-                              <label for="quantity" class="input-group-text">{{ __('Quantity') }}</label>
-                            </div>                    
-                                <input id="quantity" type="number" step=".01" class="form-control @error('quantity') is-invalid @enderror" name="quantity" value="{{ old('quantity') }}" required autocomplete="quantity" autofocus>
-                                @error('quantity')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror                    
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="input-group input-group-sm mb-3">
-                            <div class="input-group-prepend">                      
-                              <label for="unit_cost" class="input-group-text">{{ __('Unit Cost') }}</label>
-                            </div>                    
-                                <input id="unit_cost" type="number" step="0.01" class="form-control @error('unit_cost') is-invalid @enderror" name="unit_cost" value="{{ old('unit_cost') }}" required autocomplete="unit_cost" autofocus>
-                                @error('unit_cost')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror                    
-                        </div>
-                    </div>
-                <div class="w-100"></div>
-                    <div class="col">
-                        <div class="input-group input-group-sm mb-3">                            
-                            <div class="input-group-prepend">
-                                <label for="stockRoom" class="input-group-text">{{ __('Stock Room') }}</label>
-                            </div>
-                                <select class="form-control @error('stockRoom') is-invalid @enderror" id="stockRoom" name="stockRoom" required autocomplete="stockRoom" autofocus >
-                                    <option value="" selected disabled hidden> Choose Stock Room</option>                                                                                   
-                                    @foreach($stockRooms as $stockRoom)                                                                
-                                    <option value="{{$stockRoom->id}}">
-                                            {{$stockRoom->stock_room}}
-                                        </option>
-                                    @endforeach
-                                 
-                                </select>
-                                @error('stockRoom')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror                    
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="input-group input-group-sm mb-3">
-                            <div class="input-group-prepend">
-                                <label for="storageRoom" class="input-group-text">{{ __('Storage Room') }}</label>
-                            </div>
-                                <select class="form-control @error('storageRoom') is-invalid @enderror" id="storageRoom" name="storageRoom" required autocomplete="storageRoom" autofocus  disabled>
-                                    <option value="" selected disabled hidden> Choose Storage Room</option>   
-                                 
-                                </select>
-                                @error('storageRoom')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror                 
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="input-group input-group-sm mb-3">
-                            <div class="input-group-prepend">        
-
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="true" id="isArchived" class="form-control @error('isArchived') is-invalid @enderror" name="isArchived">
-                                    <label class="form-check-label" for="isArchived">
-                                      Archived
-                                    </label>
-                                  </div> 
-                                  @error('isArchived')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror   
-                                        
-                              
-                            </div>    
-                            <div class="input-group-prepend">         
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="true" id="isAvailable" class="form-control @error('isAvailable') is-invalid @enderror" name="isAvailable" checked>
-                                    <label class="form-check-label" for="defaultCheck1">
-                                      Available
-                                    </label>
-                                  </div> 
-                                  @error('isAvailable')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                 @enderror 
-                                        
-                              
-                            </div>                 
-                                                 
-                        </div>
-                    </div>
-                </div>
-                  <div class="w-100"></div>
-                  
-                    <div class="form-group">                                                
-                            <label for="description" class="input-group-text">{{ __('Description') }}</label>                           
-                        
-                        <textarea id="description" rows="3" type="description" class="form-control @error('description') is-invalid @enderror" name="description" value="{{ old('description') }}" required autocomplete="description" autofocus></textarea>
-                            @error('description')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror     
-                    </div>
-                    <br>
-                    <button type="submit" class="btn btn-primary" href='material/add'>Add Record</button>
-                </fieldset>
-
-            </form>
-        </div>
-        
-    </div>
-    <br>
+<div class="container-fluid">
     <div class = "row">
-        
+        <legend>RAW MATERIALS <button type="button" class="btn btn-primary mb-2" id="addRawMaterial">Add Raw Material</button></legend>
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-md-12">
                         <div class="card">
-                            <div class="card-header text-white" style="background-color: #00AA9E;">{{ __('Linen Raw Materials') }}</div>
-            
                             <div class="card-body">
+                                
                               <div class="table-responsive">                    
                                 <table id="rawMaterialTable" class="table table-striped table-bordered table-success" style="width:100%">
                                   <thead>
@@ -346,7 +147,7 @@
                                             <div class="input-group-prepend">                      
                                             <label for="stock_number" class="input-group-text">{{ __('Stock Number') }}</label>
                                             </div>                    
-                                            <input id="stock_number" type="text" class="form-control @error('stock_number') is-invalid @enderror" name="stock_number" value="{{ old('stock_number') }}" required autocomplete="stock_number" autofocus>
+                                            <input id="stock_number" type="text" class="form-control @error('stock_number') is-invalid @enderror" name="stock_number" value="{{ old('stock_number') }}" required autocomplete="stock_number" readonly autofocus>
                                             @error('stock_number')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
@@ -534,7 +335,7 @@
                         @foreach ($errors->all() as $error)
                             <script>
                             //console.log('{{$error}}');
-                            if({{$error}} != 'The selected stock number is invalid.'){
+                            if({{$error}} != 'The selected stock number is invalid.') {
                                 $('#editRawMaterialModal').modal('show')
                             }
                             
@@ -550,6 +351,211 @@
             </div>
         </div>
 
+    <!-- New Material Modal -->
+    <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="addRawMaterialModal" >
+            <div class="modal-dialog modal-lg">      
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Raw Material</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" name="closeAddMaterialModal">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <form class = 'card p-3 bg-light' action = "/material/add" method = "post">
+                @csrf
+                <div class="row">
+                    <!-- <div class="col">
+                        <div class="input-group input-group-sm mb-3">
+                            <div class="input-group-prepend">                      
+                            <label for="stock_number" class="input-group-text">{{ __('Stock Number') }}</label>
+                            </div>                    
+                            <input id="stock_number" type="text" class="form-control @error('stock_number') is-invalid @enderror" name="stock_number" value="{{ old('stock_number') }}" required autocomplete="stock_number"  autofocus>
+                            @error('stock_number')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror                    
+                        </div>
+                    </div> -->
+                    <div class="col">
+                        <div class="input-group input-group-sm mb-3">                            
+                            <div class="input-group-prepend">
+                                <label for="type" class="input-group-text">{{ __('Type') }}</label>
+                            </div>
+                                <select class="form-control @error('type') is-invalid @enderror" id="type" name="type" required autocomplete="type" value="{{ old('type') }}" required autocomplete="stock_number" autofocus >
+                                    <option value="" selected disabled hidden> Choose Type</option>                                                                                   
+                                    <option value="RAW">RAW</option>
+                                    <option value="READY-MADE">READY-MADE</option>
+                                    
+                                 
+                                </select>
+                                @error('type')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror                    
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="input-group input-group-sm mb-3">                            
+                            <div class="input-group-prepend">
+                                <label for="received_at" class="input-group-text">{{ __('Received Date') }}</label>
+                            </div>
+                                <input id="received_at" type="date" class="form-control @error('received_at') is-invalid @enderror" name="received_at" value="{{ old('received_at') }}" required autocomplete="received_at" autofocus>
+
+                                @error('received_at')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror                    
+                        </div>
+                    </div>
+                    <div class="w-100"></div>
+                    <div class="col">
+                        <div class="input-group input-group-sm mb-3">                            
+                            <div class="input-group-prepend">
+                                <label for="unit" class="input-group-text">{{ __('Unit') }}</label>
+                            </div>
+                                <select class="form-control @error('unit') is-invalid @enderror" id="unit" name="unit" required autocomplete="unit" autofocus >
+                                    <option value="" selected disabled hidden> Choose Unit</option>                                                                                   
+                                    <option value="PIECE">PIECE</option>
+                                    <option value="SPOOL">SPOOL</option>
+                                    <option value="YARD">YARD</option>
+                                    <option value="ROLL">ROLL</option>
+                                    <option value="SACK/BAG">SACK/BAG</option>
+                                 
+                                </select>
+                                @error('unit')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror                    
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="input-group input-group-sm mb-3">
+                            <div class="input-group-prepend">                      
+                              <label for="quantity" class="input-group-text">{{ __('Quantity') }}</label>
+                            </div>                    
+                                <input id="quantity" type="number" step=".01" class="form-control @error('quantity') is-invalid @enderror" name="quantity" value="{{ old('quantity') }}" required autocomplete="quantity" autofocus>
+                                @error('quantity')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror                    
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="input-group input-group-sm mb-3">
+                            <div class="input-group-prepend">                      
+                              <label for="unit_cost" class="input-group-text">{{ __('Unit Cost') }}</label>
+                            </div>                    
+                                <input id="unit_cost" type="number" step="0.01" class="form-control @error('unit_cost') is-invalid @enderror" name="unit_cost" value="{{ old('unit_cost') }}" required autocomplete="unit_cost" autofocus>
+                                @error('unit_cost')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror                    
+                        </div>
+                    </div>
+                <div class="w-100"></div>
+                    <div class="col">
+                        <div class="input-group input-group-sm mb-3">                            
+                            <div class="input-group-prepend">
+                                <label for="stockRoom" class="input-group-text">{{ __('Stock Room') }}</label>
+                            </div>
+                                <select class="form-control @error('stockRoom') is-invalid @enderror" id="stockRoomAdd" name="stockRoom" required autocomplete="stockRoom" autofocus >
+                                    <option value="" selected disabled hidden> Choose Stock Room</option>                                                                                   
+                                    @foreach($stockRooms as $stockRoom)                                                                
+                                    <option value="{{$stockRoom->id}}">
+                                            {{$stockRoom->stock_room}}
+                                        </option>
+                                    @endforeach
+                                 
+                                </select>
+                                @error('stockRoom')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror                    
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="input-group input-group-sm mb-3">
+                            <div class="input-group-prepend">
+                                <label for="storageRoom" class="input-group-text">{{ __('Storage Room') }}</label>
+                            </div>
+                                <select class="form-control @error('storageRoom') is-invalid @enderror" id="storageRoomAdd" name="storageRoom" required autocomplete="storageRoom" autofocus  disabled>
+                                    <option value="" selected disabled hidden> Choose Storage Room</option>   
+                                 
+                                </select>
+                                @error('storageRoom')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror                 
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="input-group input-group-sm mb-3">
+                            <div class="input-group-prepend">        
+
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="true" id="isArchived" class="form-control @error('isArchived') is-invalid @enderror" name="isArchived">
+                                    <label class="form-check-label" for="isArchived">
+                                      Archived
+                                    </label>
+                                  </div> 
+                                  @error('isArchived')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror   
+                                        
+                              
+                            </div>    
+                            <div class="input-group-prepend">         
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="true" id="isAvailable" class="form-control @error('isAvailable') is-invalid @enderror" name="isAvailable" checked>
+                                    <label class="form-check-label" for="defaultCheck1">
+                                      Available
+                                    </label>
+                                  </div> 
+                                  @error('isAvailable')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                 @enderror 
+                                        
+                              
+                            </div>                 
+                                                 
+                        </div>
+                    </div>
+                </div>
+                  <div class="w-100"></div>
+                  
+                    <div class="form-group">                                                
+                            <label for="description" class="input-group-text">{{ __('Description') }}</label>                           
+                        
+                        <textarea id="description" rows="3" type="description" class="form-control @error('description') is-invalid @enderror" name="description" value="{{ old('description') }}" required autocomplete="description" autofocus></textarea>
+                            @error('description')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror     
+                    </div>
+                    <br>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" name="closeAddMaterialModal">Close</button>
+                        <button type="submit" class="btn btn-primary" href='material/add'>Add Record</button>
+                    </div>
+
+            </form>
+                </div>
+            </div>
+        </div>
 </div>
 
 @endsection
@@ -564,12 +570,12 @@ $(document).ready(function () {
         //console.log('add materials');
     $('#rawMaterialTable').DataTable(
         {
-        "lengthMenu": [[5, 25, 50, -1], [5, 25, 50, "All"]],
+        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
         "search": true,     
         "ordering": false,
         // "order": [[ 0, "desc" ]],
         "paging": true,
-        "pageLength": 5,
+        "pageLength": 10,
         "columnDefs": [
                         {
                             "targets": [ 0 ],
@@ -578,7 +584,6 @@ $(document).ready(function () {
                             
                         },          
                     ],
-        "scrollY":        "300px",
         "scrollX":        true,
         "scrollCollapse": true,
         "fixedColumns":   {
@@ -588,14 +593,21 @@ $(document).ready(function () {
        }         
       ); 
       
-    $( "button[name='closeEditMaterialModal']" ).click(function() {
-        $('#editRawMaterialModal').modal('hide')
-    });
+      $( "button[name='closeEditMaterialModal']" ).click(function() {
+          $('#editRawMaterialModal').modal('hide')
+      });
+      
+      $( "button[name='closeAddMaterialModal']" ).click(function() {
+          $('#addRawMaterialModal').modal('hide')
+      });
 
     $('#stock_number').val("{!!$lastRecord!!}");
 
+    $('#addRawMaterial').on('click', function() {
+        $('#addRawMaterialModal').modal('show')
+    });
     
-    $("#rawMaterialTable").on('click','.editRawMaterialButton',function(){
+    $("#rawMaterialTable").on('click','.editRawMaterialButton',function() {
         $('#editRawMaterialModal').modal('show')
 
         var currentRow=$(this).closest("tr"); 
@@ -614,7 +626,7 @@ $(document).ready(function () {
 
          $.each({!!$stockRooms!!}, function(key, value) {       
              
-                if(value.stock_room == currentRow.find("td:eq(6)").text()){
+                if(value.stock_room == currentRow.find("td:eq(6)").text()) {
                     //console.log(value.id);
                     $('#editRawMaterialModal #stockRoom').val(value.id).change();
                 }
@@ -622,9 +634,9 @@ $(document).ready(function () {
 
         $.each({!!$storageList!!}, function(key, value) {    
             
-                if($('#editRawMaterialModal #stockRoom').val() == value.stock_room_id){
+                if($('#editRawMaterialModal #stockRoom').val() == value.stock_room_id) {
                     $("#editRawMaterialModal #storageRoom").append('<option value="'+value.id+'">'+value.storage_name+'</option>');
-                   if(value.storage_name == currentRow.find("td:eq(7)").text()){
+                   if(value.storage_name == currentRow.find("td:eq(7)").text()) {
                         $("#editRawMaterialModal #storageRoom").val(value.id).change();
                    }
                        
@@ -633,18 +645,18 @@ $(document).ready(function () {
                 
         });
 
-        if(currentRow.find("td:eq(8)").text() == "YES"){                   
+        if(currentRow.find("td:eq(8)").text() == "YES") {                   
             $('#isArchivedEdit').prop( "checked", true );
             //console.log($('#isArchivedEdit').is(':checked'));     
-        }else{             
+        } else {             
              //console.log($('#isArchivedEdit').is(':checked'));      
             $('#isArchivedEdit').prop( "checked", false );
         }
 
-        if(currentRow.find("td:eq(9)").text() == "YES"){                   
+        if(currentRow.find("td:eq(9)").text() == "YES") {                   
             $('#isAvailableEdit').prop( "checked", true );
             //console.log($('#isAvailableEdit').is(':checked'));     
-        }else{             
+        } else {             
              //console.log($('#isAvailableEdit').is(':checked'));      
             $('#isAvailableEdit').prop( "checked", false );
         }
@@ -656,7 +668,7 @@ $(document).ready(function () {
             $("#editRawMaterialModal #storageRoom").append('<option value="" selected disabled hidden> Choose Storage Room</option>');   
 
             $.each({!!$storageList!!}, function(key, value) {            
-                if($('#editRawMaterialModal #stockRoom').val() == value.stock_room_id){
+                if($('#editRawMaterialModal #stockRoom').val() == value.stock_room_id) {
                     $("#editRawMaterialModal #storageRoom").append('<option value="'+value.id+'">'+value.storage_name+'</option>');
                 }
             });
@@ -665,15 +677,16 @@ $(document).ready(function () {
     });
 
     
-    $("#stockRoom").change(function () {       
+    $("#stockRoomAdd").change(function () {       
+        console.log("Stockroom changed")
        
-        $('#storageRoom').removeAttr('disabled');
-        $("#storageRoom").find('option').remove();
-        $("#storageRoom").append('<option value="" selected disabled hidden> Choose Storage Room</option>');   
+        $('#storageRoomAdd').removeAttr('disabled');
+        $("#storageRoomAdd").find('option').remove();
+        $("#storageRoomAdd").append('<option value="" selected disabled hidden> Choose Storage Room</option>');   
 
         $.each({!!$storageList!!}, function(key, value) {            
-            if($('#stockRoom').val() == value.stock_room_id){
-                $("#storageRoom").append('<option value="'+value.id+'">'+value.storage_name+'</option>');
+            if($('#stockRoomAdd').val() == value.stock_room_id) {
+                $("#storageRoomAdd").append('<option value="'+value.id+'">'+value.storage_name+'</option>');
             }
         });
        
