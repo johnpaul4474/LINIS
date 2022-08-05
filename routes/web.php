@@ -12,6 +12,7 @@ use App\Http\Controllers\Issuance\ReturnedProductsController;
 use App\Http\Controllers\Request\RequestController;
 use App\Http\Controllers\Reports\ReportsController;
 use App\Http\Controllers\Role\RoleController;
+use App\Http\Controllers\PasswordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -106,6 +107,12 @@ Route::middleware('auth')->group(function () {
         Route::any('roleManagement', [RoleController::class, 'index'])->name('roleManagement');
         Route::any('assignAdmin', [RoleController::class, 'assignAdmin'])->name('assignAdmin');
         Route::post('reset/{id}', [RoleController::class, 'resetPassword'])->name('resetPassword');
+    });
+
+    //password
+    Route::prefix('password')->group(function () {
+        Route::get('/', [PasswordController::class, 'index'])->name('password');
+        Route::post('/', [PasswordController::class, 'update'])->name('password.update');
     });
 
     Route::get('test', function () {
