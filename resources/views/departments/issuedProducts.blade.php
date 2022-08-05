@@ -4,7 +4,7 @@
 <div class="row">    
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-9">
+            <div class="col-md-12">
                 <div class="card">
                     <div class="card-header text-white" style="background-color: #00AA9E;">{{$name}} {{$type}}</div>
                     <div class="card-body">
@@ -52,14 +52,6 @@ $(document).ready(function () {
             "order": [[ 1, "asc" ]],
             "paging": true,
             "pageLength": 10,
-            "columnDefs": [
-                            {
-                                "targets": [ 0 ],
-                                "visible": false,
-                                "searchable": false,
-                                
-                            },          
-                        ],
             "scrollY":        "500px",
             "scrollX":        true,
             "scrollCollapse": true,
