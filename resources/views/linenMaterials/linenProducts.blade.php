@@ -574,7 +574,7 @@
                 @foreach ($errors->all() as $error)
                     <script>
                     console.log('{{$error}}');
-                    if({{$error}} != 'The selected stock number is invalid.'){
+                    if({{$error}} != 'The selected stock number is invalid.') {
                         $('#editRawMaterialModal').modal('show')
                     }
                     
@@ -669,7 +669,7 @@ $(document).ready(function () {
     // return dataToArray.join("\n");
     // }
 
-    function generateChildProductsTable(id){
+    function generateChildProductsTable(id) {
         console.log(id);
         var tbodyElement=` <table border="0" cellpadding="10" cellspacing="0" align="center">
                 <tr>
@@ -684,7 +684,7 @@ $(document).ready(function () {
                 
             $.each({!! json_encode($productsList, JSON_HEX_TAG) !!}, function(key, value) {  
             
-            if(value.product_bulk_id == id){  
+            if(value.product_bulk_id == id) {  
                 //console.log(value.product_name);
                 let productsArray = value.products_json.split("^");
                    // console.log(productsArray);
@@ -697,25 +697,25 @@ $(document).ready(function () {
                                    
 
 
-                if(productObject.is_available == 1){
+                if(productObject.is_available == 1) {
                     tbodyElement+= "<td>YES</td>";   
-                }else{
+                } else {
                     tbodyElement+= "<td>NO</td>"; 
                 }
                 
-                if(productObject.is_condemned == 1){
+                if(productObject.is_condemned == 1) {
                     tbodyElement+= "<td>YES</td>";   
-                }else{
+                } else {
                     tbodyElement+= "<td>NO</td>"; 
                 }
                                     
                 // $.each({!!$stockRoomsList!!}, function(key, value) { 
-                //         if(value.id == productObject.stock_room_id ){                            
+                //         if(value.id == productObject.stock_room_id ) {                            
                 //             tbodyElement +="<td id=" + productObject.stock_room_id + ">" + value.stock_room + "</td>"
                 //         }
                 // });
                 // $.each({!!$storageList!!}, function(key, value) {  
-                //     if(value.id == productObject.storage_id ){
+                //     if(value.id == productObject.storage_id ) {
                 //             tbodyElement += "<td id="+ productObject.storage_id +">" +value.storage_name + "</td> </tr>"
                 //         }             
                 // });
@@ -735,7 +735,7 @@ $(document).ready(function () {
     $("#material_used").change(function() {
         let id = $(this).children(":selected").val();
         $.each({!!$rawMaterials!!}, function(key, value) {
-                if(value.id == id){
+                if(value.id == id) {
                     console.log(value);
                     $('#stock_number').val(value.stock_number);
                     $('#rawMaterialId').val(value.id);
@@ -752,7 +752,7 @@ $(document).ready(function () {
         $('#editProductsModal').modal('hide')
     });
 
-    $("#productsTable").on('click','.editProductsButton',function(){
+    $("#productsTable").on('click','.editProductsButton',function() {
         $('#editProductsModal').modal('show')
 
         var currentRow=$(this).closest("tr"); 
@@ -777,7 +777,7 @@ $(document).ready(function () {
         let id = $(this).children(":selected").val();
         
         $.each({!!$rawMaterials!!}, function(key, value) {
-                if(value.id == id){
+                if(value.id == id) {
                     console.log(value.stock_number);
                     $('#editProductsModal #stock_number').val(value.stock_number);
                     $('#editProductsModal #rawMaterialId').val(value.id);
@@ -789,7 +789,7 @@ $(document).ready(function () {
 
          $.each({!!$stockRoomsList!!}, function(key, value) {       
              
-                if(value.stock_room == currentRow.find("td:eq(8)").text()){
+                if(value.stock_room == currentRow.find("td:eq(8)").text()) {
                    
                     $('#editProductsModal #stockRoom').val(value.id).change();
                 }
@@ -797,9 +797,9 @@ $(document).ready(function () {
 
         $.each({!!$storageList!!}, function(key, value) {    
             
-                if($('#editProductsModal #stockRoom').val() == value.stock_room_id){
+                if($('#editProductsModal #stockRoom').val() == value.stock_room_id) {
                     $("#editProductsModal #storageRoom").append('<option value="'+value.id+'">'+value.storage_name+'</option>');
-                   if(value.storage_name == currentRow.find("td:eq(9)").text()){
+                   if(value.storage_name == currentRow.find("td:eq(9)").text()) {
                         $("#editProductsModal #storageRoom").val(value.id).change();
                    }
                        
@@ -809,18 +809,18 @@ $(document).ready(function () {
         });
 
         
-        // if(currentRow.find("td:eq(8)").text() == "YES"){                   
+        // if(currentRow.find("td:eq(8)").text() == "YES") {                   
         //     $('#isArchivedEdit').prop( "checked", true );
         //     console.log($('#isArchivedEdit').is(':checked'));     
-        // }else{             
+        // } else {             
         //      console.log($('#isArchivedEdit').is(':checked'));      
         //     $('#isArchivedEdit').prop( "checked", false );
         // }
 
-        // if(currentRow.find("td:eq(9)").text() == "YES"){                   
+        // if(currentRow.find("td:eq(9)").text() == "YES") {                   
         //     $('#isAvailableEdit').prop( "checked", true );
         //     console.log($('#isAvailableEdit').is(':checked'));     
-        // }else{             
+        // } else {             
         //      console.log($('#isAvailableEdit').is(':checked'));      
         //     $('#isAvailableEdit').prop( "checked", false );
         // }
@@ -832,7 +832,7 @@ $(document).ready(function () {
             $("#editProductsModal #storageRoom").append('<option value="" selected disabled hidden> Choose Storage Room</option>');   
 
             $.each({!!$storageList!!}, function(key, value) {            
-                if($('#editProductsModal #stockRoom').val() == value.stock_room_id){
+                if($('#editProductsModal #stockRoom').val() == value.stock_room_id) {
                     $("#editProductsModal #storageRoom").append('<option value="'+value.id+'">'+value.storage_name+'</option>');
                 }
             });
@@ -848,7 +848,7 @@ $(document).ready(function () {
         $("#storageRoom").append('<option value="" selected disabled hidden> Choose Storage Room</option>');   
 
         $.each({!!$storageList!!}, function(key, value) {            
-            if($('#stockRoom').val() == value.stock_room_id){
+            if($('#stockRoom').val() == value.stock_room_id) {
                 $("#storageRoom").append('<option value="'+value.id+'">'+value.storage_name+'</option>');
             }
         });
