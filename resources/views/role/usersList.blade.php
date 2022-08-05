@@ -12,6 +12,7 @@
                             <thead>
                                     <th>id</th>
                                     <th>Employee Name</th>
+                                    <th>Username</th>
                                     <th>Ward</th>
                                     <th>Office</th>
                                     <th>Role</th>
@@ -23,6 +24,7 @@
                                 <tr>
                                     <td>{{$user->id}} </td>
                                     <td>{{$user->name}} </td> 
+                                    <td>{{$user->username}} </td> 
                                     @if($user->ward_id != null)
                                         @foreach(\App\Http\Controllers\Department\DepartmentController::wardList() as $ward)                                                                
                                         @if($ward->id == $user->ward_id )
