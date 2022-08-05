@@ -534,7 +534,7 @@
                         @foreach ($errors->all() as $error)
                             <script>
                             //console.log('{{$error}}');
-                            if({{$error}} != 'The selected stock number is invalid.'){
+                            if({{$error}} != 'The selected stock number is invalid.') {
                                 $('#editRawMaterialModal').modal('show')
                             }
                             
@@ -595,7 +595,7 @@ $(document).ready(function () {
     $('#stock_number').val("{!!$lastRecord!!}");
 
     
-    $("#rawMaterialTable").on('click','.editRawMaterialButton',function(){
+    $("#rawMaterialTable").on('click','.editRawMaterialButton',function() {
         $('#editRawMaterialModal').modal('show')
 
         var currentRow=$(this).closest("tr"); 
@@ -614,7 +614,7 @@ $(document).ready(function () {
 
          $.each({!!$stockRooms!!}, function(key, value) {       
              
-                if(value.stock_room == currentRow.find("td:eq(6)").text()){
+                if(value.stock_room == currentRow.find("td:eq(6)").text()) {
                     //console.log(value.id);
                     $('#editRawMaterialModal #stockRoom').val(value.id).change();
                 }
@@ -622,9 +622,9 @@ $(document).ready(function () {
 
         $.each({!!$storageList!!}, function(key, value) {    
             
-                if($('#editRawMaterialModal #stockRoom').val() == value.stock_room_id){
+                if($('#editRawMaterialModal #stockRoom').val() == value.stock_room_id) {
                     $("#editRawMaterialModal #storageRoom").append('<option value="'+value.id+'">'+value.storage_name+'</option>');
-                   if(value.storage_name == currentRow.find("td:eq(7)").text()){
+                   if(value.storage_name == currentRow.find("td:eq(7)").text()) {
                         $("#editRawMaterialModal #storageRoom").val(value.id).change();
                    }
                        
@@ -633,18 +633,18 @@ $(document).ready(function () {
                 
         });
 
-        if(currentRow.find("td:eq(8)").text() == "YES"){                   
+        if(currentRow.find("td:eq(8)").text() == "YES") {                   
             $('#isArchivedEdit').prop( "checked", true );
             //console.log($('#isArchivedEdit').is(':checked'));     
-        }else{             
+        } else {             
              //console.log($('#isArchivedEdit').is(':checked'));      
             $('#isArchivedEdit').prop( "checked", false );
         }
 
-        if(currentRow.find("td:eq(9)").text() == "YES"){                   
+        if(currentRow.find("td:eq(9)").text() == "YES") {                   
             $('#isAvailableEdit').prop( "checked", true );
             //console.log($('#isAvailableEdit').is(':checked'));     
-        }else{             
+        } else {             
              //console.log($('#isAvailableEdit').is(':checked'));      
             $('#isAvailableEdit').prop( "checked", false );
         }
@@ -656,7 +656,7 @@ $(document).ready(function () {
             $("#editRawMaterialModal #storageRoom").append('<option value="" selected disabled hidden> Choose Storage Room</option>');   
 
             $.each({!!$storageList!!}, function(key, value) {            
-                if($('#editRawMaterialModal #stockRoom').val() == value.stock_room_id){
+                if($('#editRawMaterialModal #stockRoom').val() == value.stock_room_id) {
                     $("#editRawMaterialModal #storageRoom").append('<option value="'+value.id+'">'+value.storage_name+'</option>');
                 }
             });
@@ -672,7 +672,7 @@ $(document).ready(function () {
         $("#storageRoom").append('<option value="" selected disabled hidden> Choose Storage Room</option>');   
 
         $.each({!!$storageList!!}, function(key, value) {            
-            if($('#stockRoom').val() == value.stock_room_id){
+            if($('#stockRoom').val() == value.stock_room_id) {
                 $("#storageRoom").append('<option value="'+value.id+'">'+value.storage_name+'</option>');
             }
         });

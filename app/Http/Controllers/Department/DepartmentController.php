@@ -3,17 +3,15 @@
 namespace App\Http\Controllers\Department;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use DB;
-class DepartmentController extends Controller
-{
-    public static function wardList()
-    { 
-       return  DB::Select("SELECT * FROM nora.paul.linen_ward ORDER BY ward_name ASC");
-    }
+use App\Models\Office;
+use App\Models\Ward;
 
-    public static function officeList()
-    { 
-       return  DB::Select("SELECT * FROM nora.paul.linen_office ORDER BY office_name ASC");
-    }
+class DepartmentController extends Controller {
+	public static function wardList() { 
+		return Ward::all();
+	}
+
+	public static function officeList() { 
+		return Office::all();
+	}
 }

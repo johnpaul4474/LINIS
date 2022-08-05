@@ -4,33 +4,20 @@
 <div class= "container">
 <div class="card d-print-none" >
     <div class="card-header">
-      GENERATE INVENTORY REPORT FOR 
-            @if(Auth::user()->office_id != null)
-                  @foreach(\App\Http\Controllers\Department\DepartmentController::officeList() as $office)                                                                
-                      @if($office->id == Auth::user()->office_id) 
-                          {{$office->office_name}}
-                      @endif
-                   @endforeach
-            @elseif(Auth::user()->ward_id != null)
-                  @foreach(\App\Http\Controllers\Department\DepartmentController::wardList() as $ward)                                                                
-                  @if($ward->id ==  Auth::user()->ward_id )
-                          {{$ward->ward_name}}
-                  @endif
-                  @endforeach
-             
-            @endif
+      GENERATE INVENTORY REPORT
     </div>
     <div class="card-body">
         <form action = "/generateInventoryReport" method = "post">
             @csrf
-            <h5 class="card-title">Select Date</h5>
             <div class="row">
+                {{-- @if(Auth::user()->role_id  == 1 || Auth::user()->role_id== 2) --}}
+                @if(Auth::user()->role_id  == 1)
                 <div class="col-4">
                     <div class="input-group input-group-sm mb-3">                            
                         <div class="input-group-prepend">
-                            <label for="month" class="input-group-text">{{ __('Choose month') }}</label>
+                            <label for="month" class="input-group-text">Month</label>
                         </div>
-                            <input id="month" type="month" class="form-control @error('month') is-invalid @enderror" name="month" value="{{ old('month') }}" required autocomplete="month" autofocus>
+                            <input id="month" type="month" class="form-control @error('month') is-invalid @enderror" name="month" value="{{ old('month') }}" required autocomplete="month">
 
                             @error('month')
                                 <span class="invalid-feedback" role="alert">
@@ -39,9 +26,7 @@
                             @enderror                    
                     </div>
                 </div> 
-                
-                {{-- @if(Auth::user()->role_id  == 1 || Auth::user()->role_id== 2) --}}
-                @if(Auth::user()->role_id  == 1)
+
                 <div class="col-4">
                     <div class="input-group input-group-sm mb-3">
                         <div class="input-group-prepend">                      
@@ -93,6 +78,21 @@
                     </div>
                 </div>
                 @else
+                    <div class="col-4">
+                        <div class="input-group input-group-sm mb-3">                            
+                            <div class="input-group-prepend">
+                                <label for="month" class="input-group-text">Month</label>
+                            </div>
+                                <input readonly id="month" type="month" class="form-control @error('month') is-invalid @enderror" name="month" value="{{ old('month') }}" required autocomplete="month">
+
+                                @error('month')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror                    
+                        </div>
+                    </div> 
+                    
                     @if(Auth::user()->office_id != null)
                         @foreach(\App\Http\Controllers\Department\DepartmentController::officeList() as $office)                                                                
                             @if($office->id == Auth::user()->office_id) 
@@ -117,7 +117,7 @@
                         @endforeach
                     @elseif(Auth::user()->ward_id != null)
                         @foreach(\App\Http\Controllers\Department\DepartmentController::wardList() as $ward)                                                                
-                        @if($ward->id ==  Auth::user()->ward_id )
+                        @if($ward->id == Auth::user()->ward_id )
                                 
                                 <div class="col-6">
                                     <div class="input-group input-group-sm mb-3">
@@ -258,7 +258,7 @@
                                     @endforeach
                                     @elseif(Auth::user()->ward_id != null)
                                         @foreach(\App\Http\Controllers\Department\DepartmentController::wardList() as $ward)                                                                
-                                        @if($ward->id ==  Auth::user()->ward_id )
+                                        @if($ward->id == Auth::user()->ward_id )
                                             
                                                 <u>
                                                 {{$ward->ward_name}}
@@ -330,7 +330,17 @@
 @push('scripts')
 
 <script>
-$(document).ready(function () {    
+$(document).ready(function () {
+    // Set date
+    const dt = new Date()
+    if(dt.getDate() <= 5) {
+        // Set date to last month
+        $("#month").val(dt.getFullYear().toString() + "-" + dt.getMonth().toString().padStart(2, "0"))
+    } else {
+        // Set date to current month
+        $("#month").val(dt.getFullYear().toString() + "-" + (dt.getMonth()+1).toString().padStart(2, "0"))
+    }
+    
     $(function () {
             $('.printMe').click(function () {
                 window.print();
@@ -340,11 +350,11 @@ $(document).ready(function () {
 
         });
 
-    $("#wardRadio, #officeRadio").change(function(){
+    $("#wardRadio, #officeRadio").change(function() {
         //console.log('radio ward office');
             
             $("#ward, #office").val("").attr("readonly",true);
-            if($("#wardRadio").is(":checked")){
+            if($("#wardRadio").is(":checked")) {
                 $("#ward").removeAttr("readonly");
                 $("#wardRadio").attr("required",true);
                 $("#ward").attr("required",true);
@@ -352,7 +362,7 @@ $(document).ready(function () {
                 $("#ward").focus();
                 $("#office").prop('disabled', true);
             }
-            else if($("#officeRadio").is(":checked")){
+            else if($("#officeRadio").is(":checked")) {
                 $("#office").removeAttr("readonly");
                 $("#officeRadio").attr("required",true);
                 $("#office").attr("required",true);
@@ -364,11 +374,11 @@ $(document).ready(function () {
            
         });  
    
-        $("#ward").change(function(){
+        $("#ward").change(function() {
             var ward = $(this).children("option:selected").text().trim();
             $('#unit_ward').text(ward);
         });
-        $("#office").change(function(){
+        $("#office").change(function() {
             var office = $(this).children("option:selected").text().trim();
             $('#unit_ward').text(office);
     });

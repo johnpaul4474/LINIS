@@ -1,6 +1,18 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Linen\LinenInventoryController;
+use App\Http\Controllers\Stockroom\StockRoomController;
+use App\Http\Controllers\Stockroom\StorageController;
+use App\Http\Controllers\Linen\ProductsController;
+use App\Http\Controllers\Request\ServiceController;
+use App\Http\Controllers\Issuance\IssuanceController;
+use App\Http\Controllers\Issuance\ReturnedProductsController;
+use App\Http\Controllers\Request\RequestController;
+use App\Http\Controllers\Reports\ReportsController;
+use App\Http\Controllers\Role\RoleController;
+use App\Http\Controllers\PasswordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,77 +25,98 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', function (Request $request) {
+    if($request->user()) {
+        return redirect()->route('home');
+    } else {
+        return view('welcome');
+    }
 });
 
 Auth::routes();
-//materials
-Route::get('/home', [App\Http\Controllers\Linen\LinenInventoryController::class, 'index'])->name('home');
-Route::any('/material', [App\Http\Controllers\Linen\LinenInventoryController::class, 'create'])->name('material');
-Route::post('/material/add', [App\Http\Controllers\Linen\LinenInventoryController::class, 'store'])->name('material/add');
-Route::post('/material/delete', [App\Http\Controllers\Linen\LinenInventoryController::class, 'destroy'])->name('material/delete');
-Route::post('/material/update', [App\Http\Controllers\Linen\LinenInventoryController::class, 'update'])->name('material/update');
 
-//stockroom
-Route::any('/stockroom', [App\Http\Controllers\Stockroom\StockRoomController::class, 'index'])->name('stockroom');
-Route::post('/stockroom/add', [App\Http\Controllers\Stockroom\StockRoomController::class, 'store'])->name('stockroom/add');
-Route::post('/stockroom/delete', [App\Http\Controllers\Stockroom\StockRoomController::class, 'destroy'])->name('stockroom/delete');
-Route::post('/stockroom/update', [App\Http\Controllers\Stockroom\StockRoomController::class, 'update'])->name('stockroom/update');
+Route::middleware('auth')->group(function () {
+    Route::get('/home', [LinenInventoryController::class, 'index'])->name('home');
 
-//storage
-Route::post('/stockroom/storage/add', [App\Http\Controllers\Stockroom\StorageController::class, 'addStorage'])->name('stockroom/storage/add');
-Route::post('/stockroom/storage/update', [App\Http\Controllers\Stockroom\StorageController::class, 'updateStorage'])->name('stockroom/storage/update');
-Route::post('/stockroom/storage/delete', [App\Http\Controllers\Stockroom\StorageController::class, 'destroy'])->name('stockroom/storage/delete');
-
-//products
-Route::any('/products', [App\Http\Controllers\Linen\ProductsController::class, 'index'])->name('products');
-Route::post('/products/add', [App\Http\Controllers\linen\ProductsController::class, 'addProduct'])->name('products/add');
-Route::post('/products/delete', [App\Http\Controllers\linen\ProductsController::class, 'destroy'])->name('products/delete');
-Route::post('/products/update', [App\Http\Controllers\linen\ProductsController::class, 'update'])->name('products/update');
+    //materials
+    Route::prefix('material')->group(function () {
+        Route::any('/', [LinenInventoryController::class, 'create'])->name('material');
+        Route::post('/add', [LinenInventoryController::class, 'store'])->name('material/add');
+        Route::post('/delete', [LinenInventoryController::class, 'destroy'])->name('material/delete');
+        Route::post('/update', [LinenInventoryController::class, 'update'])->name('material/update');
+    });
 
 
-//services 
-Route::any('/services', [App\Http\Controllers\Request\ServiceController::class, 'index'])->name('services');
-Route::POST('/services/comments/{id}', [App\Http\Controllers\Request\ServiceController::class, 'updateComment'])->name('services/update');
+    //stockroom
+    Route::prefix('stockroom')->group(function () {
+        Route::any('/', [StockRoomController::class, 'index'])->name('stockroom');
+        Route::post('/add', [StockRoomController::class, 'store'])->name('stockroom/add');
+        Route::post('/delete', [StockRoomController::class, 'destroy'])->name('stockroom/delete');
+        Route::post('/update', [StockRoomController::class, 'update'])->name('stockroom/update');
 
+        //storage
+        Route::prefix('storage')->group(function () {
+            Route::post('/add', [StorageController::class, 'addStorage'])->name('stockroom/storage/add');
+            Route::post('/update', [StorageController::class, 'updateStorage'])->name('stockroom/storage/update');
+            Route::post('/delete', [StorageController::class, 'destroy'])->name('stockroom/storage/delete');
+        });
+    });
 
+    //products
+    Route::prefix('products')->group(function () {
+        Route::any('/', [ProductsController::class, 'index'])->name('products');
+        Route::post('/add', [ProductsController::class, 'addProduct'])->name('products/add');
+        Route::post('/delete', [ProductsController::class, 'destroy'])->name('products/delete');
+        Route::post('/update', [ProductsController::class, 'update'])->name('products/update');
+    });
 
+    //services
+    Route::prefix('services')->group(function () {
+        Route::any('/', [ServiceController::class, 'index'])->name('services');
+        Route::POST('/comments/{id}', [ServiceController::class, 'updateComment'])->name('services/update');
+    });
 
+    //issuance
+    Route::any('/issuance', [IssuanceController::class, 'index'])->name('issuance');
+    Route::post('/issueProduct', [IssuanceController::class, 'issueProduct'])->name('/issueProduct');
+    Route::post('/condemned/delete', [IssuanceController::class, 'destroy'])->name('/condemned/delete');
 
-//issuance
-Route::any('/issuance', [App\Http\Controllers\Issuance\IssuanceController::class, 'index'])->name('issuance');
-Route::post('/issueProduct', [App\Http\Controllers\Issuance\IssuanceController::class, 'issueProduct'])->name('/issueProduct');
-Route::post('/condemned/delete', [App\Http\Controllers\Issuance\IssuanceController::class, 'destroy'])->name('/condemned/delete');
+    //re-issue
+    Route::any('/returnedProducts', [ReturnedProductsController::class, 'index'])->name('returnedProducts');
+    Route::post('/returningProducts', [ReturnedProductsController::class, 'returningProducts'])->name('/returningProducts');
+    Route::post('/condemned/delete', [ReturnedProductsController::class, 'destroy'])->name('/condemned/delete');
+    Route::any('/condemned', [ReturnedProductsController::class, 'condemned'])->name('/condemned');
+    Route::any('/losses', [ReturnedProductsController::class, 'losses'])->name('/losses');
 
-//re-issue
-Route::any('/returnedProducts', [App\Http\Controllers\Issuance\ReturnedProductsController::class, 'index'])->name('returnedProducts');
-Route::post('/returningProducts', [App\Http\Controllers\Issuance\ReturnedProductsController::class, 'returningProducts'])->name('/returningProducts');
-Route::post('/condemned/delete', [App\Http\Controllers\Issuance\ReturnedProductsController::class, 'destroy'])->name('/condemned/delete');
-Route::any('/condemned', [App\Http\Controllers\Issuance\ReturnedProductsController::class, 'condemned'])->name('/condemned');
-Route::any('/losses', [App\Http\Controllers\Issuance\ReturnedProductsController::class, 'losses'])->name('/losses');
-//notification test
+    //requests
+    Route::any('/request', [RequestController::class, 'index'])->name('request');
+    Route::post('/newRequest', [RequestController::class, 'newRequest'])->name('newRequest');
+    Route::post('/processRequest', [RequestController::class, 'processRequest'])->name('processRequest');
+    Route::post('/pickUpProductRequest', [RequestController::class, 'pickUpProductRequest'])->name('pickUpProductRequest');
+    Route::get('/issueProductRequest', [RequestController::class, 'issueProductRequest'])->name('issueProductRequest');
+    Route::get('/retrieveItemsList', [RequestController::class, 'retrieveItemsList'])->name('retrieveItemsList');
+    Route::post('/issueFinalRequest', [RequestController::class, 'issueFinalRequest'])->name('issueFinalRequest');
 
+    //reports
+    Route::any('/reports', [ReportsController::class, 'index'])->name('reports');
+    Route::post('/generateInventoryReport', [ReportsController::class, 'linenInventory'])->name('generateInventoryReport');
 
-//requests
-Route::any('/request', [App\Http\Controllers\Request\RequestController::class, 'index'])->name('request');
-Route::post('/newRequest', [App\Http\Controllers\Request\RequestController::class, 'newRequest'])->name('newRequest');
-Route::post('/processRequest', [App\Http\Controllers\Request\RequestController::class, 'processRequest'])->name('processRequest');
-Route::post('/pickUpProductRequest', [App\Http\Controllers\Request\RequestController::class, 'pickUpProductRequest'])->name('pickUpProductRequest');
-Route::get('/issueProductRequest', [App\Http\Controllers\Request\RequestController::class, 'issueProductRequest'])->name('issueProductRequest');
-Route::get('/retrieveItemsList', [App\Http\Controllers\Request\RequestController::class, 'retrieveItemsList'])->name('retrieveItemsList');
-Route::post('/issueFinalRequest', [App\Http\Controllers\Request\RequestController::class, 'issueFinalRequest'])->name('issueFinalRequest');
+    //users
+    Route::prefix('users')->group(function () {
+        Route::any('listusers', [RoleController::class, 'listusers'])->name('listusers');
+        Route::any('roleManagement', [RoleController::class, 'index'])->name('roleManagement');
+        Route::any('assignAdmin', [RoleController::class, 'assignAdmin'])->name('assignAdmin');
+        Route::post('reset/{id}', [RoleController::class, 'resetPassword'])->name('resetPassword');
+    });
 
-//reports
-Route::any('/reports', [App\Http\Controllers\Reports\ReportsController::class, 'index'])->name('reports');
-Route::post('/generateInventoryReport', [App\Http\Controllers\Reports\ReportsController::class, 'linenInventory'])->name('generateInventoryReport');
+    //password
+    Route::prefix('password')->group(function () {
+        Route::get('/', [PasswordController::class, 'index'])->name('password');
+        Route::post('/', [PasswordController::class, 'update'])->name('password/update');
+    });
 
-//role
-Route::any('/roleManagement', [App\Http\Controllers\Role\RoleController::class, 'index'])->name('roleManagement');
-Route::any('/listusers', [App\Http\Controllers\Role\RoleController::class, 'listusers'])->name('listusers');
-Route::any('/roleManagement/assignAdmin', [App\Http\Controllers\Role\RoleController::class, 'assignAdmin'])->name('/roleManagement/assignAdmin');
-
-Route::get('test', function () {
-    event(new App\Events\LinisNotification('This is  a test'));
-    return "Event has been sent!";
+    Route::get('test', function () {
+        event(new App\Events\LinisNotification('This is  a test'));
+        return "Event has been sent!";
+    });
 });
