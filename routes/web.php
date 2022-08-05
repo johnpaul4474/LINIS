@@ -112,7 +112,7 @@ Route::middleware('auth')->group(function () {
     //password
     Route::prefix('password')->group(function () {
         Route::get('/', [PasswordController::class, 'index'])->name('password');
-        Route::post('/', [PasswordController::class, 'update'])->name('password.update');
+        Route::post('/', [PasswordController::class, 'update'])->name('password/update');
     });
 
     Route::get('test', function () {
