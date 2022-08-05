@@ -74,7 +74,7 @@
 
             console.log(messageNotification);
             $('#dropdownNotification').append(`
-                                  <a class="dropdown-item" href="services">${messageNotification}</a>
+                                  <a class="dropdown-item" href="/services">${messageNotification}</a>
                                   <div class="dropdown-divider"></div>
                                 `);
           
@@ -121,7 +121,7 @@
 
                                         
                 $('#dropdownNotification').append(`
-                                      <a class="dropdown-item" href="services">${messageNotification}</a>
+                                      <a class="dropdown-item" href="/services">${messageNotification}</a>
                                       <div class="dropdown-divider"></div>
                                     `);
                 
@@ -156,7 +156,7 @@
                 
                 
                 $('#dropdownNotification').append(`
-                                      <a class="dropdown-item" href="services">${messageNotification}</a>
+                                      <a class="dropdown-item" href="/services">${messageNotification}</a>
                                       <div class="dropdown-divider"></div>
                                     `);
                 
@@ -308,14 +308,18 @@
             </li>
             {{-- @if(Auth::user()->role_id  == 1 || Auth::user()->role_id== 2) --}}
             @if(Auth::user()->role_id  == 1)
+            <a class="nav-link" href="/departments" role="button">
+                Wards & Offices
+            </a>
+
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Inventory Management
               </a>
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <li><a class="dropdown-item" href="material">Add Raw Material </a></li>
-                <li><a class="dropdown-item" href="products">Add Final Product </a></li>
-                <li><a class="dropdown-item" href="stockroom">Add Stock Room / Storage</a></li>
+                <li><a class="dropdown-item" href="/material">Add Raw Material </a></li>
+                <li><a class="dropdown-item" href="/products">Add Final Product </a></li>
+                <li><a class="dropdown-item" href="/stockroom">Add Stock Room / Storage</a></li>
                             {{-- <li><hr class="dropdown-divider"></li> --}}
                 
               </ul>
@@ -326,8 +330,8 @@
                 Issuance and Condemned
               </a>
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <li><a class="dropdown-item" href="issuance">Issue Finished Products</a></li>
-                <li><a class="dropdown-item" href="returnedProducts">Condemned/Return Products</a></li>
+                <li><a class="dropdown-item" href="/issuance">Issue Finished Products</a></li>
+                <li><a class="dropdown-item" href="/returnedProducts">Condemned/Return Products</a></li>
 
                 {{-- <li><hr class="dropdown-divider"></li> --}}
                 
@@ -338,7 +342,7 @@
                 Storage Management
               </a>
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <li><a class="dropdown-item" href="stockroom">Add Stock Room / Storage</a></li>
+                <li><a class="dropdown-item" href="/stockroom">Add Stock Room / Storage</a></li>
                 <li><a class="dropdown-item" href="#">TO DO</a></li>
                 {{-- <li><hr class="dropdown-divider"></li> --}}
                 
@@ -350,9 +354,9 @@
                 Request Management
               </a>
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">                
-                <li><a class="dropdown-item" href="request">Create Request</a></li>
-                <li><a class="dropdown-item" href="services">Services</a></li>
-                <li><a class="dropdown-item" href="reports">Reports</a></li>
+                <li><a class="dropdown-item" href="/request">Create Request</a></li>
+                <li><a class="dropdown-item" href="/services">Services</a></li>
+                <li><a class="dropdown-item" href="/reports">Reports</a></li>
                 {{-- <li><hr class="dropdown-divider"></li> --}}
                 
               </ul>
@@ -375,7 +379,7 @@
                 Return and Condemn
               </a>
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">                
-                <li><a class="dropdown-item" href="returnedProducts">Condemned/Return Products</a></li>
+                <li><a class="dropdown-item" href="/returnedProducts">Condemned/Return Products</a></li>
 
                 {{-- <li><hr class="dropdown-divider"></li> --}}
                 
@@ -388,9 +392,9 @@
                 Request Management
               </a>
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">                
-                <li><a class="dropdown-item" href="request">Create Request</a></li>
-                <li><a class="dropdown-item" href="services">Services</a></li>
-                <li><a class="dropdown-item" href="reports">Reports</a></li>
+                <li><a class="dropdown-item" href="/request">Create Request</a></li>
+                <li><a class="dropdown-item" href="/services">Services</a></li>
+                <li><a class="dropdown-item" href="/reports">Reports</a></li>
                 {{-- <li><hr class="dropdown-divider"></li> --}}
                 
               </ul>
