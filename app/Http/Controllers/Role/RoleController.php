@@ -44,4 +44,13 @@ class RoleController extends Controller
        
         return view('role.usersList',compact('usersList'));
     }
+
+    public function resetPassword(Request $request, $id) {
+        $user = UsersList::find($id);
+        $user->update([
+            "password" => \Hash::make($user->username)
+        ]);
+
+        return redirect()->route('listusers')->with('success', 'User password reset successful.');
+    }
 }

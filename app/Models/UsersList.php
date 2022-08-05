@@ -16,7 +16,8 @@ class UsersList extends Model {
         'role_name',
         'role_id',	
         'ward_id',
-        'office_id'
+        'office_id',
+        'password'
     ];
 
     protected $dates = ['deleted_at'];

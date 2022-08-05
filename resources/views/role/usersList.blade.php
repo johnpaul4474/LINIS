@@ -50,7 +50,7 @@
                                         <td>User</td>
                                     @endif
                                     <td>                                          
-                                        <form action = "/users/assignAdmin" method = "post">
+                                        <form action = "/users/reset/{{$user->id}}" method = "POST">
                                             @csrf
                                             <input id="userId" type="hidden" class="form-control " name="userId" value="{{$user->id}}" >  
                                             <button type="submit" class="btn btn-danger btn-sm"  >

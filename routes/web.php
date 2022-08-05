@@ -105,6 +105,7 @@ Route::middleware('auth')->group(function () {
         Route::any('listusers', [RoleController::class, 'listusers'])->name('listusers');
         Route::any('roleManagement', [RoleController::class, 'index'])->name('roleManagement');
         Route::any('assignAdmin', [RoleController::class, 'assignAdmin'])->name('assignAdmin');
+        Route::post('reset/{id}', [RoleController::class, 'resetPassword'])->name('resetPassword');
     });
 
     Route::get('test', function () {
