@@ -360,8 +360,8 @@
                 Role Management
               </a>
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">                
-                <li><a class="dropdown-item" href="roleManagement">Assign Employee</a></li>
-                <li><a class="dropdown-item" href="listusers">List of users</a></li>                
+                <li><a class="dropdown-item" href="/users/roleManagement">Assign Employee</a></li>
+                <li><a class="dropdown-item" href="/users/listusers">List of users</a></li>                
                 {{-- <li><hr class="dropdown-divider"></li> --}}
                 
               </ul>

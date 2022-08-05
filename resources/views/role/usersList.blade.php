@@ -15,7 +15,7 @@
                                     <th>Ward</th>
                                     <th>Office</th>
                                     <th>Role</th>
-                                    {{-- <th>Assign</th> --}}
+                                    <th>Actions</th>
                                     
                             </thead> 
                             <tbody>
@@ -49,15 +49,15 @@
                                     @else
                                         <td>User</td>
                                     @endif
-                                    {{-- <td>                                          
-                                        <form action = "/roleManagement/assignAdmin" method = "post">
+                                    <td>                                          
+                                        <form action = "/users/assignAdmin" method = "post">
                                             @csrf
                                             <input id="userId" type="hidden" class="form-control " name="userId" value="{{$user->id}}" >  
-                                        <button type="submit" class="editProductsButton btn btn-primary btn-sm"  >
-                                            <i class='fa fa-user'></i>
-                                        </button>
+                                            <button type="submit" class="btn btn-danger btn-sm"  >
+                                                Reset Password
+                                            </button>
                                         </form>
-                                    </td> --}}
+                                    </td>
                                 </tr>   
                                 @endforeach
                             </tbody>       

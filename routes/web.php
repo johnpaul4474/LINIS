@@ -100,10 +100,12 @@ Route::middleware('auth')->group(function () {
     Route::any('/reports', [ReportsController::class, 'index'])->name('reports');
     Route::post('/generateInventoryReport', [ReportsController::class, 'linenInventory'])->name('generateInventoryReport');
 
-    //role
-    Route::any('/roleManagement', [RoleController::class, 'index'])->name('roleManagement');
-    Route::any('/listusers', [RoleController::class, 'listusers'])->name('listusers');
-    Route::any('/roleManagement/assignAdmin', [RoleController::class, 'assignAdmin'])->name('/roleManagement/assignAdmin');
+    //users
+    Route::prefix('users')->group(function () {
+        Route::any('listusers', [RoleController::class, 'listusers'])->name('listusers');
+        Route::any('roleManagement', [RoleController::class, 'index'])->name('roleManagement');
+        Route::any('assignAdmin', [RoleController::class, 'assignAdmin'])->name('assignAdmin');
+    });
 
     Route::get('test', function () {
         event(new App\Events\LinisNotification('This is  a test'));
