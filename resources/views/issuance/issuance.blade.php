@@ -172,7 +172,7 @@
         
                                     </div> 
                                     <div class="card-footer text-center">
-                                        <button type="button" id="issueItems" class="btn btn-primary " disabled >Issue</button>
+                                        <button type="button" id="issueItems" class="btn btn-primary " >Issue</button>
                                         {{-- <button type="button" id="removeItemsBtn" class="btn btn-primary " >Remove</button> --}}
                                         <button type="button" id="printItems" class="btn btn-primary " >Print</button>
                                         {{-- <button type="submit" class="btn btn-primary " >Submit</button>  --}}
@@ -331,15 +331,24 @@ $(document).ready(function () {
     $("#issueItems").click(function(event) {
 
         if($('#productIds').val().length == 0) {
-            console.log("No selected items")
+            alert("No selected items")
             return;
+        }
+
+        // Check if there is a selected ward/office
+        var selected_ward = document.getElementById("ward");
+        var selected_office = document.getElementById("office");
+
+        if(selected_ward.selectedIndex == 0 && selected_office.selectedIndex == 0) {
+            alert("No selected ward/office")
+            return
         }
 
         event.preventDefault();
 
         if($('#availableProducts').val() <= 0 || $("#ward").val() == null || $("#office").val() == null) {
             //console.log("disable add button");
-            $(this).attr("disabled",true);
+            // $(this).attr("disabled",true);
         }
 
         $('#issuanceForm').removeAttr("hidden",false);
@@ -660,21 +669,6 @@ $("#finishedProduct").change(function() {
        
     
     });
-
-    $("#ward, #office").change(function () {
-        enableDisableIssueButton();
-    });
-
-    function enableDisableIssueButton() {
-        var selected_ward = document.getElementById("ward");
-        var selected_office = document.getElementById("office");
-
-        if(selected_ward.selectedIndex > 0 || selected_office.selectedIndex > 0) {
-            $("#issueItems").attr("disabled", false);
-        } else {
-            $("#issueItems").attr("disabled", true);
-        }
-    }
     
     $("#wardRadio, #officeRadio").change(function() {
         //console.log('radio ward office');
@@ -696,8 +690,6 @@ $("#finishedProduct").change(function() {
                 $("#office").focus();   
                 $("#ward").prop('disabled', true);
             }
-
-            enableDisableIssueButton();
         });   
 
     $("#quantity").change(function(i) {
