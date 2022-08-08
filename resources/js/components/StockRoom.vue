@@ -1,11 +1,31 @@
 <template>
-    <h1>{{ title }}</h1>
+    <div>
+        <navbar :user-name="userName"></navbar>
+        <Menu></Menu>
+
+        <div class="container-fluid">
+            <h1>
+                {{userName}}
+            </h1>
+        </div>
+    </div>
 </template>
 
 <script>
-export default {
-    setup: () => ({
-        title: 'How To Install Vue 3 in Laravel 8 From Scratch'
-    })
-}
+    import Navbar from './Navbar'
+    import Menu from './Menu'
+
+    export default {
+        setup () {
+            return {}
+        },
+
+        components: {
+            Navbar, Menu
+        },
+
+        props: {
+            userName: String
+        }
+    }
 </script>
