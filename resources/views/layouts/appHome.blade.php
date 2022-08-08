@@ -313,7 +313,7 @@
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li><a class="dropdown-item" href="/material">Raw Materials</a></li>
                 <li><a class="dropdown-item" href="/products">Add Final Product </a></li>
-                <li><a class="dropdown-item" href="/stockroom">Add Stock Room / Storage</a></li>
+                <li><a class="dropdown-item" href="/stockroom">Storage Management</a></li>
                             {{-- <li><hr class="dropdown-divider"></li> --}}
                 
               </ul>
