@@ -30,31 +30,14 @@ class StorageController extends Controller
 
     public function addStorage(Request $request)
     {
-   
-
-        $stockRooms = StockRoom::select()->orderBy('created_at','desc')->get();
-        $storageList = Storage::select()->orderBy('created_at','asc')->get();
-        //////// TO-DO clean database for new records start from 0
-        $latestId = DB::table('nora.paul.linen_storage')->orderBy('id','desc')->first();
-
-        $newRecordId =0;
-        if($latestId != null) {
-            $newRecordId = (int)$latestId->id +1;
-        } else {
-            $newRecordId = 1;
-        }
-
-        ActivityLogs::create(['activity_details' => 'Added Storage ID: '.$newRecordId.' STORAGE NAME: '.strtoupper($request->storage)]);
-
-        DB::table('nora.paul.linen_storage')
-        ->insert([
-         'stock_room_id' => $request->stockRoom,
-         'storage_name' => strtoupper($request->storage),		  
-         'created_at' => Carbon::now(),	   
-            
+        $storage = Storage::create([
+            'stock_room_id' => $request->stock_room_id,
+            'storage_name' => strtoupper($request->storage_name)
         ]);
 
-        return redirect()->route('stockroom')->with('success', 'Storage added successfully');
+        ActivityLogs::create(['activity_details' => 'Added Storage ID: '.$storage->id.' STORAGE NAME: '.strtoupper($storage->storage_name)]);
+
+        return response()->json($storage->fresh());
     }
 
     public function updateStorage(Request $request)

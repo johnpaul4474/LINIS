@@ -3,9 +3,9 @@
         <navbar :user-name="userName"></navbar>
         <Menu></Menu>
 
-        <div class="container mt-4">
+        <div class="container-fluid mt-4">
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="card">
                         <div class="card-header text-white" style="background-color: #00AA9E;">STOCK ROOMS</div>
                         <div class="card-body">
@@ -31,14 +31,14 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr v-for="(room, index) in stockRoomsLocal" :key="index" :class="selected_storage_index == index ? 'table-success' : ''">
+                                        <tr v-for="(room, index) in stockRoomsLocal" :key="index" :class="selected_stock_room_index == index ? 'table-success' : ''">
                                             <td>
                                                 {{room.stock_room}}
                                             </td>
                                             <td>
                                                 <button type="button" class="btn btn-primary btn-sm ml-1" data-bs-toggle="modal" data-bs-target="#renameStockRoomModal" @click="setCurrentStockRoom(room)">Rename</button>
                                                 <button type="button" class="btn btn-danger btn-sm ml-1" :disabled="room.storages.length>0" @click="deleteStockRoom(room)">Delete</button>
-                                                <button type="button" class="btn btn-success btn-sm ml-1" @click="selectStorageRoom(index)">
+                                                <button type="button" class="btn btn-success btn-sm ml-1" @click="selectStockRoom(index)">
                                                     Storage List
                                                 </button>
                                             </td>
@@ -49,20 +49,20 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="card">
-                        <div class="card-header text-white" style="background-color: #00AA9E;">STORAGES in {{stockRoomsLocal && selected_storage_index >= 0 ? stockRoomsLocal[selected_storage_index].stock_room : ''}}</div>
+                        <div class="card-header text-white" style="background-color: #00AA9E;">STORAGES in {{stockRoomsLocal && selected_stock_room_index >= 0 ? stockRoomsLocal[selected_stock_room_index].stock_room : ''}}</div>
                         <div class="card-body">
                             <div class="card p-3 bg-light mb-2">
-                                <legend>ADD STORAGE in {{stockRoomsLocal && selected_storage_index >= 0 ? stockRoomsLocal[selected_storage_index].stock_room : ''}}</legend>
+                                <legend>ADD STORAGE in {{stockRoomsLocal && selected_stock_room_index >= 0 ? stockRoomsLocal[selected_stock_room_index].stock_room : ''}}</legend>
                                 <div class="input-group input-group-sm">
                                     <span class="input-group-text">Storage</span>                 
-                                    <input class="form-control" style="text-transform:uppercase" type="text" required autocomplete="storage" autofocus>                  
+                                    <input class="form-control" style="text-transform:uppercase" type="text" v-model="new_storage">                  
                                 </div>
                                 
                                 <br>
                                 <div class="d-grid gap-1">
-                                    <button type="button" class="btn btn-primary" href='material/add'>Add Storage</button>
+                                    <button type="button" class="btn btn-primary" :disabled="!new_storage || new_storage.length == 0" @click="addStorage">Add Storage</button>
                                 </div>
                             </div>
 
@@ -80,9 +80,11 @@
                                                 {{storage.storage_name}}
                                             </td>
                                             <td>
-                                                <button type="button" class="btn btn-primary btn-sm ml-1">Edit</button>
-                                                <button type="button" class="btn btn-danger btn-sm ml-1">Delete</button>
-                                                <button type="button" class="btn btn-success btn-sm ml-1">View Contents</button>
+                                                <button type="button" class="btn btn-primary btn-sm ml-1" data-bs-toggle="modal" data-bs-target="#renameStorageModal" @click="setCurrentStorage(room)">Rename</button>
+                                                <button type="button" class="btn btn-danger btn-sm ml-1" :disabled="storage.raw_materials.length>0" @click="deleteStorage(room)">Delete</button>
+                                                <button type="button" class="btn btn-success btn-sm ml-1" @click="selectStockRoom(index)">
+                                                    Storage List
+                                                </button>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -119,23 +121,25 @@
 
 <script>
     import {ref, computed, toRef} from 'vue'
-    import Navbar from '../components/Navbar'
-    import Menu from '../components/Menu'
+    import Navbar from '../../components/Navbar'
+    import Menu from '../../components/Menu'
     import axios from 'axios';
 
     export default {
         setup (props) {
             const stockRoomsLocal = ref(toRef(props, 'stockRooms').value)
+            const selected_stock_room_index = ref(0)
             const selected_storage_index = ref(0)
             const new_stock_room = ref("")
+            const new_storage = ref("")
             const currentStockRoom = ref({})
 
             const storages = computed(() => {
-                return stockRoomsLocal.value[selected_storage_index.value].storages
+                return stockRoomsLocal.value[selected_stock_room_index.value].storages
             })
 
-            function selectStorageRoom(index) {
-                selected_storage_index.value = index
+            function selectStockRoom(index) {
+                selected_stock_room_index.value = index
             }
 
             function setCurrentStockRoom(room) {
@@ -149,7 +153,7 @@
 
                 stockRoomsLocal.value = [res.data, ...stockRoomsLocal.value]
                 new_stock_room.value = ""
-                selected_storage_index.value = 0
+                selected_stock_room_index.value = 0
             }
 
             async function renameStockRoom() {
@@ -172,9 +176,21 @@
                 stockRoomsLocal.value.splice(index, 1)
             }
 
+            async function addStorage() {
+                const res = await axios.post("/stockroom/storage/add", {
+                    stock_room_id: stockRoomsLocal.value[selected_stock_room_index.value].id,
+                    storage_name: new_storage.value
+                })
+
+                stockRoomsLocal.value[selected_stock_room_index.value].storages = [res.data, ...stockRoomsLocal.value[selected_stock_room_index.value].storages]
+                new_storage.value = ""
+                selected_storage_index.value = 0
+            }
+
             return {
-                selectStorageRoom,
+                selectStockRoom,
                 storages,
+                selected_stock_room_index,
                 selected_storage_index,
                 addStockRoom,
                 new_stock_room,
@@ -182,7 +198,9 @@
                 setCurrentStockRoom,
                 currentStockRoom,
                 renameStockRoom,
-                deleteStockRoom
+                deleteStockRoom,
+                addStorage,
+                new_storage
             }
         },
 

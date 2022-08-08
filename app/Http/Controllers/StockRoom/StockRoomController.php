@@ -44,7 +44,7 @@ class StockRoomController extends Controller
 
         ActivityLogs::create(['activity_details' => 'Added Stock Room ID: '.$stockRoom->id.' stock room: '.$stockRoom->stock_room]);
 
-        return response()->json($stockRoom);
+        return response()->json(StockRoom::with("storages")->find($stockRoom->id));
     }
 
     public function update(Request $request)
@@ -56,7 +56,7 @@ class StockRoomController extends Controller
 
         ActivityLogs::create(['activity_details' => 'Updated Stock Room ID: '.$stockRoom->id.' stock_room: '.$stockRoom->stock_room]);
        
-        return response()->json($stockRoom->fresh());
+        return response()->json(StockRoom::with("storages")->find($stockRoom->id));
     }
 
     public function destroy(Request $request)

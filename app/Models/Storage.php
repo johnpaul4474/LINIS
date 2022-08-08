@@ -15,4 +15,9 @@ class Storage extends Model {
     ];
 
     protected $dates = ['deleted_at'];
+    protected $with = ["rawMaterials"];
+
+    public function rawMaterials() {
+        return $this->hasMany(LinenRawMaterials::class, "storage_room");
+    }
 }
