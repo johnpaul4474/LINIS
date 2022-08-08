@@ -13,12 +13,12 @@
                                 <legend>ADD STOCK ROOM</legend>
                                 <div class="input-group input-group-sm">
                                     <span class="input-group-text">Stock Room</span>                 
-                                    <input class="form-control" style="text-transform:uppercase" type="text" required autocomplete="stock_room" autofocus>        
+                                    <input class="form-control" v-model="new_stock_room" style="text-transform:uppercase" type="text" required autocomplete="stock_room" autofocus>        
                                 </div>
                                 
                                 <br>
                                 <div class="d-grid gap-1">
-                                    <button type="button" class="btn btn-primary" href='material/add'>Add Stock Room</button>
+                                    <button type="button" class="btn btn-primary" @click="addStockRoom" :disabled="!new_stock_room || new_stock_room.length == 0">Add Stock Room</button>
                                 </div>
                             </div>
 
@@ -31,7 +31,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr v-for="(room, index) in stockRooms" :key="index" :class="selected_storage_index == index ? 'table-success' : ''">
+                                        <tr v-for="(room, index) in stockRoomsLocal" :key="index" :class="selected_storage_index == index ? 'table-success' : ''">
                                             <td>
                                                 {{room.stock_room}}
                                             </td>
@@ -51,10 +51,10 @@
                 </div>
                 <div class="col-md-6">
                     <div class="card">
-                        <div class="card-header text-white" style="background-color: #00AA9E;">STORAGES in {{selected_storage_index >= 0 ? stockRooms[selected_storage_index].stock_room : ''}}</div>
+                        <div class="card-header text-white" style="background-color: #00AA9E;">STORAGES in {{stockRoomsLocal && selected_storage_index >= 0 ? stockRoomsLocal[selected_storage_index].stock_room : ''}}</div>
                         <div class="card-body">
                             <div class="card p-3 bg-light mb-2">
-                                <legend>ADD STORAGE in {{selected_storage_index >= 0 ? stockRooms[selected_storage_index].stock_room : ''}}</legend>
+                                <legend>ADD STORAGE in {{stockRoomsLocal && selected_storage_index >= 0 ? stockRoomsLocal[selected_storage_index].stock_room : ''}}</legend>
                                 <div class="input-group input-group-sm">
                                     <span class="input-group-text">Storage</span>                 
                                     <input class="form-control" style="text-transform:uppercase" type="text" required autocomplete="storage" autofocus>                  
@@ -97,23 +97,36 @@
 </template>
 
 <script>
-    import {ref, computed} from 'vue'
+    import {ref, computed, toRef} from 'vue'
     import Navbar from '../components/Navbar'
     import Menu from '../components/Menu'
+    import axios from 'axios';
 
     export default {
         setup (props) {
+            const stockRoomsLocal = ref(toRef(props, 'stockRooms').value)
             const selected_storage_index = ref(0)
+            const new_stock_room = ref("")
 
             const storages = computed(() => {
-                return props.stockRooms[selected_storage_index.value].storages
+                return stockRoomsLocal.value[selected_storage_index.value].storages
             })
 
             function selectStorageRoom(index) {
                 selected_storage_index.value = index
             }
 
-            return {selectStorageRoom, storages, selected_storage_index}
+            async function addStockRoom() {
+                const res = await axios.post("/stockroom/add", {
+                    stock_room: new_stock_room.value
+                })
+
+                stockRoomsLocal.value = [res.data, ...stockRoomsLocal.value]
+                new_stock_room.value = ""
+                selected_storage_index.value = 0
+            }
+
+            return {selectStorageRoom, storages, selected_storage_index, addStockRoom, new_stock_room, stockRoomsLocal}
         },
 
         components: {

@@ -41,41 +41,13 @@ class StockRoomController extends Controller
     public function store(Request $request)
     {
         
-        $stockRooms = StockRoom::select()->orderBy('created_at','desc')->get();
-        $storageList = Storage::select()->orderBy('created_at','asc')->get();
-
-        $stockRoomValidationList = []; 
-        foreach ($stockRooms as $data) {
-            array_push($stockRoomValidationList,$data->stock_room);
-        }
-
-        //dd($stockRoomValidationList);
-        Validator::make($request->all(), [
-            'stock_room' => ['required', 'string', 'max:255',Rule::notIn(array_map("strtoupper",$stockRoomValidationList))], 
-        ])->validate();
-
-        
-        //////// TO-DO clean database for new records start from 0
-        $latestId = DB::table('nora.paul.linen_stock_rooms')->orderBy('id','desc')->first();
-        $newRecordId =0;
-        if($latestId != null) {
-            $newRecordId = (int)$latestId->id +1;
-        } else {
-            $newRecordId = 1;
-        }
-
-        ActivityLogs::create(['activity_details' => 'Added Stock Room ID: '.$newRecordId.' stock room: '.$request->stock_room]);
-
-        DB::table('nora.paul.linen_stock_rooms')
-        ->insert([
-         'stock_room' => strtoupper($request->stock_room),	  
-         'created_at' => Carbon::now(),	
-         
-
-            
+        $stockRoom = StockRoom::create([
+            'stock_room' => strtoupper($request->stock_room)
         ]);
 
-        return redirect()->route('stockroom')->with('success', 'Stock Room added successfully');
+        ActivityLogs::create(['activity_details' => 'Added Stock Room ID: '.$stockRoom->id.' stock room: '.$stockRoom->stock_room]);
+
+        return response()->json($stockRoom);
     }
 
     public function update(Request $request)
