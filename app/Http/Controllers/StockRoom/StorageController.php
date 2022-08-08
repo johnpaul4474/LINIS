@@ -54,21 +54,15 @@ class StorageController extends Controller
 
     public function destroy(Request $request)
     {
-        ActivityLogs::create(['activity_details' => 'Deleted  storage id: '.$request->id]);
-
-        $stockRooms = StockRoom::select()->orderBy('created_at','desc')->get();
-        $storageList = Storage::select()->orderBy('created_at','asc')->get();
-        // $stockRoomStorage = DB::table('nora.paul.linen_stock_rooms as stock_room')
-        // ->join('nora.paul.linen_storage as storage', 'stock_room.id', '=', 'storage.stock_room_id')  
-        // ->select('stock_room.id as stock_room_id','storage.id as storage_id','stock_room.stock_room', 'storage.storage_name')  
-        // ->whereNull('stock_room.deleted_at')  
-        // ->WhereNull('storage.deleted_at') 
-        // ->orderBy('stock_room.stock_room','asc')     
-        // ->get();
-     
-        Storage::where('id', $request->id)->delete();
-
-        return redirect()->route('stockroom')->with('error', 'Storage deleted successfully');
+        $storage = Storage::find($request->id);
+        if(sizeof($storage->rawMaterials) > 0 && sizeof($storage->products) > 0) {
+            return response()->json("There are items in this storage.");
+        } else {
+            $storage->delete();
+            ActivityLogs::create(['activity_details' => 'Deleted  storage id: '.$request->id]);
+        }
+        
+        return response()->json(true);
     }
 
 }

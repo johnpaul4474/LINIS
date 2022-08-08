@@ -81,9 +81,9 @@
                                             </td>
                                             <td>
                                                 <button type="button" class="btn btn-primary btn-sm ml-1" data-bs-toggle="modal" data-bs-target="#renameStorageModal" @click="setCurrentStorage(storage)">Rename</button>
-                                                <button type="button" class="btn btn-danger btn-sm ml-1" :disabled="storage.raw_materials.length>0" @click="deleteStorage(room)">Delete</button>
+                                                <button type="button" class="btn btn-danger btn-sm ml-1" :disabled="storage.raw_materials.length>0" @click="deleteStorage(storage)">Delete</button>
                                                 <button type="button" class="btn btn-success btn-sm ml-1" @click="selectStockRoom(index)">
-                                                    Storage List
+                                                    View Contents
                                                 </button>
                                             </td>
                                         </tr>
@@ -223,23 +223,34 @@
                 stockRoomsLocal.value[selected_stock_room_index.value].storages[index] = res.data
             }
 
+            async function deleteStorage(storage) {
+                const res = await axios.post("/stockroom/storage/delete", {id: storage.id})
+
+                const index = storages.value.findIndex(sto => {
+                    return sto.id == storage.id
+                })
+
+                stockRoomsLocal.value[selected_stock_room_index.value].storages.splice(index, 1)
+            }
+
             return {
                 selectStockRoom,
                 storages,
                 selected_stock_room_index,
                 selected_storage_index,
-                addStockRoom,
-                new_stock_room,
                 stockRoomsLocal,
                 setCurrentStockRoom,
                 setCurrentStorage,
+                addStockRoom,
+                addStorage,
+                new_stock_room,
+                new_storage,
                 currentStockRoom,
                 currentStorage,
                 renameStockRoom,
                 renameStorage,
                 deleteStockRoom,
-                addStorage,
-                new_storage
+                deleteStorage,
             }
         },
 
