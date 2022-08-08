@@ -22735,6 +22735,12 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 
@@ -22744,12 +22750,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     var stockRoomsLocal = (0,vue__WEBPACK_IMPORTED_MODULE_1__.ref)((0,vue__WEBPACK_IMPORTED_MODULE_1__.toRef)(props, 'stockRooms').value);
     var selected_storage_index = (0,vue__WEBPACK_IMPORTED_MODULE_1__.ref)(0);
     var new_stock_room = (0,vue__WEBPACK_IMPORTED_MODULE_1__.ref)("");
+    var currentStockRoom = (0,vue__WEBPACK_IMPORTED_MODULE_1__.ref)({});
     var storages = (0,vue__WEBPACK_IMPORTED_MODULE_1__.computed)(function () {
       return stockRoomsLocal.value[selected_storage_index.value].storages;
     });
 
     function selectStorageRoom(index) {
       selected_storage_index.value = index;
+    }
+
+    function setCurrentStockRoom(room) {
+      currentStockRoom.value = _objectSpread({}, room);
     }
 
     function addStockRoom() {
@@ -22784,13 +22795,47 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       return _addStockRoom.apply(this, arguments);
     }
 
+    function renameStockRoom() {
+      return _renameStockRoom.apply(this, arguments);
+    }
+
+    function _renameStockRoom() {
+      _renameStockRoom = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
+        var res, index;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return axios__WEBPACK_IMPORTED_MODULE_4___default().post("/stockroom/update", currentStockRoom.value);
+
+              case 2:
+                res = _context2.sent;
+                index = stockRoomsLocal.value.findIndex(function (room) {
+                  return room.id == currentStockRoom.value.id;
+                });
+                stockRoomsLocal.value[index] = res.data;
+
+              case 5:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      }));
+      return _renameStockRoom.apply(this, arguments);
+    }
+
     return {
       selectStorageRoom: selectStorageRoom,
       storages: storages,
       selected_storage_index: selected_storage_index,
       addStockRoom: addStockRoom,
       new_stock_room: new_stock_room,
-      stockRoomsLocal: stockRoomsLocal
+      stockRoomsLocal: stockRoomsLocal,
+      setCurrentStockRoom: setCurrentStockRoom,
+      currentStockRoom: currentStockRoom,
+      renameStockRoom: renameStockRoom
     };
   },
   components: {
@@ -23109,12 +23154,7 @@ var _hoisted_16 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_17 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-  type: "button",
-  "class": "btn btn-primary btn-sm ml-1"
-}, "Edit", -1
-/* HOISTED */
-);
+var _hoisted_17 = ["onClick"];
 
 var _hoisted_18 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
   type: "button",
@@ -23173,6 +23213,55 @@ var _hoisted_31 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
+var _hoisted_32 = {
+  "class": "modal fade",
+  tabindex: "-1",
+  role: "dialog",
+  "aria-labelledby": "myLargeModalLabel",
+  "aria-hidden": "true",
+  id: "renameStockRoomModal"
+};
+var _hoisted_33 = {
+  "class": "modal-dialog"
+};
+var _hoisted_34 = {
+  "class": "modal-content bg-light"
+};
+var _hoisted_35 = {
+  "class": "modal-body"
+};
+
+var _hoisted_36 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("legend", null, "RENAME STOCK ROOM", -1
+/* HOISTED */
+);
+
+var _hoisted_37 = {
+  "class": "input-group input-group-sm"
+};
+
+var _hoisted_38 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+  "class": "input-group-text"
+}, "Stock Room", -1
+/* HOISTED */
+);
+
+var _hoisted_39 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1
+/* HOISTED */
+);
+
+var _hoisted_40 = {
+  "class": "d-flex"
+};
+var _hoisted_41 = ["disabled"];
+
+var _hoisted_42 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  type: "button",
+  "class": "btn btn-light",
+  "data-bs-dismiss": "modal"
+}, "Cancel", -1
+/* HOISTED */
+);
+
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_navbar = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("navbar");
 
@@ -23211,7 +23300,17 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($setup.selected_storage_index == index ? 'table-success' : '')
     }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(room.stock_room), 1
     /* TEXT */
-    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [_hoisted_17, _hoisted_18, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+      type: "button",
+      "class": "btn btn-primary btn-sm ml-1",
+      "data-bs-toggle": "modal",
+      "data-bs-target": "#renameStockRoomModal",
+      onClick: function onClick($event) {
+        return $setup.setCurrentStockRoom(room);
+      }
+    }, "Rename", 8
+    /* PROPS */
+    , _hoisted_17), _hoisted_18, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
       type: "button",
       "class": "btn btn-success btn-sm ml-1",
       onClick: function onClick($event) {
@@ -23236,7 +23335,31 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     ), _hoisted_31]);
   }), 128
   /* KEYED_FRAGMENT */
-  ))])])])])])])])])]);
+  ))])])])])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Rename Stock Room Modal "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_32, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_33, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_34, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_35, [_hoisted_36, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_37, [_hoisted_38, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    "class": "form-control",
+    "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
+      return $setup.currentStockRoom.stock_room = $event;
+    }),
+    style: {
+      "text-transform": "uppercase"
+    },
+    type: "text",
+    required: "",
+    autocomplete: "stock_room",
+    autofocus: ""
+  }, null, 512
+  /* NEED_PATCH */
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $setup.currentStockRoom.stock_room]])]), _hoisted_39, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_40, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    type: "button",
+    "class": "btn btn-primary",
+    "data-bs-dismiss": "modal",
+    onClick: _cache[3] || (_cache[3] = function () {
+      return $setup.renameStockRoom && $setup.renameStockRoom.apply($setup, arguments);
+    }),
+    disabled: !$setup.currentStockRoom.stock_room || $setup.currentStockRoom.stock_room.length == 0
+  }, "Rename", 8
+  /* PROPS */
+  , _hoisted_41), _hoisted_42])])])])])]);
 }
 
 /***/ }),

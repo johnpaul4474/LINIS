@@ -52,30 +52,14 @@ class StockRoomController extends Controller
 
     public function update(Request $request)
     { 
-        $stockRooms = StockRoom::select()->orderBy('created_at','desc')->get();
-        $storageList = Storage::select()->orderBy('created_at','asc')->get();
-
-        $stockRoomValidationList = []; 
-        foreach ($stockRooms as $data) {
-            array_push($stockRoomValidationList,$data->stock_room);
-        }
-
-        Validator::make($request->all(), [
-            'edit_stock_room' => ['required', 'string', 'max:255',Rule::notIn(array_map("strtoupper",$stockRoomValidationList))], 
-        ])->validate();
-
-        ActivityLogs::create(['activity_details' => 'Updated Stock Room ID: '.$request->idStockRoom.' stock_room: '.$request->edit_stock_room]);
-
-        DB::table('nora.paul.linen_stock_rooms')
-        ->where('id', (int)$request->idStockRoom)
-        ->update([
-            'stock_room' => $request->edit_stock_room,
-            'updated_at' => Carbon::now(),	
-                     
+        $stockRoom = StockRoom::find($request->id);
+        $stockRoom->update([
+            "stock_room" => strtoupper($request->stock_room)
         ]);
+
+        ActivityLogs::create(['activity_details' => 'Updated Stock Room ID: '.$stockRoom->id.' stock_room: '.$stockRoom->stock_room]);
        
-       
-        return redirect()->route('stockroom')->with('info', 'Stock Room updated successfully');
+        return response()->json($stockRoom->fresh());
     }
 
     /**

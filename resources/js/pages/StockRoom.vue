@@ -36,7 +36,7 @@
                                                 {{room.stock_room}}
                                             </td>
                                             <td>
-                                                <button type="button" class="btn btn-primary btn-sm ml-1">Edit</button>
+                                                <button type="button" class="btn btn-primary btn-sm ml-1" data-bs-toggle="modal" data-bs-target="#renameStockRoomModal" @click="setCurrentStockRoom(room)">Rename</button>
                                                 <button type="button" class="btn btn-danger btn-sm ml-1">Delete</button>
                                                 <button type="button" class="btn btn-success btn-sm ml-1" @click="selectStorageRoom(index)">
                                                     Storage List
@@ -93,6 +93,27 @@
                 </div>
             </div>
         </div>
+
+        <!-- Rename Stock Room Modal -->
+        <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="renameStockRoomModal" >
+            <div class="modal-dialog">
+                <div class="modal-content bg-light">
+                    <div class="modal-body">
+                            <legend>RENAME STOCK ROOM</legend>
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-text">Stock Room</span>                 
+                                <input class="form-control" v-model="currentStockRoom.stock_room" style="text-transform:uppercase" type="text" required autocomplete="stock_room" autofocus>        
+                            </div>
+                            
+                            <br>
+                            <div class="d-flex">
+                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="renameStockRoom" :disabled="!currentStockRoom.stock_room || currentStockRoom.stock_room.length == 0">Rename</button>
+                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -107,6 +128,7 @@
             const stockRoomsLocal = ref(toRef(props, 'stockRooms').value)
             const selected_storage_index = ref(0)
             const new_stock_room = ref("")
+            const currentStockRoom = ref({})
 
             const storages = computed(() => {
                 return stockRoomsLocal.value[selected_storage_index.value].storages
@@ -114,6 +136,10 @@
 
             function selectStorageRoom(index) {
                 selected_storage_index.value = index
+            }
+
+            function setCurrentStockRoom(room) {
+                currentStockRoom.value = {...room}
             }
 
             async function addStockRoom() {
@@ -126,7 +152,27 @@
                 selected_storage_index.value = 0
             }
 
-            return {selectStorageRoom, storages, selected_storage_index, addStockRoom, new_stock_room, stockRoomsLocal}
+            async function renameStockRoom() {
+                const res = await axios.post("/stockroom/update", currentStockRoom.value)
+
+                const index = stockRoomsLocal.value.findIndex(room => {
+                    return room.id == currentStockRoom.value.id
+                })
+
+                stockRoomsLocal.value[index] = res.data
+            }
+
+            return {
+                selectStorageRoom,
+                storages,
+                selected_storage_index,
+                addStockRoom,
+                new_stock_room,
+                stockRoomsLocal,
+                setCurrentStockRoom,
+                currentStockRoom,
+                renameStockRoom
+            }
         },
 
         components: {
