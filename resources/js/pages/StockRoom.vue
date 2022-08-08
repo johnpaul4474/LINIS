@@ -37,7 +37,7 @@
                                             </td>
                                             <td>
                                                 <button type="button" class="btn btn-primary btn-sm ml-1" data-bs-toggle="modal" data-bs-target="#renameStockRoomModal" @click="setCurrentStockRoom(room)">Rename</button>
-                                                <button type="button" class="btn btn-danger btn-sm ml-1">Delete</button>
+                                                <button type="button" class="btn btn-danger btn-sm ml-1" :disabled="room.storages.length>0" @click="deleteStockRoom(room)">Delete</button>
                                                 <button type="button" class="btn btn-success btn-sm ml-1" @click="selectStorageRoom(index)">
                                                     Storage List
                                                 </button>
@@ -162,6 +162,16 @@
                 stockRoomsLocal.value[index] = res.data
             }
 
+            async function deleteStockRoom(room) {
+                const res = await axios.post("/stockroom/delete", {id: room.id})
+
+                const index = stockRoomsLocal.value.findIndex(r => {
+                    return r.id == room.id
+                })
+
+                stockRoomsLocal.value.splice(index, 1)
+            }
+
             return {
                 selectStorageRoom,
                 storages,
@@ -171,7 +181,8 @@
                 stockRoomsLocal,
                 setCurrentStockRoom,
                 currentStockRoom,
-                renameStockRoom
+                renameStockRoom,
+                deleteStockRoom
             }
         },
 

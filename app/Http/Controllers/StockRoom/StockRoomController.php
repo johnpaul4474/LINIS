@@ -35,12 +35,9 @@ class StockRoomController extends Controller
         // return view('linenStockroom.stockroom',compact('stockRooms','storageList','stockRoomStorage'));
         return view('linenStockroom.index',compact('stockRooms'));
     }
-
-
     
     public function store(Request $request)
     {
-        
         $stockRoom = StockRoom::create([
             'stock_room' => strtoupper($request->stock_room)
         ]);
@@ -62,22 +59,16 @@ class StockRoomController extends Controller
         return response()->json($stockRoom->fresh());
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\StockRoom  $stockRoom
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Request $request)
     {
-       //also deletes the entry for nora.paul_linen_storage which contains the stock_room_id
-        ActivityLogs::create(['activity_details' => 'Deleted  Stock room id: '.$request->id]);
+        $stockRoom = StockRoom::with("storages")->find($request->id);
+        if(sizeof($stockRoom->storages) > 0) {
+            return response()->json("Delete all stoarges in this room first before deleting this stock room.");
+        } else {
+            $stockRoom->delete();
+            ActivityLogs::create(['activity_details' => 'Deleted  Stock room id: '.$request->id]);
+        }
 
-        $stockRooms = StockRoom::select()->orderBy('created_at','desc')->get();
-        $storageList = Storage::select()->orderBy('created_at','asc')->get();
-        StockRoom::where('id', $request->id)->delete();
-        Storage::where('stock_room_id', $request->id)->delete();
-
-        return redirect()->route('stockroom')->with('error', 'Stock Room deleted successfully');
+        return response()->json(true);
     }
 }
