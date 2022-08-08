@@ -22,7 +22,10 @@
     </head>
     <body class="antialiased">
         <div id="app">
-            <stock-room user-name="{{ Auth::user()->name }}"/>
+            <stock-room
+                user-name="{{ Auth::user()->name }}"
+                :stock-rooms="{{$stockRooms}}"
+            />
         </div>
 
         <script src="{{ mix('js/app.js') }}"></script>

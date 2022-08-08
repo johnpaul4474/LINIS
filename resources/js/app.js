@@ -4,7 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap"
 
 import { createApp } from 'vue'
-import StockRoom from './components/StockRoom'
+import StockRoom from './pages/StockRoom'
 
 const app = createApp({})
 

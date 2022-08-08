@@ -128,13 +128,6 @@ Route::middleware('auth')->group(function () {
         Route::get('office/{office_id}', [DepartmentController::class, 'officeIssuedProducts'])->name('department/office');
     });
 
-    // Vue components
-    Route::prefix('v')->group(function () {
-        Route::get('/', function () {
-            return view('vue.index');
-        });
-    });
-
     Route::get('test', function () {
         event(new App\Events\LinisNotification('This is  a test'));
         return "Event has been sent!";

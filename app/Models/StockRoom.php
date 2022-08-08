@@ -14,4 +14,8 @@ class StockRoom extends Model {
     ];
 
     protected $dates = ['deleted_at'];
+
+    public function storages() {
+        return $this->hasMany(Storage::class, "stock_room_id");
+    }
 }

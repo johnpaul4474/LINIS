@@ -19,19 +19,21 @@ class StockRoomController extends Controller
     public function index()
     {
 
-        $stockRooms = StockRoom::select()->orderBy('stock_room','asc')->get();
-        $storageList = Storage::select()->orderBy('storage_name','asc')->get();
+        $stockRooms = StockRoom::with("storages")->orderBy('stock_room','asc')->get();
 
-        $stockRoomStorage = DB::table('nora.paul.linen_stock_rooms as stock_room')
-            ->join('nora.paul.linen_storage as storage', 'stock_room.id', '=', 'storage.stock_room_id')  
-            ->select('stock_room.id as stock_room_id','storage.id as storage_id','stock_room.stock_room', 'storage.storage_name')  
-            ->whereNull('stock_room.deleted_at')  
-            ->WhereNull('storage.deleted_at') 
-            ->orderBy('stock_room.stock_room','asc')     
-            ->get();
+        // $storageList = Storage::select()->orderBy('storage_name','asc')->get();
+
+        // $stockRoomStorage = DB::table('nora.paul.linen_stock_rooms as stock_room')
+        //     ->join('nora.paul.linen_storage as storage', 'stock_room.id', '=', 'storage.stock_room_id')  
+        //     ->select('stock_room.id as stock_room_id','storage.id as storage_id','stock_room.stock_room', 'storage.storage_name')  
+        //     ->whereNull('stock_room.deleted_at')  
+        //     ->WhereNull('storage.deleted_at') 
+        //     ->orderBy('stock_room.stock_room','asc')     
+        //     ->get();
 
            
-        return view('linenStockroom.stockroom',compact('stockRooms','storageList','stockRoomStorage'));
+        // return view('linenStockroom.stockroom',compact('stockRooms','storageList','stockRoomStorage'));
+        return view('linenStockroom.index',compact('stockRooms'));
     }
 
 
