@@ -23,7 +23,7 @@
                             </div>
 
                             <div class="table-responsive">
-                                <table class="table table-striped table-bordered">
+                                <table class="table table-bordered">
                                     <thead>
                                         <tr>
                                             <th scope="col">Stock Room</th>
@@ -31,7 +31,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr v-for="(room, index) in stockRoomsLocal" :key="index" :class="selected_stock_room_index == index ? 'table-success' : ''">
+                                        <tr v-for="(room, index) in stockRoomsLocal" :key="index" :class="selected_stock_room_index == index ? 'table-primary' : ''">
                                             <td>
                                                 {{room.stock_room}}
                                             </td>
@@ -49,6 +49,7 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="col-md-4">
                     <div class="card">
                         <div class="card-header text-white" style="background-color: #00AA9E;">STORAGES in {{stockRoomsLocal && selected_stock_room_index >= 0 ? stockRoomsLocal[selected_stock_room_index].stock_room : ''}}</div>
@@ -67,7 +68,7 @@
                             </div>
 
                             <div class="table-responsive">
-                                <table class="table table-striped table-bordered">
+                                <table class="table table-bordered">
                                     <thead>
                                         <tr>
                                             <th scope="col">Storage</th>
@@ -75,17 +76,53 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr v-for="(storage, index) in storages" :key="index">
+                                        <tr v-for="(storage, index) in storages" :key="index" :class="selected_storage_index == index ? 'table-primary' : ''">
                                             <td>
                                                 {{storage.storage_name}}
                                             </td>
                                             <td>
                                                 <button type="button" class="btn btn-primary btn-sm ml-1" data-bs-toggle="modal" data-bs-target="#renameStorageModal" @click="setCurrentStorage(storage)">Rename</button>
-                                                <button type="button" class="btn btn-danger btn-sm ml-1" :disabled="storage.raw_materials.length>0" @click="deleteStorage(storage)">Delete</button>
-                                                <button type="button" class="btn btn-success btn-sm ml-1" @click="selectStockRoom(index)">
+                                                <button type="button" class="btn btn-danger btn-sm ml-1" :disabled="storage.raw_materials.length>0 || storage.products.length>0" @click="deleteStorage(storage)">Delete</button>
+                                                <button type="button" class="btn btn-success btn-sm ml-1" @click="selectStorage(index)">
                                                     View Contents
                                                 </button>
                                             </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-header text-white" style="background-color: #00AA9E;">
+                            Contents of
+                            <span v-if="stockRoomsLocal && stockRoomsLocal.length > 0 && selected_stock_room_index >= 0 && stockRoomsLocal[selected_stock_room_index].storages.length > 0 && selected_storage_index >= 0">
+                                {{stockRoomsLocal[selected_stock_room_index].stock_room}}/
+                                {{storages[selected_storage_index] ? storages[selected_storage_index].storage_name : ''}}
+                            </span>
+                        </div>
+
+                        <div class="card-body">
+                            <legend>Products & Raw Materials</legend>
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Type</th>
+                                            <th scope="col">Material</th>
+                                            <th scope="col">Quantity</th>
+                                            <th scope="col">Unit</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="(item, index) in contents" :key="index">
+                                            <td>{{item.type}}</td>
+                                            <td>{{item.type == "Raw Material" ? item.description : item.product_name}}</td>
+                                            <td>{{item.type == "Raw Material" ? item.quantity : item.product_quantity}}</td>
+                                            <td>{{item.type == "Raw Material" ? item.unit : item.product_unit}}</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -100,7 +137,7 @@
         <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="renameStockRoomModal" >
             <div class="modal-dialog">
                 <div class="modal-content bg-light">
-                    <div class="modal-body">
+                    <div class="modal-body" v-if="currentStockRoom">
                             <legend>RENAME STOCK ROOM</legend>
                             <div class="input-group input-group-sm">
                                 <span class="input-group-text">Stock Room</span>                 
@@ -121,7 +158,7 @@
         <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="renameStorageModal" >
             <div class="modal-dialog">
                 <div class="modal-content bg-light">
-                    <div class="modal-body">
+                    <div class="modal-body" v-if="currentStorage">
                             <legend>RENAME STORAGE</legend>
                             <div class="input-group input-group-sm">
                                 <span class="input-group-text">Storage</span>                 
@@ -160,8 +197,32 @@
                 return stockRoomsLocal.value[selected_stock_room_index.value].storages
             })
 
+            const contents = computed(() => {
+                var rawMaterials = []
+                var products = []
+
+                if(storages.value[selected_storage_index.value]) {
+                    rawMaterials = storages.value[selected_storage_index.value].raw_materials
+                    products = storages.value[selected_storage_index.value].products
+                }
+
+                for(let i=0; i<rawMaterials.length; i++) {
+                    rawMaterials[i].type = "Raw Material"
+                }
+
+                for(let i=0; i<products.length; i++) {
+                    products[i].type = "Product"
+                }
+
+                return products.concat(rawMaterials)
+            })
+
             function selectStockRoom(index) {
                 selected_stock_room_index.value = index
+            }
+
+            function selectStorage(index) {
+                selected_storage_index.value = index
             }
 
             function setCurrentStockRoom(room) {
@@ -235,6 +296,7 @@
 
             return {
                 selectStockRoom,
+                selectStorage,
                 storages,
                 selected_stock_room_index,
                 selected_storage_index,
@@ -251,6 +313,7 @@
                 renameStorage,
                 deleteStockRoom,
                 deleteStorage,
+                contents
             }
         },
 
