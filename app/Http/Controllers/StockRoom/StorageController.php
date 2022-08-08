@@ -30,98 +30,39 @@ class StorageController extends Controller
 
     public function addStorage(Request $request)
     {
-   
-
-        $stockRooms = StockRoom::select()->orderBy('created_at','desc')->get();
-        $storageList = Storage::select()->orderBy('created_at','asc')->get();
-        //////// TO-DO clean database for new records start from 0
-        $latestId = DB::table('nora.paul.linen_storage')->orderBy('id','desc')->first();
-
-        $newRecordId =0;
-        if($latestId != null) {
-            $newRecordId = (int)$latestId->id +1;
-        } else {
-            $newRecordId = 1;
-        }
-
-        ActivityLogs::create(['activity_details' => 'Added Storage ID: '.$newRecordId.' STORAGE NAME: '.strtoupper($request->storage)]);
-
-        DB::table('nora.paul.linen_storage')
-        ->insert([
-         'stock_room_id' => $request->stockRoom,
-         'storage_name' => strtoupper($request->storage),		  
-         'created_at' => Carbon::now(),	   
-            
+        $storage = Storage::create([
+            'stock_room_id' => $request->stock_room_id,
+            'storage_name' => strtoupper($request->storage_name)
         ]);
 
-        return redirect()->route('stockroom')->with('success', 'Storage added successfully');
+        ActivityLogs::create(['activity_details' => 'Added Storage ID: '.$storage->id.' STORAGE NAME: '.strtoupper($storage->storage_name)]);
+
+        return response()->json($storage->fresh());
     }
 
     public function updateStorage(Request $request)
     {
-    
-        //TO DO validation of stock room with its storage value
-        // $storageValidationList = []; 
-        // foreach ($storageList as $data) {
-        //     array_push($storageValidationList,$data->storage_name);
-        // }
-
-    
-        // Validator::make($request->all(), [
-        //     'storage' => ['required', 'string', 'max:255',Rule::notIn(array_map("strtoupper",$storageValidationList))], 
-        // ])->validate();
-
-
-        $stockRooms = StockRoom::select()->orderBy('created_at','desc')->get();
-        $storageList = Storage::select()->orderBy('created_at','asc')->get();
-        $stockRoomStorage = DB::table('nora.paul.linen_stock_rooms as stock_room')
-        ->join('nora.paul.linen_storage as storage', 'stock_room.id', '=', 'storage.stock_room_id')  
-        ->select('stock_room.id as stock_room_id','storage.id as storage_id','stock_room.stock_room', 'storage.storage_name')  
-        ->whereNull('stock_room.deleted_at')  
-        ->WhereNull('storage.deleted_at') 
-        ->orderBy('stock_room.stock_room','asc')     
-        ->get();
-        //////// TO-DO clean database for new records start from 0
-        $latestId = DB::table('nora.paul.linen_storage')->orderBy('id','desc')->first();
-
-        $newRecordId =0;
-        if($latestId != null) {
-            $newRecordId = (int)$latestId->id +1;
-        } else {
-            $newRecordId = 1;
-        }
-
-        ActivityLogs::create(['activity_details' => 'Updated Storage Storage ID: '.$request->idStorage.' STORAGE NAME: '.strtoupper($request->edit_storage).' STOCK ROOM: '.$request->editStockRoomStorage]);
-
-        DB::table('nora.paul.linen_storage')
-        ->where('id', (int)$request->idStorage)
-        ->update([
-         'stock_room_id' => $request->editStockRoomStorage,
-         'storage_name' => strtoupper($request->edit_storage),		  
-         'updated_at' => Carbon::now(),	   
-            
+        $storage = Storage::find($request->id);
+        $storage->update([
+            "storage_name" => strtoupper($request->storage_name)
         ]);
 
-        return redirect()->route('stockroom')->with('info', 'Storage updated successfully');
+        ActivityLogs::create(['activity_details' => 'Updated Storage Storage ID: '.$storage->id.' STORAGE NAME: '.strtoupper($request->storage_name)]);
+
+        return response()->json($storage->fresh());
     }
 
     public function destroy(Request $request)
     {
-        ActivityLogs::create(['activity_details' => 'Deleted  storage id: '.$request->id]);
-
-        $stockRooms = StockRoom::select()->orderBy('created_at','desc')->get();
-        $storageList = Storage::select()->orderBy('created_at','asc')->get();
-        // $stockRoomStorage = DB::table('nora.paul.linen_stock_rooms as stock_room')
-        // ->join('nora.paul.linen_storage as storage', 'stock_room.id', '=', 'storage.stock_room_id')  
-        // ->select('stock_room.id as stock_room_id','storage.id as storage_id','stock_room.stock_room', 'storage.storage_name')  
-        // ->whereNull('stock_room.deleted_at')  
-        // ->WhereNull('storage.deleted_at') 
-        // ->orderBy('stock_room.stock_room','asc')     
-        // ->get();
-     
-        Storage::where('id', $request->id)->delete();
-
-        return redirect()->route('stockroom')->with('error', 'Storage deleted successfully');
+        $storage = Storage::find($request->id);
+        if(sizeof($storage->rawMaterials) > 0 && sizeof($storage->products) > 0) {
+            return response()->json("There are items in this storage.");
+        } else {
+            $storage->delete();
+            ActivityLogs::create(['activity_details' => 'Deleted  storage id: '.$request->id]);
+        }
+        
+        return response()->json(true);
     }
 
 }

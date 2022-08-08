@@ -38,6 +38,11 @@ Auth::routes();
 
 Route::middleware('auth')->group(function () {
     Route::get('/home', [LinenInventoryController::class, 'index'])->name('home');
+    Route::get('/logout', function () {
+        \Session::flush();
+        \Auth::logout();
+        return redirect('login');
+    });
 
     //materials
     Route::prefix('material')->group(function () {

@@ -19,107 +19,56 @@ class StockRoomController extends Controller
     public function index()
     {
 
-        $stockRooms = StockRoom::select()->orderBy('stock_room','asc')->get();
-        $storageList = Storage::select()->orderBy('storage_name','asc')->get();
+        $stockRooms = StockRoom::with("storages")->orderBy('stock_room','asc')->get();
 
-        $stockRoomStorage = DB::table('nora.paul.linen_stock_rooms as stock_room')
-            ->join('nora.paul.linen_storage as storage', 'stock_room.id', '=', 'storage.stock_room_id')  
-            ->select('stock_room.id as stock_room_id','storage.id as storage_id','stock_room.stock_room', 'storage.storage_name')  
-            ->whereNull('stock_room.deleted_at')  
-            ->WhereNull('storage.deleted_at') 
-            ->orderBy('stock_room.stock_room','asc')     
-            ->get();
+        // $storageList = Storage::select()->orderBy('storage_name','asc')->get();
+
+        // $stockRoomStorage = DB::table('nora.paul.linen_stock_rooms as stock_room')
+        //     ->join('nora.paul.linen_storage as storage', 'stock_room.id', '=', 'storage.stock_room_id')  
+        //     ->select('stock_room.id as stock_room_id','storage.id as storage_id','stock_room.stock_room', 'storage.storage_name')  
+        //     ->whereNull('stock_room.deleted_at')  
+        //     ->WhereNull('storage.deleted_at') 
+        //     ->orderBy('stock_room.stock_room','asc')     
+        //     ->get();
 
            
-        return view('linenStockroom.stockroom',compact('stockRooms','storageList','stockRoomStorage'));
+        // return view('linenStockroom.stockroom',compact('stockRooms','storageList','stockRoomStorage'));
+        return view('linenStockroom.index',compact('stockRooms'));
     }
-
-
     
     public function store(Request $request)
     {
-        
-        $stockRooms = StockRoom::select()->orderBy('created_at','desc')->get();
-        $storageList = Storage::select()->orderBy('created_at','asc')->get();
-
-        $stockRoomValidationList = []; 
-        foreach ($stockRooms as $data) {
-            array_push($stockRoomValidationList,$data->stock_room);
-        }
-
-        //dd($stockRoomValidationList);
-        Validator::make($request->all(), [
-            'stock_room' => ['required', 'string', 'max:255',Rule::notIn(array_map("strtoupper",$stockRoomValidationList))], 
-        ])->validate();
-
-        
-        //////// TO-DO clean database for new records start from 0
-        $latestId = DB::table('nora.paul.linen_stock_rooms')->orderBy('id','desc')->first();
-        $newRecordId =0;
-        if($latestId != null) {
-            $newRecordId = (int)$latestId->id +1;
-        } else {
-            $newRecordId = 1;
-        }
-
-        ActivityLogs::create(['activity_details' => 'Added Stock Room ID: '.$newRecordId.' stock room: '.$request->stock_room]);
-
-        DB::table('nora.paul.linen_stock_rooms')
-        ->insert([
-         'stock_room' => strtoupper($request->stock_room),	  
-         'created_at' => Carbon::now(),	
-         
-
-            
+        $stockRoom = StockRoom::create([
+            'stock_room' => strtoupper($request->stock_room)
         ]);
 
-        return redirect()->route('stockroom')->with('success', 'Stock Room added successfully');
+        ActivityLogs::create(['activity_details' => 'Added Stock Room ID: '.$stockRoom->id.' stock room: '.$stockRoom->stock_room]);
+
+        return response()->json(StockRoom::with("storages")->find($stockRoom->id));
     }
 
     public function update(Request $request)
     { 
-        $stockRooms = StockRoom::select()->orderBy('created_at','desc')->get();
-        $storageList = Storage::select()->orderBy('created_at','asc')->get();
-
-        $stockRoomValidationList = []; 
-        foreach ($stockRooms as $data) {
-            array_push($stockRoomValidationList,$data->stock_room);
-        }
-
-        Validator::make($request->all(), [
-            'edit_stock_room' => ['required', 'string', 'max:255',Rule::notIn(array_map("strtoupper",$stockRoomValidationList))], 
-        ])->validate();
-
-        ActivityLogs::create(['activity_details' => 'Updated Stock Room ID: '.$request->idStockRoom.' stock_room: '.$request->edit_stock_room]);
-
-        DB::table('nora.paul.linen_stock_rooms')
-        ->where('id', (int)$request->idStockRoom)
-        ->update([
-            'stock_room' => $request->edit_stock_room,
-            'updated_at' => Carbon::now(),	
-                     
+        $stockRoom = StockRoom::find($request->id);
+        $stockRoom->update([
+            "stock_room" => strtoupper($request->stock_room)
         ]);
+
+        ActivityLogs::create(['activity_details' => 'Updated Stock Room ID: '.$stockRoom->id.' stock_room: '.$stockRoom->stock_room]);
        
-       
-        return redirect()->route('stockroom')->with('info', 'Stock Room updated successfully');
+        return response()->json(StockRoom::with("storages")->find($stockRoom->id));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\StockRoom  $stockRoom
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Request $request)
     {
-       //also deletes the entry for nora.paul_linen_storage which contains the stock_room_id
-        ActivityLogs::create(['activity_details' => 'Deleted  Stock room id: '.$request->id]);
+        $stockRoom = StockRoom::with("storages")->find($request->id);
+        if(sizeof($stockRoom->storages) > 0) {
+            return response()->json("Delete all stoarges in this room first before deleting this stock room.");
+        } else {
+            $stockRoom->delete();
+            ActivityLogs::create(['activity_details' => 'Deleted  Stock room id: '.$request->id]);
+        }
 
-        $stockRooms = StockRoom::select()->orderBy('created_at','desc')->get();
-        $storageList = Storage::select()->orderBy('created_at','asc')->get();
-        StockRoom::where('id', $request->id)->delete();
-        Storage::where('stock_room_id', $request->id)->delete();
-
-        return redirect()->route('stockroom')->with('error', 'Stock Room deleted successfully');
+        return response()->json(true);
     }
 }
