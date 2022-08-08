@@ -80,7 +80,7 @@
                                                 {{storage.storage_name}}
                                             </td>
                                             <td>
-                                                <button type="button" class="btn btn-primary btn-sm ml-1" data-bs-toggle="modal" data-bs-target="#renameStorageModal" @click="setCurrentStorage(room)">Rename</button>
+                                                <button type="button" class="btn btn-primary btn-sm ml-1" data-bs-toggle="modal" data-bs-target="#renameStorageModal" @click="setCurrentStorage(storage)">Rename</button>
                                                 <button type="button" class="btn btn-danger btn-sm ml-1" :disabled="storage.raw_materials.length>0" @click="deleteStorage(room)">Delete</button>
                                                 <button type="button" class="btn btn-success btn-sm ml-1" @click="selectStockRoom(index)">
                                                     Storage List
@@ -116,6 +116,27 @@
                 </div>
             </div>
         </div>
+
+        <!-- Rename Storage Modal -->
+        <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="renameStorageModal" >
+            <div class="modal-dialog">
+                <div class="modal-content bg-light">
+                    <div class="modal-body">
+                            <legend>RENAME STORAGE</legend>
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-text">Storage</span>                 
+                                <input class="form-control" v-model="currentStorage.storage_name" style="text-transform:uppercase" type="text" required autofocus>        
+                            </div>
+                            
+                            <br>
+                            <div class="d-flex">
+                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="renameStorage" :disabled="!currentStorage.storage_name || currentStorage.storage_name.length == 0">Rename</button>
+                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -133,6 +154,7 @@
             const new_stock_room = ref("")
             const new_storage = ref("")
             const currentStockRoom = ref({})
+            const currentStorage = ref({})
 
             const storages = computed(() => {
                 return stockRoomsLocal.value[selected_stock_room_index.value].storages
@@ -144,6 +166,10 @@
 
             function setCurrentStockRoom(room) {
                 currentStockRoom.value = {...room}
+            }
+
+            function setCurrentStorage(storage) {
+                currentStorage.value = {...storage}
             }
 
             async function addStockRoom() {
@@ -187,6 +213,16 @@
                 selected_storage_index.value = 0
             }
 
+            async function renameStorage() {
+                const res = await axios.post("/stockroom/storage/update", currentStorage.value)
+
+                const index = storages.value.findIndex(sto => {
+                    return sto.id == currentStorage.value.id
+                })
+
+                stockRoomsLocal.value[selected_stock_room_index.value].storages[index] = res.data
+            }
+
             return {
                 selectStockRoom,
                 storages,
@@ -196,8 +232,11 @@
                 new_stock_room,
                 stockRoomsLocal,
                 setCurrentStockRoom,
+                setCurrentStorage,
                 currentStockRoom,
+                currentStorage,
                 renameStockRoom,
+                renameStorage,
                 deleteStockRoom,
                 addStorage,
                 new_storage
