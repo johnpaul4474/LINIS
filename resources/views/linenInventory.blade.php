@@ -289,13 +289,13 @@
                                     @if($products->issued_office_id != null)
                                     @foreach(\App\Http\Controllers\Department\DepartmentController::officeList() as $office)                                                                
                                         @if($office->id == $products->issued_office_id) 
-                                            <td style="background-color:#FF0000">LOSSED - {{$office->office_name}}</td>
+                                            <td style="background-color:#FF0000">LOST - {{$office->office_name}}</td>
                                         @endif
                                     @endforeach
                                     @elseif($products->issued_ward_id != null)
                                         @foreach(\App\Http\Controllers\Department\DepartmentController::wardList() as $ward)                                                                
                                         @if($ward->id == $products->issued_ward_id )
-                                            <td style="background-color:#FF0000">LOSSED - {{$ward->ward_name}}</td>
+                                            <td style="background-color:#FF0000">LOST - {{$ward->ward_name}}</td>
                                         @endif
                                         @endforeach
                                     @else  
