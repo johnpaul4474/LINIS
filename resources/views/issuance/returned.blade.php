@@ -426,7 +426,7 @@
                 <form class = 'card p-3 bg-light' action = "losses" method = "post">
                     @csrf
                     <fieldset>
-                        <legend>Lossed Products <legend>
+                        <legend>Lost Products <legend>
                         <div class="row">
                             {{-- @if(Auth::user()->role_id  == 1 || Auth::user()->role_id== 2) --}}
                             @if(Auth::user()->role_id  == 1)
@@ -615,13 +615,13 @@
                             </div>
                             <div class="col" >
                                 <div class="card text-center" >
-                                    <div class="card-header">{{ __('LOSSED ITEMS') }}</div>
+                                    <div class="card-header">{{ __('LOST ITEMS') }}</div>
                                     <div class="card-body">
                                         
                                         
 
 
-                                        <button type="submit" class="btn btn-primary " >Lossed Items</button>  
+                                        <button type="submit" class="btn btn-primary " >Lost Items</button>  
 
                                     </div> 
                                       
@@ -658,7 +658,7 @@
                             <th>PRODUCT <br> UNIT</th>
                             <th>AVAILABLE <br> QUANTITY</th>
                             <th>TOTAL <br> CONDEMNED</th> 
-                            <th>TOTAL <br> LOSSED</th> 
+                            <th>TOTAL <br> LOST</th> 
                             <th>ORIGINAL TOTAL <br> QUANTITY</th>                           
                             <th>UNIT <br> COST</th>
                             <th>TOTAL <br> COST</th>                           
@@ -666,7 +666,7 @@
                             <th>STORAGE</th>
                             <th>AVAILABLE</th>
                             <th>CONDEMNED</th> 
-                            <th>LOSSED</th>
+                            <th>LOST</th>
                             <th>WARD/OFFICE</th>                
                             <th>DATE CREATED</th>                            
                             {{-- <th>DELETE</th> --}}
