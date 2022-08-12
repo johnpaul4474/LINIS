@@ -14,7 +14,9 @@ class ActivityLogs extends Model {
 
     protected static function booted() {
         static::creating(function ($obj) {
-            $obj->employee_id = Auth::user()->employee_id;
+            if(Auth::check()) {
+                $obj->employee_id = Auth::user()->employee_id;
+            }
         });
     }
 }
