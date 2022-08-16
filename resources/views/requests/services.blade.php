@@ -118,16 +118,21 @@
                             {{-- @if(Auth::user()->role_id  == 1 || Auth::user()->role_id== 2) --}}
                             @if(Auth::user()->role_id  == 1)
                               @if($req->status == 1)
-                                <form action = "/processRequest" method = "post">
-                                  @csrf
-                                  <td>
-                                    <input id="id" type="hidden" class="form-control @error('id') is-invalid @enderror" name="id" value="{{$req->id}}">
-                                    <input id="product_name_request" type="hidden" class="form-control @error('id') is-invalid @enderror" name="product_name_request" value="{{$req->product_name_request}}">
-                                    <input id="product_quantity_request" type="hidden" class="form-control @error('id') is-invalid @enderror" name="product_quantity_request" value="{{$req->product_quantity_request}}">
-                                    <input id="remarksSave_{{$req->id}}" type="hidden" class="form-control @error('remarksSave_{{$req->id}}_{{$req->id}}') is-invalid @enderror" name="remarksSave" value="">
-                                      <button type="submit" class="editProductsButton btn btn-primary btn-sm" >PROCESS</button>
-                                    </td>
-                                </form>
+                                <td>
+                                  <form action = "/processRequest" method = "post">
+                                    @csrf
+                                      <input id="id" type="hidden" class="form-control @error('id') is-invalid @enderror" name="id" value="{{$req->id}}">
+                                      <input id="product_name_request" type="hidden" class="form-control @error('id') is-invalid @enderror" name="product_name_request" value="{{$req->product_name_request}}">
+                                      <input id="product_quantity_request" type="hidden" class="form-control @error('id') is-invalid @enderror" name="product_quantity_request" value="{{$req->product_quantity_request}}">
+                                      <input id="remarksSave_{{$req->id}}" type="hidden" class="form-control @error('remarksSave_{{$req->id}}_{{$req->id}}') is-invalid @enderror" name="remarksSave" value="">
+                                        <button type="submit" class="editProductsButton btn btn-primary btn-sm" >PROCESS</button>
+                                  </form>
+                                  <form action = "/cancelRequest/{{$req->id}}" method = "post">
+                                    @csrf
+                                      <input id="remarksSave2_{{$req->id}}" type="hidden" class="form-control @error('remarksSave2_{{$req->id}}_{{$req->id}}') is-invalid @enderror" name="remarksSave" value="">
+                                        <button type="submit" class="editProductsButton btn btn-danger btn-sm" >CANCEL</button>
+                                  </form>
+                                </td>
                               @elseif($req->status == 2)
                               <form action = "/pickUpProductRequest" method = "post">
                                 @csrf
@@ -151,6 +156,8 @@
                               </form>
                               @elseif($req->status == 4)
                               <td style="background-color:#4CAF50;color:white">ISSUED </td> 
+                              @elseif($req->status == 5)
+                              <td>CANCELLED/DELETED </td> 
                               
                               @endif 
                             @endif   
@@ -234,6 +241,7 @@ $(document).ready(function () {
 function remarksOnKeyUp(id) {
     console.log(id);        
     $('#remarksSave_'+id).val($('#remarks_'+id).val());
+    $('#remarksSave2_'+id).val($('#remarks_'+id).val());
   }
      
 </script>    
