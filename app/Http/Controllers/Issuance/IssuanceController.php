@@ -49,8 +49,9 @@ class IssuanceController extends Controller {
         
         Products::where('product_bulk_id', $request->finishedProduct)->decrement('product_available_quantity',(int)$request->quantity);
         
-        Products::whereIn('id', $productIds)
-            ->update([
+        foreach($productIds as $id) {
+            $product = Products::find($id);
+            $product->update([
                 'is_available'              => false,
                 'is_issued'                 => true,
                 'is_returned'               => false,
@@ -58,12 +59,14 @@ class IssuanceController extends Controller {
                 'is_condemned'              => false,            
                 'issued_office_id'          => $request->office,	
                 'issued_ward_id'            => $request->ward,	
-                'issued_date'               => Carbon::now() ,
+                'issued_date'               => Carbon::now(),
                 'returned_date'             => null,
                 'condemned_date'            => null,
                 'lossed_date'               => null,
-                'product_issued_quantity'   => count($productIds)           
+                'product_issued_quantity'   => count($productIds),
+                'product_unit_cost'         => $product->product_unit_cost*(100 + $request->additional)/100
             ]);
+        }
         
         $productsList  = ProductsList::all();
         $wardList = Ward::all();
