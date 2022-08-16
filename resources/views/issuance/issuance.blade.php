@@ -102,16 +102,32 @@
                             <div class="card" >
                                 <div class="card-header">{{ __('ISSUE ITEMS') }}</div>
                                 <div class="card-body">
-                                    <div class="input-group input-group-sm mb-3">
-                                        <div class="input-group-prepend">                      
-                                        <label for="quantity" class="input-group-text">{{ __('Quantity') }}</label>
-                                        </div>                    
-                                            <input id="quantity" type="number" class="form-control @error('quantity') is-invalid @enderror" name="quantity" value="{{ old('quantity') }}" required autocomplete="quantity" autofocus>
-                                            @error('quantity')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror                    
+                                    <div class="d-flex">
+                                        <div class="input-group input-group-sm mb-3 mr-5">
+                                            <div class="input-group-prepend">                      
+                                                <label for="additional" class="input-group-text">Additional Cost</label>
+                                            </div>                    
+                                                <input id="additional" type="number" class="form-control @error('additional') is-invalid @enderror" name="additional" value=10 required autocomplete="additional" autofocus>
+                                                @error('additional')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror       
+                                            <div class="input-group-append">                      
+                                                <label for="additional" class="input-group-text">%</label>
+                                            </div>                
+                                        </div>
+                                        <div class="input-group input-group-sm mb-3">
+                                            <div class="input-group-prepend">                      
+                                            <label for="quantity" class="input-group-text">{{ __('Quantity') }}</label>
+                                            </div>                    
+                                                <input id="quantity" type="number" class="form-control @error('quantity') is-invalid @enderror" name="quantity" value="{{ old('quantity') }}" required autocomplete="quantity" readonly>
+                                                @error('quantity')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror                    
+                                        </div>
                                     </div>
                                 
                                         @csrf
@@ -353,13 +369,15 @@ $(document).ready(function () {
 
         $('#issuanceForm').removeAttr("hidden",false);
         let quantity = $('#quantity').val();
+        let additional = $('#additional').val();
         let unit = $('#tdUnit').val();
         let item = $('#tdItem').val();
-        let cost = $('#tdCost').val();
+        let cost = $('#tdCost').val()*(+additional+100)/100;
         let issuedDate = $('#tdDateIssued').val();
         let trId = $('#trId').val();
         let totalCost = quantity*cost;
         let productIds = $('#productIds').val();
+        let remarks = additional > 0 ?`Added ${additional}% to unit amount` : ''
 
        
         issuedItemsList.push({               
@@ -405,7 +423,7 @@ $(document).ready(function () {
                         <td width="10%">${cost}</td>
                         <td width="10%">${totalCost}</td>
                         <td width="10%">${issuedDate}</td>
-                        <td width="10%"></td>
+                        <td width="10%">${remarks}</td>
                     </tr> `   
                 ); 
                 
@@ -423,6 +441,7 @@ $(document).ready(function () {
                         quantity : $('#quantity').val(),
                         ward : $("#ward").val(),
                         office : $("#office").val(),
+                        additional : $("#additional").val(),
                         },
                     success:function(response) {
                         $('#quantity').val(0);
