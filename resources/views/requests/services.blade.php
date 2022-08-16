@@ -51,11 +51,8 @@
                             <th>Status</th>
                             <th>Processed By</th>
                             <th>Processed Date</th>
-                            {{-- @if(Auth::user()->role_id  == 1 || Auth::user()->role_id== 2) --}}
                             <th>Remarks</th>
-                            @if(Auth::user()->role_id  == 1)
                             <th>Action</th>
-                            @endif
                           </tr>
                         </thead>
                         <tbody>
@@ -159,7 +156,20 @@
                               @elseif($req->status == 5)
                               <td>CANCELLED/DELETED </td> 
                               
-                              @endif 
+                              @endif
+
+                            @else
+                              @if($req->status == 1)
+                                <td>
+                                  <form action = "/cancelRequest/{{$req->id}}" method = "post">
+                                    @csrf
+                                      <input id="remarksSave2_{{$req->id}}" type="hidden" class="form-control @error('remarksSave2_{{$req->id}}_{{$req->id}}') is-invalid @enderror" name="remarksSave" value="">
+                                        <button type="submit" class="editProductsButton btn btn-danger btn-sm" >CANCEL</button>
+                                  </form>
+                                </td>
+                              @else
+                                <td></td>
+                              @endif
                             @endif   
         
                           </tr>
