@@ -12,9 +12,7 @@
                             <thead>
                                     <th>Product Stock ID</th>
                                     <th>Product Name</th>
-                                    <th>Quantity</th>
                                     <th>Unit Cost</th>
-                                    <th>Total Cost</th>
                                     <th>Status</th>
                                     
                             </thead> 
@@ -23,9 +21,7 @@
                                 <tr>
                                     <td>{{$product->product_stock_id}} </td>
                                     <td>{{$product->product_name}} </td>
-                                    <td>{{$product->product_quantity}} {{$product->product_unit}}/S</td>
                                     <td>{{$product->product_unit_cost}} </td>
-                                    <td>{{$product->total_cost}} </td>
                                     <td>{{$product->status}} </td>
                                 </tr>   
                                 @endforeach

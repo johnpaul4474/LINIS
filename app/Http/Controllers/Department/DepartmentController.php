@@ -30,9 +30,7 @@ class DepartmentController extends Controller {
 			select
 				product_stock_id,
 				product_unit,
-				product_quantity,
 				product_unit_cost,
-				total_cost,
 				product_name,
 				case
 					when is_condemned=1 then 'Condemned'
