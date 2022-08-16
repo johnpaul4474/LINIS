@@ -345,4 +345,19 @@ class RequestController extends Controller
 
         return redirect()->route('services')->with('success', 'Remarks added successfully');
     }
+
+    public function cancelRequest(Request $request, $id) {
+        ActivityLogs::create(['activity_details' => 'Cancel Request id: '.$id.' Processed by: '.Auth::user()->employee_id]);
+
+        Requests::where('id', $request->id)
+            ->update([
+                'status' => 5,
+                'processed_by' => Auth::user()->name,
+                'processed_by_emp_id' => Auth::user()->employee_id,
+                'processed_at' => Carbon::now(),
+                'comments' => $request->remarksSave
+            ]);
+
+            return redirect()->route('services')->with('success', 'Request cancelled successfully');
+    }
 }

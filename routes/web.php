@@ -98,6 +98,7 @@ Route::middleware('auth')->group(function () {
     Route::any('/request', [RequestController::class, 'index'])->name('request');
     Route::post('/newRequest', [RequestController::class, 'newRequest'])->name('newRequest');
     Route::post('/processRequest', [RequestController::class, 'processRequest'])->name('processRequest');
+    Route::post('/cancelRequest/{id}', [RequestController::class, 'cancelRequest'])->name('cancelRequest');
     Route::post('/pickUpProductRequest', [RequestController::class, 'pickUpProductRequest'])->name('pickUpProductRequest');
     Route::get('/issueProductRequest', [RequestController::class, 'issueProductRequest'])->name('issueProductRequest');
     Route::get('/retrieveItemsList', [RequestController::class, 'retrieveItemsList'])->name('retrieveItemsList');
