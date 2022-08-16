@@ -64,7 +64,8 @@ class IssuanceController extends Controller {
                 'condemned_date'            => null,
                 'lossed_date'               => null,
                 'product_issued_quantity'   => count($productIds),
-                'product_unit_cost'         => $product->product_unit_cost*(100 + $request->additional)/100
+                'product_unit_cost'         => $product->product_unit_cost*(100 + $request->additional)/100,
+                'issuance_additional_cost'  => $request->additional
             ]);
         }
         

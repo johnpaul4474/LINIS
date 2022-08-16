@@ -41,7 +41,8 @@ class Products extends Model {
         'issued_date',
         'returned_date',
         'condemned_date',
-        'lossed_date'
+        'lossed_date',
+        'issuance_additional_cost'
     ];
 
     protected $dates = ['deleted_at'];
