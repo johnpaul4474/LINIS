@@ -13,6 +13,7 @@ use App\Http\Controllers\Request\RequestController;
 use App\Http\Controllers\Reports\ReportsController;
 use App\Http\Controllers\Role\RoleController;
 use App\Http\Controllers\PasswordController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Department\DepartmentController;
 
 /*
@@ -26,13 +27,10 @@ use App\Http\Controllers\Department\DepartmentController;
 |
 */
 
-Route::get('/', function (Request $request) {
-    if($request->user()) {
-        return redirect()->route('home');
-    } else {
-        return view('welcome');
-    }
-});
+Route::get('/', [HomeController::class, 'index']);
+Route::get('/auth', [HomeController::class, 'authTunnel']);
+Route::get('/401', [HomeController::class, 'authorized'])->name("authorized");
+Route::get('/404', [HomeController::class, 'notFound'])->name("notFound");
 
 Auth::routes();
 
