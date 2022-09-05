@@ -22,9 +22,10 @@
     </head>
     <body class="antialiased">
         <div id="app">
-            <stock-room
+            <select-area
                 user-name="{{ Auth::user()->name }}"
-                :stock-rooms="{{$stockRooms}}"
+                :ward-list="{{$wards}}"
+                :office-list="{{$offices}}"
                 :role-id="{{ Auth::user()->role_id }}"
             />
         </div>

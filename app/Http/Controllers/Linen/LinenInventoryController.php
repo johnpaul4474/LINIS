@@ -13,17 +13,21 @@ use App\Models\Storage;
 use App\Models\Products;
 use Illuminate\Validation\Rule;
 use App\Models\Requests;
+use App\Models\Office;
+use App\Models\Ward;
+use App\Models\UsersList;
 use DB;
 use Carbon\Carbon;
 
 class LinenInventoryController extends Controller
 {
-    public function index() {
+    public function index(Request $request) {
         $stockRooms = StockRoom::select()->orderBy('stock_room', 'asc')->get();
         $storageList = Storage::select()->orderBy('storage_name', 'asc')->get();
         $rawMaterials = LinenRawMaterials::all();
         $materialCount = LinenRawMaterials::count() ;
 
+        $requestList = [];
         if(Auth::user()->role_id == 1 || Auth::user()->role_id == 2 ) {
             $requestList = Requests::select()->orderBy('created_at', 'desc' )->get();
         } else {
@@ -36,6 +40,8 @@ class LinenInventoryController extends Controller
             }
         }
 
+        $productCount = 0;
+        $productsList = [];
         if(Auth::user()->role_id == 1 || Auth::user()->role_id == 2) {
              $productsList = DB::select('EXEC nora.paul.linen_getBulkProducts');
              $productCount = Products::where('is_condemned',0)
@@ -63,6 +69,29 @@ class LinenInventoryController extends Controller
         }
        
         return view('linenInventory', compact('materialCount','productCount','rawMaterials','stockRooms','storageList','productsList','requestList'));
+    }
+
+    public function selectArea(Request $request) {
+        if($request->user()) {
+            $user = UsersList::find($request->user()->id);
+
+            if(!!$request->office_id || !!$request->ward_id) {
+                $user->update([
+                    "office_id" => $request->office_id,
+                    "ward_id" => $request->ward_id
+                ]);
+
+                return redirect()->route('home');
+            } else {
+                // Send user to register page
+                $wards = Ward::all();
+                $offices = Office::all();
+    
+                return view("selectArea", compact('wards', 'offices'));
+            }
+        } else {
+            return redirect()->route('home');
+        }
     }
 
     public function create() {

@@ -11,7 +11,7 @@ class ServiceController extends Controller
 {
     public function index() {
         //to do filter by user get only for ward or office
-        
+        $requestList = [];
         if(Auth::user()->role_id == 1 || Auth::user()->role_id == 2 ) { 
             $requestList = Requests::select()->orderBy('status', 'asc' )->get();
         } else {
@@ -22,8 +22,6 @@ class ServiceController extends Controller
                 $requestList = Requests::select()->where('office_id',Auth::user()->office_id)->orderBy('status', 'asc' )->get();  
             }
         }
-
-       
 
         return view('requests.services',compact('requestList'));
     }

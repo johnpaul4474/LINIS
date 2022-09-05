@@ -19,6 +19,7 @@ use App\Models\ActivityLogs;
 class IssuanceController extends Controller {
     public function index(Request $request) {
         $productsList  = ProductsList::all();
+        $requestList =[];
         
         if(Auth::user()->role_id == 1 || Auth::user()->role_id == 2 ) { 
             $requestList = Requests::select()->orderBy('created_at', 'desc' )->get();
