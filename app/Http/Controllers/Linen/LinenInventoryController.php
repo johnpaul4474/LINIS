@@ -22,12 +22,6 @@ use Carbon\Carbon;
 class LinenInventoryController extends Controller
 {
     public function index(Request $request) {
-        // check if user has a ward/office
-        if($request->user() && !$request->user()->ward_id && !$request->user()->office_id) {
-            // Send user to register page
-            return redirect()->route('selectArea');
-        }
-
         $stockRooms = StockRoom::select()->orderBy('stock_room', 'asc')->get();
         $storageList = Storage::select()->orderBy('storage_name', 'asc')->get();
         $rawMaterials = LinenRawMaterials::all();
