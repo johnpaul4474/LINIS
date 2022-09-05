@@ -278,6 +278,9 @@
                                     <a class="dropdown-item" href="/password">
                                        Change Password
                                     </a>
+                                    <a class="dropdown-item" href="/area">
+                                        Change Ward/Office
+                                    </a>
                                     <a class="dropdown-item" href="/logout">
                                         Logout
                                     </a>

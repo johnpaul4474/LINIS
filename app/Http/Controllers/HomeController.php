@@ -7,7 +7,7 @@ use App\Models\UsersList;
 
 class HomeController extends Controller
 {
-    public function authorized() {
+    public function unauthorized() {
         return view('unathorized');
     }
     public function notFound() {
@@ -23,10 +23,12 @@ class HomeController extends Controller
     }
 
     public function authTunnel(Request $request) {
-        $referer = $request->headers->get('referer');
+        if(!config("app.debug")) {
+            $referer = $request->headers->get('referer');
         
-        if(!$referer || parse_url($referer)["host"] != "192.168.6.179") {
-            return redirect()->route('notFound');
+            if(!$referer || parse_url($referer)["host"] != "192.168.6.179") {
+                return redirect()->route('notFound');
+            }
         }
 
         if($request->employeeid) {
@@ -38,6 +40,29 @@ class HomeController extends Controller
 
             $user = UsersList::where("employee_id", $request->employeeid)->first();
 
+            // Create user if does not exist
+            if(!$user) {
+                $homis = \DB::table("hospital.dbo.user_acc")
+                    ->where("employeeid", $request->employeeid)
+                    ->first();
+
+                if(!$homis) {
+                    return redirect()->route('unauthorized');
+                }
+
+                $hpersonal = \DB::table("hospital.dbo.hpersonal")
+                    ->where("employeeid", $request->employeeid)
+                    ->first();
+
+                $user = UsersList::create([
+                    'username' => $homis->user_name,	
+                    'name' => $hpersonal->lastname . ", " . $hpersonal->firstname,	
+                    'employee_id' => $request->employeeid,	
+                    'role_name' => 'user',
+                    'role_id' => 3
+                ]);
+            }
+
             if($user) {
                 \Auth::loginUsingId($user->id);
             }
@@ -46,7 +71,7 @@ class HomeController extends Controller
         if(\Auth::check()) {
             return redirect()->route('home');
         } else {
-            return redirect()->route('authorized');
+            return redirect()->route('unauthorized');
         }
     }
 }

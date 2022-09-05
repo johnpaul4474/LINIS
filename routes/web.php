@@ -29,13 +29,14 @@ use App\Http\Controllers\Department\DepartmentController;
 
 Route::get('/', [HomeController::class, 'index']);
 Route::get('/auth', [HomeController::class, 'authTunnel']);
-Route::get('/401', [HomeController::class, 'authorized'])->name("authorized");
+Route::get('/401', [HomeController::class, 'unauthorized'])->name("unauthorized");
 Route::get('/404', [HomeController::class, 'notFound'])->name("notFound");
 
 Auth::routes();
 
 Route::middleware('auth')->group(function () {
     Route::get('/home', [LinenInventoryController::class, 'index'])->name('home');
+    Route::get('/area', [LinenInventoryController::class, 'selectArea'])->name('selectArea');
     Route::get('/logout', function () {
         \Session::flush();
         \Auth::logout();

@@ -25,6 +25,7 @@
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">                
                             <li><a class="dropdown-item" href="/password">Change Password</a></li>
+                            <li><a class="dropdown-item" href="/area">Change Ward/Office</a></li>
                             <li><a class="dropdown-item" href="/logout">Logout</a></li>
                         </ul>
                     </li>
