@@ -1,7 +1,7 @@
 <template>
     <div>
         <navbar :user-name="userName"></navbar>
-        <Menu></Menu>
+        <Menu :admin="roleId==1"></Menu>
 
         <div class="container-fluid mt-4">
             <div class="row">
@@ -323,7 +323,11 @@
 
         props: {
             userName: String,
-            stockRooms: Array
+            stockRooms: Array,
+            roleId: {
+                type: Number,
+                default: 3
+            }
         }
     }
 </script>

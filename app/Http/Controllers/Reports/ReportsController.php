@@ -31,8 +31,9 @@ class ReportsController extends Controller {
         $currentMonth = Carbon::parse($rawDate)->format('Y-m-d');
         $lastMonth = Carbon::parse($rawDate)->subMonths(1)->format('Y-m-d');
         $nextMonth = Carbon::parse($rawDate)->addMonths(1)->format('Y-m-d');
-        $officeward ;
+        $officeward = null ;
 
+        $linenInventory = [];
         $linenInventoryReport = [];
         if($request->office != null) {      
             $linenInventory = DB::select('EXEC nora.paul.linen_getProductsListByOffice  @office='.$request->office);

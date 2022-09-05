@@ -25,6 +25,7 @@ use App\Models\Products;
 class RequestController extends Controller
 {
     public function index() {
+        $productsList = [];
         if(Auth::user()->office_id != null) {      
             $productsList = DB::select('EXEC nora.paul.linen_getProductsListByWardOffice @ward =null'.', @office='.Auth::user()->office_id);
         } else if (Auth::user()->ward_id != null) {
@@ -214,6 +215,7 @@ class RequestController extends Controller
         $requestId = $request->id;
 
         $productsList  = ProductsList::all();
+        $requestList = [];
         
         if(Auth::user()->role_id == 1 || Auth::user()->role_id == 2 ) { 
             $requestList = Requests::select()->where('id',$requestId)->orderBy('created_at', 'desc' )->get();
