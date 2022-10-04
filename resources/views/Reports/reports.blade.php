@@ -167,9 +167,7 @@
                     <br>
                     <br>
                     <br>
-                    ____________________________
-                    <br>
-                    Signature over printed name:
+                    {{str_pad(\Auth::user()->name, 28, ' ', STR_PAD_BOTH )}}
               </div>
               <div class="col">
                   Received by:
@@ -246,10 +244,11 @@
                 <table class="table table-sm table-bordered">
                         <thead>
                             <tr>
-                              <th  colspan="4"><small><b>UNIT/WARD: </b>
-                                {{$officeward}}
-                            </small></th>
-                              <th  colspan="4"><small><b>DATE: {{\Carbon\Carbon::now()->format('F d,Y h:i A')}}</b></small></th>
+                              <th  colspan="3">
+                                <small><b>UNIT/WARD: </b> {{$officeward}}</small>
+                              </th>
+                              <th  colspan="2"><small><b>Month: </b>{{$currentMonth ? date('F Y', strtotime($currentMonth)) : ''}}</small></th>
+                              <th  colspan="3"><small><b>Generated: </b>{{\Carbon\Carbon::now()->format('Y-m-d h:i A')}}</small></th>
                             </tr>
                           </thead>
                           <tbody>

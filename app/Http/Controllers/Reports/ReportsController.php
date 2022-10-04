@@ -47,7 +47,7 @@ class ReportsController extends Controller {
 
         }
         
-        return view('Reports.reports',compact('linenInventory', $linenInventory,'linenInventoryReport',$linenInventoryReport,'officeward'));
+        return view('Reports.reports',compact('linenInventory', $linenInventory,'linenInventoryReport',$linenInventoryReport,'officeward', 'currentMonth'));
     }
 }
         
