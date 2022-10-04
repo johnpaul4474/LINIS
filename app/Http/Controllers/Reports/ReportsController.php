@@ -22,8 +22,9 @@ class ReportsController extends Controller {
         $linenInventory = [];
         $linenInventoryReport = [];
         $officeward = "";
+        $currentMonth = date('Y-m-d');
 
-        return view('Reports.reports',compact('linenInventory', $linenInventory,'linenInventoryReport',$linenInventoryReport,'officeward'));
+        return view('Reports.reports',compact('linenInventory', $linenInventory,'linenInventoryReport',$linenInventoryReport,'officeward', 'currentMonth'));
     }
 
     public function linenInventory(Request $request) {
