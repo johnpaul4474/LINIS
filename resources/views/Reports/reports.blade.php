@@ -247,33 +247,7 @@
                         <thead>
                             <tr>
                               <th  colspan="4"><small><b>UNIT/WARD: </b>
-                                @if(Auth::user()->role_id  == 3)
-                                    @if(Auth::user()->office_id != null)
-                                    @foreach(\App\Http\Controllers\Department\DepartmentController::officeList() as $office)                                                                
-                                        @if($office->id == Auth::user()->office_id) 
-                                            <u>
-                                              {{$office->office_name}}
-                                            </u>
-                                        @endif
-                                    @endforeach
-                                    @elseif(Auth::user()->ward_id != null)
-                                        @foreach(\App\Http\Controllers\Department\DepartmentController::wardList() as $ward)                                                                
-                                        @if($ward->id == Auth::user()->ward_id )
-                                            
-                                                <u>
-                                                {{$ward->ward_name}}
-                                                </u> 
-                                            
-                                        @endif
-                                        @endforeach
-                                    
-                                    @endif
-                                @else
-                                    <span id="unit_ward">          
-                                    </span>
-                                   
-                                    
-                                @endif
+                                {{$officeward}}
                             </small></th>
                               <th  colspan="4"><small><b>DATE: {{\Carbon\Carbon::now()->format('F d,Y h:i A')}}</b></small></th>
                             </tr>
