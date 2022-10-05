@@ -40,6 +40,7 @@ class DepartmentController extends Controller {
 				end as status
 			from nora.paul.linen_products_list
 			where issued_ward_id = ?
+			and deleted_at is null
 		", [$ward_id]);
 
 		return view("departments.issuedProducts", compact('products', 'name', 'type'));
@@ -65,6 +66,7 @@ class DepartmentController extends Controller {
 				end as status
 			from nora.paul.linen_products_list
 			where issued_office_id = ?
+			and deleted_at is null
 		", [$office_id]);
 
 		return view("departments.issuedProducts", compact('products', 'name', 'type'));
